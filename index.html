@@ -22,25 +22,17 @@
         }
         .title-font { 
             font-family: 'Orbitron', sans-serif; 
-            letter-spacing: 8px; 
+            letter-spacing: 6px; 
         }
-        .neon-gold { 
-            color: var(--neon-gold); 
-            text-shadow: 0 0 15px #ffd700, 0 0 40px #c026d3, 0 0 60px #00f5ff; 
-        }
-        .neon-cyan { 
-            color: var(--neon-cyan); 
-            text-shadow: 0 0 25px #00f5ff; 
-        }
+        .neon-gold { color: var(--neon-gold); text-shadow: 0 0 20px #ffd700, 0 0 45px #c026d3, 0 0 70px #00f5ff; }
+        .neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 25px #00f5ff; }
 
-        /* HUD PANEL STYLE */
         .hall-card {
             background: linear-gradient(145deg, #0f0a1f, #1c1333);
             border: 3px solid #22d3ee;
             position: relative;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: 0 0 35px rgba(34, 211, 238, 0.5);
         }
         .hall-card::before {
             content: '';
@@ -52,68 +44,49 @@
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             opacity: 0.7;
-            transition: all 0.5s ease;
         }
         .hall-card:hover {
             transform: scale(1.07) translateY(-10px);
-            box-shadow: 0 0 80px rgba(34, 211, 238, 0.95), 
-                        0 0 110px rgba(192, 38, 211, 0.8);
+            box-shadow: 0 0 80px rgba(34, 211, 238, 0.95);
             border-color: #67e8f9;
         }
-        .hall-card:hover::before {
-            opacity: 1;
-            animation: borderFlow 2s linear infinite;
-        }
 
-        @keyframes borderFlow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-
-        .hall-logo {
-            width: 100%;
-            max-width: 340px;
-            height: 135px;
-            object-fit: contain;
-            margin: 20px auto 28px;
-            filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.85));
-            transition: all 0.5s ease;
-        }
-
-        .hall-card:hover .hall-logo {
-            transform: scale(1.16) rotate(2deg);
-            filter: drop-shadow(0 0 75px #ffd700) drop-shadow(0 0 45px #00f5ff);
-        }
-
-        .ratio-bar { 
-            height: 10px; 
-            background: #1e2937; 
-            border-radius: 9999px; 
-            overflow: hidden; 
-            border: 2px solid #22d3ee; 
-        }
-        .ratio-fill-win { height: 100%; background: linear-gradient(90deg, #22c55e, #86efac); }
-        .ratio-fill-big { height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); }
-
-        .glitch { animation: glitch 1.2s linear infinite alternate; }
+        .glitch { animation: glitch 1.3s linear infinite alternate; }
         @keyframes glitch {
             0% { text-shadow: 3px 0 #ff00ff, -3px 0 #00ffff; }
             100% { text-shadow: -3px 0 #ff00ff, 3px 0 #00ffff; }
         }
 
         .scanline::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            content: ''; position: absolute; inset: 0;
             background: linear-gradient(transparent 50%, rgba(0,245,255,0.07) 50%);
             background-size: 100% 4px;
-            pointer-events: none;
             animation: scan 7s linear infinite;
-            z-index: 1;
+            pointer-events: none;
         }
-        @keyframes scan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
+        @keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+
+        /* Analysis Loading */
+        .loading-card {
+            background: rgba(15, 23, 42, 0.95);
+            border: 2px solid #00f5ff;
+            box-shadow: 0 0 60px rgba(0, 245, 255, 0.6);
+        }
+        .holo-ring { animation: holo-rotate 20s linear infinite; }
+        @keyframes holo-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Win Probability Bar dưới hình game */
+        .win-prob-bar {
+            height: 16px;
+            background: #1e2937;
+            border-radius: 9999px;
+            overflow: hidden;
+            border: 2px solid #22d3ee;
+        }
+        .win-prob-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #86efac, #22c55e);
+            box-shadow: 0 0 25px #22c55e;
         }
     </style>
 </head>
@@ -121,7 +94,7 @@
 
 <div class="max-w-[420px] mx-auto px-4 pt-6">
 
-    <!-- ====================== HALL SELECTION - SHARP HUD PANEL ====================== -->
+    <!-- ====================== HALL SELECTION ====================== -->
     <div id="hall-screen">
         <div class="text-center mb-12">
             <h1 class="title-font text-5xl neon-gold tracking-widest glitch">QUANTUM SẢNH</h1>
@@ -129,7 +102,6 @@
             <div class="h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent my-6"></div>
             <p class="text-white/70 text-xs tracking-widest">CHỌN CỔNG • HƠN 120 TRÒ CHƠI QUANTUM</p>
         </div>
-
         <div class="space-y-8" id="hall-grid"></div>
     </div>
 
@@ -192,58 +164,110 @@
         </div>
     </div>
 
-    <!-- ====================== ANALYSIS SCREEN ====================== -->
+    <!-- ====================== ANALYSIS SCREEN (ĐÃ CHỈNH SỬA) ====================== -->
     <div id="analysis-screen" class="hidden">
-        <button onclick="backToCurrentScreen()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg">
-            ← QUAY LẠI
+        <button onclick="backToCurrentScreen()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg font-medium">
+            ← QUAY LẠI MA TRẬN
         </button>
 
-        <div id="matrix-loading" class="hidden h-80 relative mb-8 rounded-3xl overflow-hidden">
-            <canvas id="matrix-canvas"></canvas>
-            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black/50">
-                <div class="text-6xl mb-4 animate-pulse">⟡</div>
-                <p class="text-cyan-300 text-xl font-medium">ĐANG KẾT NỐI MA TRẬN...</p>
-                <div class="w-72 h-1 bg-cyan-950 mt-10 rounded-full overflow-hidden">
-                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-400 to-purple-500 w-0 transition-all"></div>
+        <!-- Loading Screen -->
+        <div id="matrix-loading" class="hidden rounded-3xl p-8 relative overflow-hidden min-h-[320px] flex items-center justify-center">
+            <div class="loading-card w-full max-w-[340px] rounded-3xl p-8 text-center relative">
+                <div class="holo-ring absolute -inset-10 border border-cyan-400/30 rounded-full"></div>
+                <div class="text-6xl mb-4 glitch">⟡</div>
+                <h2 class="text-4xl font-bold tracking-widest neon-cyan mb-2">NEURAL SYNC</h2>
+                <p class="text-cyan-300 text-lg mb-10">ĐANG PHÂN TÍCH DÒNG CHẢY QUANTUM...</p>
+                <div class="relative">
+                    <div class="h-2.5 bg-zinc-900 rounded-full overflow-hidden border border-cyan-400/50">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 w-0 transition-all duration-100 rounded-full"></div>
+                    </div>
+                    <div id="loading-percentage" class="text-center text-cyan-400 font-mono text-xl mt-4">0%</div>
                 </div>
             </div>
         </div>
 
-        <div id="future-result" class="hidden rounded-3xl p-6 relative">
+        <!-- Future Result - Phiên bản đẹp nhất -->
+        <div id="future-result" class="hidden analysis-card rounded-3xl p-8 relative">
+            
+            <!-- Tên Game -->
             <div class="text-center mb-6">
-                <h1 id="game-title" class="title-font text-3xl neon-gold tracking-widest"></h1>
+                <h1 id="game-title" class="title-font text-[28px] leading-tight neon-gold tracking-widest glitch"></h1>
             </div>
 
-            <div class="flex justify-center mb-8">
-                <img id="game-avatar-analysis" class="game-avatar" alt="">
+            <!-- Hình Game -->
+            <div class="flex justify-center mb-6 relative">
+                <div class="relative">
+                    <img id="game-avatar-analysis" class="w-52 h-52 object-contain rounded-3xl border-4 border-cyan-400 shadow-[0_0_90px_-10px_#00f5ff]" alt="">
+                    <div class="holo-ring absolute -inset-8 border border-cyan-400/40 rounded-3xl"></div>
+                </div>
             </div>
 
-            <div class="bg-[#0f172a] rounded-2xl p-5 mb-8 border border-cyan-500/40">
+            <!-- Thanh Xác Suất Nổ Hũ (đúng vị trí bạn yêu cầu) -->
+            <div class="mb-8 px-2">
+                <div class="flex justify-between items-center text-sm mb-2 px-1">
+                    <span class="font-medium text-white/80">XÁC SUẤT NỔ HŨ</span>
+                    <span id="win-prob-text" class="font-bold text-emerald-400 text-2xl">96%</span>
+                </div>
+                <div class="win-prob-bar">
+                    <div id="win-prob-fill" class="win-prob-fill transition-all" style="width: 96%"></div>
+                </div>
+            </div>
+
+            <!-- Golden Time -->
+            <div class="bg-[#0f172a] border border-cyan-400/60 rounded-3xl p-6 mb-8">
                 <div class="flex items-center gap-4">
-                    <div class="w-[105px] h-[105px] flex-shrink-0 relative">
-                        <img id="wheel-image" class="w-full h-full rounded-full object-cover">
-                    </div>
                     <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1"><span class="text-3xl">⏳</span><p class="text-cyan-300 text-sm font-medium">GIỜ VÀNG QUAY</p></div>
-                        <div class="flex items-center gap-3">
-                            <div id="current-time" class="text-xl text-white/75 font-mono"></div>
-                            <span class="text-2xl text-cyan-400">→</span>
-                            <div id="golden-time" class="neon-gold text-2xl font-bold"></div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-3xl">⏳</span>
+                            <p class="text-cyan-300 font-semibold tracking-widest">GIỜ VÀNG QUANTUM</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div id="current-time" class="text-3xl font-mono text-white/80"></div>
+                            <span class="text-cyan-400 text-4xl">→</span>
+                            <div id="golden-time" class="neon-gold text-4xl font-bold digital-number"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <button onclick="hackScatter()" id="hackBtn" 
-                    class="w-full py-6 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 rounded-2xl text-xl font-bold border-4 border-purple-300 flex items-center justify-center gap-3 active:scale-95 shadow-2xl">
-                <span class="tracking-widest">HACK SCATTER NGAY</span>
-                <span class="text-3xl">🪙</span>
+            <!-- Spin Protocol -->
+            <div class="spin-protocol rounded-3xl p-6 mb-8 bg-[#0f172a]/80 border border-cyan-400/40">
+                <h3 class="text-center text-purple-300 font-bold tracking-widest text-lg mb-5 flex items-center justify-center gap-2">
+                    <span>⚡</span> SPIN PROTOCOL - HƯỚNG DẪN QUAY
+                </h3>
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <p class="text-xs text-white/60 mb-1">TỔNG VÒNG</p>
+                        <p id="total-spins" class="text-5xl font-bold neon-cyan digital-number">87</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-white/60 mb-1">QUAY THƯỜNG</p>
+                        <p id="normal-spins" class="text-4xl font-semibold text-emerald-400">62</p>
+                        <p class="text-[10px] text-white/50">vòng</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-white/60 mb-1">QUAY NHANH</p>
+                        <p id="fast-spins" class="text-4xl font-semibold text-amber-400">25</p>
+                        <p class="text-[10px] text-white/50">vòng</p>
+                    </div>
+                </div>
+                <div class="mt-6 text-center text-xs text-cyan-400/80">
+                    • Khuyến nghị dùng Auto Spin theo protocol trên<br>
+                    • Bắt đầu quay thường → tăng tốc turbo ở giai đoạn sau để tối ưu scatter
+                </div>
+            </div>
+
+            <!-- Hack Button -->
+            <button onclick="hackScatter()" 
+                    class="w-full py-7 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 rounded-3xl text-2xl font-bold tracking-widest flex items-center justify-center gap-4 shadow-[0_0_60px_#c026d3] active:scale-95 transition-all">
+                <span>HACK SCATTER NGAY</span>
+                <span class="text-4xl">🌀</span>
             </button>
         </div>
     </div>
 </div>
 
-<!-- Hack Loading & Modal -->
+<!-- ====================== HACK LOADING & MODAL ====================== -->
 <div id="hack-loading" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-[60]">
     <div class="w-full max-w-[360px] px-6 text-center">
         <div class="mb-8">
@@ -257,7 +281,7 @@
             <div class="absolute inset-0 flex flex-col items-center justify-center">
                 <div id="hack-status" class="text-cyan-400 font-mono text-xl mb-6 tracking-widest glitch">INITIALIZING SCATTER PROTOCOL...</div>
                 <div class="w-80 h-1.5 bg-zinc-900 rounded-full overflow-hidden border border-cyan-500/30">
-                    <div id="hack-progress-bar" class="h-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 w-0 transition-all duration-300"></div>
+                    <div id="hack-progress-bar" class="h-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 w-0 transition-all"></div>
                 </div>
                 <div id="hack-percentage" class="font-mono text-cyan-300 mt-3 text-lg">0%</div>
             </div>
@@ -267,14 +291,14 @@
 
 <div id="hack-modal" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-[70]">
     <div class="bg-gradient-to-br from-amber-900 via-yellow-900 to-amber-950 w-[92%] max-w-[360px] rounded-3xl p-8 border-4 border-yellow-400 shadow-[0_0_70px_#fcd34d]">
-        <div class="flex justify-center mb-6 relative">
-            <span id="gold-icon" class="gold-coin text-8xl">🪙</span>
+        <div class="flex justify-center mb-6">
+            <span class="text-8xl">🪙</span>
         </div>
         <h2 class="text-center text-3xl font-bold text-yellow-300 glitch">HACK SCATTER</h2>
-        <h3 id="success-rate" class="text-center text-2xl font-bold text-emerald-400 mb-8">THÀNH CÔNG 95%</h3>
+        <h3 class="text-center text-2xl font-bold text-emerald-400 mb-8">THÀNH CÔNG 95%</h3>
         <div class="bg-black/70 rounded-2xl p-6 mb-8">
             <p class="text-yellow-300 text-sm mb-2 text-center">MỨC MUA TỐI ƯU</p>
-            <div id="hack-amount" class="text-6xl font-bold text-white text-center">3.000K</div>
+            <div class="text-6xl font-bold text-white text-center">3.000K</div>
         </div>
         <button onclick="closeModal()" class="w-full py-6 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl text-2xl font-bold">QUAY NGAY 🔥</button>
     </div>
@@ -339,15 +363,13 @@ const gamesPerPage = 10;
 let filteredGames = pgGames.slice();
 let recommendedIndex = 0;
 
-// ====================== RENDER HALLS (SHARP HUD) ======================
+// ====================== RENDER HALLS ======================
 function renderHalls() {
     const grid = document.getElementById('hall-grid');
     grid.innerHTML = '';
-
     halls.forEach(hall => {
         const winRate = Math.floor(Math.random() * 18) + 80;
         const bigWinRate = Math.floor(Math.random() * 22) + 68;
-
         const div = document.createElement('div');
         div.className = `hall-card rounded-3xl p-6 cursor-pointer`;
         div.innerHTML = `
@@ -379,7 +401,6 @@ function renderHalls() {
     });
 }
 
-// Các hàm còn lại (giữ nguyên logic cũ)
 function selectHall(hallId) {
     currentHall = hallId;
     document.getElementById('hall-screen').classList.add('hidden');
@@ -487,35 +508,23 @@ function showAnalysis(index) {
 
     document.getElementById('game-title').textContent = game.name;
     document.getElementById('game-avatar-analysis').src = game.img;
-    document.getElementById('wheel-image').src = game.img;
-    setTimeout(startMatrixPrediction, 300);
-}
 
-function initMatrix() {
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
-    let drops = [];
-    const fontSize = 14;
-    const resize = () => {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-        drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
-    };
-    resize();
-    window.addEventListener('resize', resize);
-    const chars = "01アイウエオ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    function draw() {
-        ctx.fillStyle = 'rgba(0,0,0,0.07)';
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = '#00f5ff';
-        ctx.font = fontSize + 'px monospace';
-        for (let i = 0; i < drops.length; i++) {
-            ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize);
-            if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-            drops[i]++;
-        }
-    }
-    setInterval(draw, 35);
+    // Xác suất nổ hũ ngẫu nhiên
+    const prob = Math.floor(Math.random() * 12) + 88;
+    document.getElementById('win-prob-text').textContent = prob + "%";
+    document.getElementById('win-prob-fill').style.width = prob + "%";
+
+    // Spin Protocol
+    const totalSpins = Math.floor(Math.random() * 121) + 30;
+    const normalRatio = 0.55 + Math.random() * 0.35;
+    const normalSpins = Math.floor(totalSpins * normalRatio);
+    const fastSpins = totalSpins - normalSpins;
+
+    document.getElementById('total-spins').textContent = totalSpins;
+    document.getElementById('normal-spins').textContent = normalSpins;
+    document.getElementById('fast-spins').textContent = fastSpins;
+
+    setTimeout(startMatrixPrediction, 200);
 }
 
 function startMatrixPrediction() {
@@ -523,12 +532,17 @@ function startMatrixPrediction() {
     const result = document.getElementById('future-result');
     loading.classList.remove('hidden');
     result.classList.add('hidden');
+
     let progress = 0;
     const bar = document.getElementById('progress-bar');
+    const percentText = document.getElementById('loading-percentage');
+
     const intv = setInterval(() => {
-        progress += Math.random()*15 + 8;
+        progress += Math.random() * 14 + 9;
         if (progress > 100) progress = 100;
         bar.style.width = progress + '%';
+        percentText.textContent = Math.floor(progress) + '%';
+
         if (progress >= 100) {
             clearInterval(intv);
             setTimeout(() => {
@@ -538,9 +552,39 @@ function startMatrixPrediction() {
                 const future = new Date(now.getTime() + (Math.floor(Math.random() * 18) + 3) * 60000);
                 document.getElementById('current-time').textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
                 document.getElementById('golden-time').textContent = `${String(future.getHours()).padStart(2,'0')}:${String(future.getMinutes()).padStart(2,'0')}`;
-            }, 400);
+            }, 600);
         }
-    }, 70);
+    }, 65);
+}
+
+// Hack Matrix
+let hackCanvas, hackCtx, hackDrops = [];
+function initHackMatrix() {
+    hackCanvas = document.getElementById('hack-matrix');
+    hackCtx = hackCanvas.getContext('2d');
+    const fontSize = 13;
+    const resize = () => {
+        hackCanvas.width = hackCanvas.offsetWidth;
+        hackCanvas.height = hackCanvas.offsetHeight;
+        hackDrops = Array(Math.floor(hackCanvas.width / fontSize)).fill(1);
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const chars = "01アイウエオ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    function draw() {
+        hackCtx.fillStyle = 'rgba(0,0,0,0.1)';
+        hackCtx.fillRect(0, 0, hackCanvas.width, hackCanvas.height);
+        hackCtx.fillStyle = '#00f5ff';
+        hackCtx.font = fontSize + 'px monospace';
+        for (let i = 0; i < hackDrops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            hackCtx.fillText(text, i * fontSize, hackDrops[i] * fontSize);
+            if (hackDrops[i] * fontSize > hackCanvas.height && Math.random() > 0.975) hackDrops[i] = 0;
+            hackDrops[i]++;
+        }
+    }
+    setInterval(draw, 40);
 }
 
 function hackScatter() {
@@ -551,20 +595,23 @@ function hackScatter() {
     const status = document.getElementById('hack-status');
 
     const interval = setInterval(() => {
-        progress += Math.random() * 12 + 8;
+        progress += Math.random() * 11 + 7;
         if (progress > 100) progress = 100;
+
         bar.style.width = progress + '%';
         percent.textContent = Math.floor(progress) + '%';
-        if (progress > 30) status.textContent = "BREACHING SCATTER LAYER...";
-        if (progress > 65) status.textContent = "ALIGNING WIN PROTOCOL...";
+
+        if (progress > 35) status.textContent = "BREACHING SCATTER LAYER...";
+        if (progress > 70) status.textContent = "ALIGNING WIN PROTOCOL...";
+
         if (progress >= 100) {
             clearInterval(interval);
             setTimeout(() => {
                 document.getElementById('hack-loading').classList.add('hidden');
                 document.getElementById('hack-modal').classList.remove('hidden');
-            }, 600);
+            }, 500);
         }
-    }, 80);
+    }, 75);
 }
 
 function closeModal() {
@@ -572,9 +619,10 @@ function closeModal() {
     alert("🎉 Hack Scatter thành công! Chúc bạn nổ hũ lớn!");
 }
 
+// ====================== INIT ======================
 window.onload = () => {
     renderHalls();
-    initMatrix();
+    initHackMatrix();
 };
 </script>
 </body>
