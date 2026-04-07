@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SẢNH PG • MATRIX ANALYSIS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;900&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-gold: #ffd700;
+            --neon-cyan: #00f5ff;
+        }
+
+        body {
+            background: #05050f;
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .title-font { 
+            font-family: 'Orbitron', sans-serif; 
+            letter-spacing: 6px; 
+        }
+
+        .neon-gold { color: var(--neon-gold); text-shadow: 0 0 20px #ffd700, 0 0 50px #ffd700; }
+        .neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 25px #00f5ff; }
+
+        .game-avatar {
+            width: 190px;
+            height: 190px;
+            object-fit: cover;
+            border: 5px solid #00f5ff;
+            border-radius: 24px;
+            box-shadow: 0 0 40px rgba(0, 245, 255, 0.8),
+                        0 0 80px rgba(255, 215, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .game-avatar:active {
+            transform: scale(0.90);
+        }
+
+        .ratio-container {
+            margin-top: 18px;
+        }
+
+        .ratio-bar {
+            height: 14px;
+            background: #1e2937;
+            border-radius: 9999px;
+            overflow: hidden;
+            border: 2px solid #00f5ff;
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
+        }
+
+        .ratio-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #86efac);
+            transition: width 1.5s ease;
+            box-shadow: 0 0 20px #22c55e;
+        }
+
+        .analysis-frame {
+            background: linear-gradient(145deg, #0a0f1f, #1a2338);
+            border: 3px solid #00f5ff;
+            box-shadow: 0 0 50px rgba(0, 245, 255, 0.5);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .future-wheel {
+            position: relative;
+            width: 105px;
+            height: 105px;
+            flex-shrink: 0;
+        }
+
+        .wheel-border {
+            position: absolute;
+            inset: 0;
+            border: 5px solid transparent;
+            border-image: linear-gradient(45deg, #00f5ff, #ffd700, #00f5ff) 1;
+            border-radius: 9999px;
+            animation: wheelRotate 12s linear infinite;
+            box-shadow: 0 0 25px #00f5ff, 0 0 50px rgba(255, 215, 0, 0.5);
+        }
+
+        .live-blink {
+            color: #ef4444;
+            animation: blinkRed 1.2s infinite alternate;
+        }
+
+        @keyframes blinkRed {
+            from { opacity: 0.6; }
+            to { opacity: 1; text-shadow: 0 0 15px #ef4444; }
+        }
+
+        @keyframes wheelRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="pb-12">
+
+    <div class="max-w-[420px] mx-auto px-4 pt-8">
+
+        <!-- Home Screen -->
+        <div id="home-screen">
+            <div class="text-center mb-10">
+                <h1 class="title-font text-5xl neon-gold tracking-widest">SẢNH PG</h1>
+            </div>
+
+            <div class="flex justify-center">
+                <div onclick="showAnalysis()" class="text-center">
+                    <img src="https://i.ibb.co/SXYM0VGD/channels4-profile.jpg" 
+                         alt="Wild Bounty Showdown" 
+                         class="game-avatar mx-auto">
+                    
+                    <p class="mt-6 text-2xl font-bold neon-cyan tracking-wide">WILD BOUNTY SHOWDOWN</p>
+                    
+                    <!-- Thanh % Tỉ lệ nhả -->
+                    <div class="ratio-container px-8">
+                        <div class="flex justify-between text-sm mb-1.5 text-white/80">
+                            <span>DỰ ĐOÁN TỈ LỆ NHẢ</span>
+                            <span id="ratio-text" class="font-bold text-emerald-400">84%</span>
+                        </div>
+                        <div class="ratio-bar">
+                            <div id="ratio-fill" class="ratio-fill" style="width: 84%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Screen -->
+        <div id="analysis-screen" class="hidden">
+            <button onclick="backToHome()" 
+                    class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white transition-colors">
+                ← QUAY LẠI SẢNH PG
+            </button>
+
+            <div id="matrix-loading" class="hidden h-80 relative mb-8 rounded-3xl overflow-hidden">
+                <canvas id="matrix-canvas"></canvas>
+                <div class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black/50">
+                    <div class="text-6xl mb-4 animate-pulse">⟡</div>
+                    <p class="text-cyan-300 text-xl font-medium">ĐANG KẾT NỐI MA TRẬN...</p>
+                    <div class="w-72 h-1 bg-cyan-950 mt-10 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-400 to-purple-500 w-0 transition-all"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="future-result" class="hidden analysis-frame rounded-3xl p-6 relative">
+                <div id="particle-container"></div>
+
+                <div class="text-center mb-6">
+                    <h1 class="title-font text-3xl neon-gold tracking-widest">WILD BOUNTY SHOWDOWN</h1>
+                    <div class="inline-flex items-center gap-3 bg-[#1e2937] border border-cyan-400 rounded-full px-7 py-3 mt-4">
+                        <span class="text-base font-bold tracking-wider">A.I ĐANG PHÂN TÍCH</span>
+                        <span class="live-blink text-xl font-bold">● LIVE</span>
+                    </div>
+                </div>
+
+                <!-- Giờ Vàng + Cách Quay + Hack Scatter giữ nguyên như cũ -->
+                <div class="bg-[#0f172a] rounded-2xl p-5 mb-8 border border-cyan-500/40">
+                    <div class="flex items-center gap-4">
+                        <div class="future-wheel">
+                            <div class="wheel-border"></div>
+                            <div class="wheel-inner">
+                                <img src="https://i.ibb.co/SXYM0VGD/channels4-profile.jpg" class="cowgirl-img">
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-3xl">⏳</span>
+                                <p class="text-cyan-300 text-sm font-medium">GIỜ VÀNG QUAY</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div id="current-time" class="text-xl text-white/75 font-mono"></div>
+                                <span class="text-2xl text-cyan-400">→</span>
+                                <div id="golden-time" class="hacker-font neon-gold"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="flex items-center gap-3 mb-5">
+                        <span class="text-4xl">🎰</span>
+                        <p class="text-2xl font-semibold neon-cyan">CÁCH QUAY</p>
+                    </div>
+                    <div class="bg-black/70 rounded-2xl p-6">
+                        <div class="flex justify-between mb-6">
+                            <div>
+                                <p class="text-xs text-gray-400 mb-1">TỔNG VÒNG QUAY</p>
+                                <div id="total-spins" class="text-6xl font-bold neon-gold"></div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-cyan-400 mb-1">🐢 QUAY CHẬM</p>
+                                <div id="slow-spins" class="text-5xl font-bold text-cyan-300"></div>
+                            </div>
+                        </div>
+                        <div class="h-2.5 bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 rounded-full mb-5"></div>
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="text-orange-300">
+                                ⚡ QUAY NHANH: <span id="fast-spins" class="font-bold"></span>
+                            </div>
+                            <div class="text-xs text-white/60">Tăng tốc nổ Scatter lớn</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="hackScatter()" id="hackBtn"
+                        class="w-full py-6 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl text-xl font-bold border-4 border-purple-300 flex items-center justify-center gap-3 active:scale-95 transition-all">
+                    <span>HACK SCATTER NGAY</span>
+                    <span class="text-3xl">💎</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hack Loading & Modal (giữ nguyên) -->
+    <div id="hack-loading" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-[60]">
+        <div class="text-center">
+            <div class="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+            <p class="text-purple-300 text-xl font-medium mb-2">ĐANG PHÂN TÍCH MA TRẬN SCATTER...</p>
+            <p class="text-purple-400 text-sm">VIP FUNCTION • Vui lòng chờ trong giây lát</p>
+            <div class="w-64 h-1.5 bg-gray-800 rounded-full mx-auto mt-8 overflow-hidden">
+                <div id="hack-progress" class="h-full bg-gradient-to-r from-purple-400 to-pink-400 w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="hack-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[70]">
+        <div class="bg-gradient-to-br from-purple-900 via-violet-900 to-fuchsia-900 w-[92%] max-w-[340px] rounded-3xl p-8 text-center border-4 border-purple-400 shadow-2xl">
+            <div class="text-7xl mb-6">💎</div>
+            <h2 class="text-2xl font-bold text-white tracking-widest mb-1">HACK SCATTER</h2>
+            <h3 class="text-xl font-bold text-white mb-6">THÀNH CÔNG</h3>
+            <p class="text-purple-200 text-sm mb-4">Mức mua tối ưu được gợi ý:</p>
+            <div id="hack-amount" class="text-6xl font-bold text-white mb-8">900K</div>
+            <button onclick="closeModal()" class="w-full bg-white text-purple-900 font-bold py-4 rounded-2xl text-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+                QUAY NGAY <span class="text-xl">🔥</span>
+            </button>
+            <p class="text-purple-300 text-sm mt-6 font-medium">THẮNG LỚN ĐỪNG QUÊN A !</p>
+        </div>
+    </div>
+
+    <script>
+        let canvas, ctx, drops = [], fontSize = 14;
+        let currentRatio = 84;
+
+        function initMatrix() {
+            canvas = document.getElementById('matrix-canvas');
+            ctx = canvas.getContext('2d');
+            const resize = () => {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
+            };
+            resize();
+            window.addEventListener('resize', resize);
+
+            const chars = "01アイウエオ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            function draw() {
+                ctx.fillStyle = 'rgba(0,0,0,0.07)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00f5ff';
+                ctx.font = fontSize + 'px monospace';
+                for (let i = 0; i < drops.length; i++) {
+                    ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize);
+                    if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }
+            setInterval(draw, 35);
+        }
+
+        function updateRatio() {
+            const ratioText = document.getElementById('ratio-text');
+            const ratioFill = document.getElementById('ratio-fill');
+
+            currentRatio = Math.floor(Math.random() * 31) + 70;
+            ratioText.textContent = currentRatio + "%";
+            ratioFill.style.width = currentRatio + "%";
+
+            if (currentRatio >= 95) {
+                ratioFill.style.background = "linear-gradient(90deg, #eab308, #facc15)";
+            } else {
+                ratioFill.style.background = "linear-gradient(90deg, #22c55e, #86efac)";
+            }
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particle-container');
+            container.innerHTML = '';
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'absolute w-1 h-1 rounded-full';
+                p.style.background = Math.random() > 0.5 ? '#00f5ff' : '#ffd700';
+                p.style.left = Math.random()*100 + '%';
+                p.style.top = Math.random()*100 + '%';
+                container.appendChild(p);
+                let x = parseFloat(p.style.left);
+                let y = parseFloat(p.style.top);
+                let vx = (Math.random()-0.5)*0.7;
+                let vy = (Math.random()-0.5)*0.7 + 0.4;
+                function move() {
+                    x += vx; y += vy; vy += 0.01;
+                    if (y > 105) { y = -5; x = Math.random()*100; }
+                    p.style.left = x + '%';
+                    p.style.top = y + '%';
+                    requestAnimationFrame(move);
+                }
+                move();
+            }
+        }
+
+        function showAnalysis() {
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('analysis-screen').classList.remove('hidden');
+            setTimeout(startMatrixPrediction, 300);
+        }
+
+        function backToHome() {
+            document.getElementById('analysis-screen').classList.add('hidden');
+            document.getElementById('home-screen').classList.remove('hidden');
+            document.getElementById('future-result').classList.add('hidden');
+            document.getElementById('matrix-loading').classList.add('hidden');
+        }
+
+        function startMatrixPrediction() {
+            const loading = document.getElementById('matrix-loading');
+            const result = document.getElementById('future-result');
+            loading.classList.remove('hidden');
+            result.classList.add('hidden');
+
+            let progress = 0;
+            const bar = document.getElementById('progress-bar');
+
+            const intv = setInterval(() => {
+                progress += Math.random()*15 + 8;
+                if (progress > 100) progress = 100;
+                bar.style.width = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(intv);
+                    setTimeout(() => {
+                        loading.classList.add('hidden');
+                        result.classList.remove('hidden');
+
+                        const now = new Date();
+                        const future = new Date(now.getTime() + (Math.floor(Math.random() * 18) + 3) * 60000);
+
+                        document.getElementById('current-time').textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+                        document.getElementById('golden-time').textContent = `${String(future.getHours()).padStart(2,'0')}:${String(future.getMinutes()).padStart(2,'0')}`;
+
+                        const total = Math.floor(Math.random() * 129) + 10;
+                        const slow = Math.max(5, Math.floor(total * 0.3));
+                        document.getElementById('total-spins').textContent = total;
+                        document.getElementById('slow-spins').textContent = slow;
+                        document.getElementById('fast-spins').textContent = total - slow;
+
+                        createParticles();
+                    }, 400);
+                }
+            }, 70);
+        }
+
+        function hackScatter() {
+            const btn = document.getElementById('hackBtn');
+            const loadingScreen = document.getElementById('hack-loading');
+            btn.disabled = true;
+            btn.style.opacity = "0.6";
+            loadingScreen.classList.remove('hidden');
+
+            let progress = 0;
+            const progressBar = document.getElementById('hack-progress');
+
+            const interval = setInterval(() => {
+                progress += Math.random() * 13 + 7;
+                if (progress > 100) progress = 100;
+                progressBar.style.width = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loadingScreen.classList.add('hidden');
+                        btn.disabled = false;
+                        btn.style.opacity = "1";
+
+                        const amounts = ["75K","150K","175K","300K","450K","600K","900K","1.800K","2.400K","3.000K"];
+                        document.getElementById('hack-amount').textContent = amounts[Math.floor(Math.random() * amounts.length)];
+
+                        const modal = document.getElementById('hack-modal');
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                    }, 400);
+                }
+            }, 85);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('hack-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        window.onload = () => {
+            initMatrix();
+            updateRatio();                    // Hiển thị tỷ lệ lần đầu
+            setInterval(updateRatio, 180000); // Cập nhật mỗi 3 phút
+        };
+    </script>
+</body>
+</html>
