@@ -3,417 +3,579 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SẢNH PG • MATRIX ANALYSIS</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>SẢNH GAME</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;900&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --neon-gold: #ffd700;
-            --neon-cyan: #00f5ff;
-        }
-
-        body {
-            background: #05050f;
-            font-family: 'Inter', system-ui, sans-serif;
-            min-height: 100vh;
-            color: white;
+        :root { --neon-gold: #ffd700; --neon-cyan: #00f5ff; --neon-purple: #c026d3; }
+        body { 
+            background: #05050f; 
+            font-family: 'Inter', system-ui, sans-serif; 
+            min-height: 100vh; 
+            color: white; 
             overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(0,245,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(192,38,211,0.04) 1px, transparent 1px);
+            background-size: 45px 45px;
         }
-
         .title-font { 
             font-family: 'Orbitron', sans-serif; 
-            letter-spacing: 6px; 
+            letter-spacing: 8px; 
+        }
+        .neon-gold { 
+            color: var(--neon-gold); 
+            text-shadow: 0 0 15px #ffd700, 0 0 40px #c026d3, 0 0 60px #00f5ff; 
+        }
+        .neon-cyan { 
+            color: var(--neon-cyan); 
+            text-shadow: 0 0 25px #00f5ff; 
         }
 
-        .neon-gold { color: var(--neon-gold); text-shadow: 0 0 20px #ffd700, 0 0 50px #ffd700; }
-        .neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 25px #00f5ff; }
-
-        .game-avatar {
-            width: 190px;
-            height: 190px;
-            object-fit: cover;
-            border: 5px solid #00f5ff;
-            border-radius: 24px;
-            box-shadow: 0 0 40px rgba(0, 245, 255, 0.8),
-                        0 0 80px rgba(255, 215, 0, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .game-avatar:active {
-            transform: scale(0.90);
-        }
-
-        .ratio-container {
-            margin-top: 18px;
-        }
-
-        .ratio-bar {
-            height: 14px;
-            background: #1e2937;
-            border-radius: 9999px;
-            overflow: hidden;
-            border: 2px solid #00f5ff;
-            box-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
-        }
-
-        .ratio-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #22c55e, #86efac);
-            transition: width 1.5s ease;
-            box-shadow: 0 0 20px #22c55e;
-        }
-
-        .analysis-frame {
-            background: linear-gradient(145deg, #0a0f1f, #1a2338);
-            border: 3px solid #00f5ff;
-            box-shadow: 0 0 50px rgba(0, 245, 255, 0.5);
-            border-radius: 24px;
-            overflow: hidden;
-        }
-
-        .future-wheel {
+        /* HUD PANEL STYLE */
+        .hall-card {
+            background: linear-gradient(145deg, #0f0a1f, #1c1333);
+            border: 3px solid #22d3ee;
             position: relative;
-            width: 105px;
-            height: 105px;
-            flex-shrink: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 0 35px rgba(34, 211, 238, 0.5);
         }
-
-        .wheel-border {
+        .hall-card::before {
+            content: '';
             position: absolute;
             inset: 0;
-            border: 5px solid transparent;
-            border-image: linear-gradient(45deg, #00f5ff, #ffd700, #00f5ff) 1;
-            border-radius: 9999px;
-            animation: wheelRotate 12s linear infinite;
-            box-shadow: 0 0 25px #00f5ff, 0 0 50px rgba(255, 215, 0, 0.5);
+            border: 2px solid transparent;
+            background: linear-gradient(45deg, #00f5ff, #c026d3, #00f5ff) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.7;
+            transition: all 0.5s ease;
+        }
+        .hall-card:hover {
+            transform: scale(1.07) translateY(-10px);
+            box-shadow: 0 0 80px rgba(34, 211, 238, 0.95), 
+                        0 0 110px rgba(192, 38, 211, 0.8);
+            border-color: #67e8f9;
+        }
+        .hall-card:hover::before {
+            opacity: 1;
+            animation: borderFlow 2s linear infinite;
         }
 
-        .live-blink {
-            color: #ef4444;
-            animation: blinkRed 1.2s infinite alternate;
+        @keyframes borderFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
 
-        @keyframes blinkRed {
-            from { opacity: 0.6; }
-            to { opacity: 1; text-shadow: 0 0 15px #ef4444; }
+        .hall-logo {
+            width: 100%;
+            max-width: 340px;
+            height: 135px;
+            object-fit: contain;
+            margin: 20px auto 28px;
+            filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.85));
+            transition: all 0.5s ease;
         }
 
-        @keyframes wheelRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .hall-card:hover .hall-logo {
+            transform: scale(1.16) rotate(2deg);
+            filter: drop-shadow(0 0 75px #ffd700) drop-shadow(0 0 45px #00f5ff);
+        }
+
+        .ratio-bar { 
+            height: 10px; 
+            background: #1e2937; 
+            border-radius: 9999px; 
+            overflow: hidden; 
+            border: 2px solid #22d3ee; 
+        }
+        .ratio-fill-win { height: 100%; background: linear-gradient(90deg, #22c55e, #86efac); }
+        .ratio-fill-big { height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+
+        .glitch { animation: glitch 1.2s linear infinite alternate; }
+        @keyframes glitch {
+            0% { text-shadow: 3px 0 #ff00ff, -3px 0 #00ffff; }
+            100% { text-shadow: -3px 0 #ff00ff, 3px 0 #00ffff; }
+        }
+
+        .scanline::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(transparent 50%, rgba(0,245,255,0.07) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            animation: scan 7s linear infinite;
+            z-index: 1;
+        }
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
         }
     </style>
 </head>
-<body class="pb-12">
+<body class="pb-20 scanline">
 
-    <div class="max-w-[420px] mx-auto px-4 pt-8">
+<div class="max-w-[420px] mx-auto px-4 pt-6">
 
-        <!-- Home Screen -->
-        <div id="home-screen">
-            <div class="text-center mb-10">
-                <h1 class="title-font text-5xl neon-gold tracking-widest">SẢNH PG</h1>
+    <!-- ====================== HALL SELECTION - SHARP HUD PANEL ====================== -->
+    <div id="hall-screen">
+        <div class="text-center mb-12">
+            <h1 class="title-font text-5xl neon-gold tracking-widest glitch">QUANTUM SẢNH</h1>
+            <p class="text-cyan-400 mt-3 text-sm tracking-[4px]">HUD ACCESS • NEURAL 2049</p>
+            <div class="h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent my-6"></div>
+            <p class="text-white/70 text-xs tracking-widest">CHỌN CỔNG • HƠN 120 TRÒ CHƠI QUANTUM</p>
+        </div>
+
+        <div class="space-y-8" id="hall-grid"></div>
+    </div>
+
+    <!-- ====================== PG SCREEN ====================== -->
+    <div id="pg-screen" class="hidden">
+        <div class="text-center mb-8">
+            <h1 class="title-font text-5xl neon-gold tracking-widest">SẢNH PG</h1>
+        </div>
+
+        <div class="mb-10">
+            <div class="text-center mb-3">
+                <span class="text-yellow-400 text-sm font-bold tracking-widest">⭐ NEURAL RECOMMENDATION</span>
+            </div>
+            <div onclick="showAnalysis(recommendedIndex)" id="recommended-card" 
+                 class="cursor-pointer bg-gradient-to-br from-purple-900 to-violet-900 rounded-3xl p-5 border-4 border-yellow-400 shadow-2xl">
+                <div class="flex justify-center">
+                    <img id="recommended-img" class="game-avatar" alt="">
+                </div>
+                <p id="recommended-name" class="text-center mt-4 text-2xl font-bold neon-cyan"></p>
+                <div class="mt-4 px-6">
+                    <div class="flex justify-between text-xs mb-1 text-white/80">
+                        <span>TỈ LỆ NHẢ</span>
+                        <span id="recommended-ratio" class="font-bold text-emerald-400">85%</span>
+                    </div>
+                    <div class="ratio-bar">
+                        <div id="recommended-fill" class="ratio-fill-win" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <input id="search-input" type="text" placeholder="🔍 TÌM TRÒ CHƠI QUANTUM..." 
+                   class="w-full px-5 py-3 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-cyan-300 bg-[#1e2937] border-2 border-[#00f5ff]">
+        </div>
+
+        <div class="flex justify-between items-center mb-4 px-1">
+            <h2 class="text-xl font-bold neon-gold">CÁC CỔNG KHÁC</h2>
+            <div id="page-info" class="text-cyan-400 text-sm font-medium"></div>
+        </div>
+
+        <div id="game-grid" class="grid grid-cols-2 gap-6"></div>
+        <div class="flex justify-center gap-3 mt-10" id="pagination"></div>
+
+        <button onclick="backToHall()" 
+                class="mt-10 w-full py-4 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-2xl text-lg font-bold active:scale-95">
+            ← QUAY VỀ QUANTUM HUB
+        </button>
+    </div>
+
+    <!-- ====================== OTHER HALL SCREEN ====================== -->
+    <div id="other-screen" class="hidden">
+        <button onclick="backToHall()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg">
+            ← QUAY VỀ QUANTUM HUB
+        </button>
+        <div class="text-center mt-12">
+            <div id="current-hall-logo" class="mx-auto mb-6 flex items-center justify-center"></div>
+            <div id="current-hall-name" class="title-font text-4xl neon-gold mb-3"></div>
+            <p class="text-emerald-400 text-xl font-bold">ĐANG ĐỒNG BỘ HƠN 30 TRÒ CHƠI MỚI</p>
+        </div>
+    </div>
+
+    <!-- ====================== ANALYSIS SCREEN ====================== -->
+    <div id="analysis-screen" class="hidden">
+        <button onclick="backToCurrentScreen()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg">
+            ← QUAY LẠI
+        </button>
+
+        <div id="matrix-loading" class="hidden h-80 relative mb-8 rounded-3xl overflow-hidden">
+            <canvas id="matrix-canvas"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black/50">
+                <div class="text-6xl mb-4 animate-pulse">⟡</div>
+                <p class="text-cyan-300 text-xl font-medium">ĐANG KẾT NỐI MA TRẬN...</p>
+                <div class="w-72 h-1 bg-cyan-950 mt-10 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-400 to-purple-500 w-0 transition-all"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="future-result" class="hidden rounded-3xl p-6 relative">
+            <div class="text-center mb-6">
+                <h1 id="game-title" class="title-font text-3xl neon-gold tracking-widest"></h1>
             </div>
 
+            <div class="flex justify-center mb-8">
+                <img id="game-avatar-analysis" class="game-avatar" alt="">
+            </div>
+
+            <div class="bg-[#0f172a] rounded-2xl p-5 mb-8 border border-cyan-500/40">
+                <div class="flex items-center gap-4">
+                    <div class="w-[105px] h-[105px] flex-shrink-0 relative">
+                        <img id="wheel-image" class="w-full h-full rounded-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1"><span class="text-3xl">⏳</span><p class="text-cyan-300 text-sm font-medium">GIỜ VÀNG QUAY</p></div>
+                        <div class="flex items-center gap-3">
+                            <div id="current-time" class="text-xl text-white/75 font-mono"></div>
+                            <span class="text-2xl text-cyan-400">→</span>
+                            <div id="golden-time" class="neon-gold text-2xl font-bold"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="hackScatter()" id="hackBtn" 
+                    class="w-full py-6 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 rounded-2xl text-xl font-bold border-4 border-purple-300 flex items-center justify-center gap-3 active:scale-95 shadow-2xl">
+                <span class="tracking-widest">HACK SCATTER NGAY</span>
+                <span class="text-3xl">🪙</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Hack Loading & Modal -->
+<div id="hack-loading" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-[60]">
+    <div class="w-full max-w-[360px] px-6 text-center">
+        <div class="mb-8">
+            <div class="inline-flex items-center gap-3 bg-red-950/80 border border-red-500/50 px-6 py-2 rounded-full">
+                <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                <span class="text-red-400 font-mono text-sm tracking-[3px]">SYSTEM BREACH IN PROGRESS</span>
+            </div>
+        </div>
+        <div class="relative mb-10">
+            <canvas id="hack-matrix" class="w-full h-52 opacity-70"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <div id="hack-status" class="text-cyan-400 font-mono text-xl mb-6 tracking-widest glitch">INITIALIZING SCATTER PROTOCOL...</div>
+                <div class="w-80 h-1.5 bg-zinc-900 rounded-full overflow-hidden border border-cyan-500/30">
+                    <div id="hack-progress-bar" class="h-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 w-0 transition-all duration-300"></div>
+                </div>
+                <div id="hack-percentage" class="font-mono text-cyan-300 mt-3 text-lg">0%</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="hack-modal" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-[70]">
+    <div class="bg-gradient-to-br from-amber-900 via-yellow-900 to-amber-950 w-[92%] max-w-[360px] rounded-3xl p-8 border-4 border-yellow-400 shadow-[0_0_70px_#fcd34d]">
+        <div class="flex justify-center mb-6 relative">
+            <span id="gold-icon" class="gold-coin text-8xl">🪙</span>
+        </div>
+        <h2 class="text-center text-3xl font-bold text-yellow-300 glitch">HACK SCATTER</h2>
+        <h3 id="success-rate" class="text-center text-2xl font-bold text-emerald-400 mb-8">THÀNH CÔNG 95%</h3>
+        <div class="bg-black/70 rounded-2xl p-6 mb-8">
+            <p class="text-yellow-300 text-sm mb-2 text-center">MỨC MUA TỐI ƯU</p>
+            <div id="hack-amount" class="text-6xl font-bold text-white text-center">3.000K</div>
+        </div>
+        <button onclick="closeModal()" class="w-full py-6 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl text-2xl font-bold">QUAY NGAY 🔥</button>
+    </div>
+</div>
+
+<script>
+// ====================== DATA ======================
+const halls = [
+    { id: "pg",   name: "SẢNH PG",   img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
+    { id: "jili", name: "SẢNH JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
+    { id: "168g", name: "SẢNH 168G", img: "https://i.ibb.co/rKdGGjyN/S-NH-168-GAME.png" },
+    { id: "fc",   name: "SẢNH FC",   img: "https://i.ibb.co/CrjMgMK/S-NH-FC.png" }
+];
+
+const originalPGGames = [
+    { name: "BA CHÚ HEO", img: "https://i.ibb.co/Y7TWMqH8/BA-CH-HEO.avif" },
+    { name: "BẠN VIÊN BẢO TÀNG", img: "https://i.ibb.co/7tvVVdJd/B-N-VI-N-B-O-T-NG.avif" },
+    { name: "CƠN SỐT TIỀN", img: "https://i.ibb.co/kLczq6k/CON-SOT-TIEN.avif" },
+    { name: "CƠN SỐT BĂNG", img: "https://i.ibb.co/jk36yDXH/C-N-S-T-B-NG.avif" },
+    { name: "CƠN SỐT QUAY TẠI QUÁN", img: "https://i.ibb.co/gFS37Bbh/C-N-S-T-QUAY-T-I-QU-N.avif" },
+    { name: "CƠN SỐT VÀNG KRAKEN", img: "https://i.ibb.co/LdVRFM7g/C-N-S-T-V-NG-KRAKEN.avif" },
+    { name: "CÁ CƯỢC NGƯỜI CHẾT", img: "https://i.ibb.co/wZ9BTQkB/C-A-C-I-NG-I-CH-T.avif" },
+    { name: "CUỘC ĐUA GRAFFITI", img: "https://i.ibb.co/spcc0ktF/CUOC-DUA-GRAFFITI.avif" },
+    { name: "CUỘC TẤN SÁT TẬN THẾ", img: "https://i.ibb.co/Fk59vMPc/CUOC-TAN-SAT-TAN-THE.avif" },
+    { name: "CUỘC ĐUA GÀ CON", img: "https://i.ibb.co/1fm6YwYN/CU-C-UA-G-CON.avif" },
+    { name: "CHIẾN THẮNG PIÑATA", img: "https://i.ibb.co/4gRKVtbJ/CHI-N-TH-NG-PINATA.avif" },
+    { name: "CHÚ RỒNG MAY MẮN", img: "https://i.ibb.co/HpfZD1S1/CHU-RONG-MAY-MAN.avif" },
+    { name: "CHÚ HUYỀN BÍ", img: "https://i.ibb.co/nqk92srG/CH-HUY-N-B.avif" },
+    { name: "ẢO ẢNH CHẲN LẺ", img: "https://i.ibb.co/svFPB59H/A-NG-C-H-N-LO-N.avif" },
+    { name: "NHÀ MÁY MAYA", img: "https://i.ibb.co/27hHtLd4/NH-M-NH-MAYA.avif" },
+    { name: "CỬ ĐẠI THẦN BÍ", img: "https://i.ibb.co/TxwhnD0h/C-D-C-TH-N-B.avif" },
+    { name: "Iguazu", img: "https://i.ibb.co/CKqNTTpN/I-C-NH-IGUAZU.avif" },
+    { name: "GÁI TÀI CÁ MR. KHO BÁU", img: "https://i.ibb.co/nsn45ng2/GAI-T-I-C-A-MR-KHO-B-U.avif" },
+    { name: "GRIMM BOUNTY", img: "https://i.ibb.co/jPcQYYjV/GRIMM-BOUNTY.avif" },
+    { name: "GIÀU CÓ KNOCKOUT", img: "https://i.ibb.co/qM3hhNWp/GIAU-CO-KNOUKOUT.avif" },
+    { name: "HOÀNG TỐC PHARAOH", img: "https://i.ibb.co/j9NL1dX0/HO-NG-T-C-PHARAOH.avif" },
+    { name: "JACK", img: "https://i.ibb.co/hFgJCrX5/JACK.avif" },
+    { name: "KỲ QUAN BẦU TRỜI", img: "https://i.ibb.co/CTyjySt/K-QUAN-B-U-TR-I.avif" },
+    { name: "KỲ QUAN INCA", img: "https://i.ibb.co/dswcDcgh/K-QUAN-INCA.avif" },
+    { name: "KHO BÁU ALIBABA", img: "https://i.ibb.co/q36zDXhG/KHO-B-U-ALIBABA.avif" },
+    { name: "KHO BÁU GUARDIAN", img: "https://i.ibb.co/chyn3gLB/KHO-B-U-GUARDIAN.avif" },
+    { name: "KHO BÁU HOÀNG GIA", img: "https://i.ibb.co/CK0VqvzV/KHO-BAU-HOANG-GIA.avif" },
+    { name: "LOREN GIÀU CÓ", img: "https://i.ibb.co/v40hMctL/LO-REN-GIAU-CO.avif" },
+    { name: "LONG SINH 2", img: "https://i.ibb.co/k6zRYnxc/LONG-SINH-2.avif" },
+    { name: "MÓN NGON MIỆNG", img: "https://i.ibb.co/5X2jwjBd/M-N-NGON-MI-NG.avif" },
+    { name: "NGỰA MAY MẮN", img: "https://i.ibb.co/0wyxGdx/NG-A-MAY-M-N.avif" },
+    { name: "PHI VỤ CƯỚP TIỀN", img: "https://i.ibb.co/QFrfZZ97/PHI-VU-CUOP-TIEN.avif" },
+    { name: "RỒNG MAY MẮN", img: "https://i.ibb.co/KpCdGpST/R-N-MAY-M-N.avif" },
+    { name: "SOCOLA HÔN HỘ", img: "https://i.ibb.co/Dm5HxTY/SOCOLA-HO-N-H-O.avif" },
+    { name: "SỰ NGỦ MƠ", img: "https://i.ibb.co/RknTPK4x/S-NG-O-M-NG.avif" },
+    { name: "TIỀN THƯỞNG CƠ MỰC", img: "https://i.ibb.co/ptsRB9B/TI-N-TH-NG-C-M-P.avif" },
+    { name: "THÁM HIỂM NẺO", img: "https://i.ibb.co/1YB3bSsx/TH-M-NG-N-H.avif" },
+    { name: "THUẬT GIẢ KIM", img: "https://i.ibb.co/hJfwSSZd/THU-T-GI-KIM.avif" },
+    { name: "TRUY TÌM KHO BÁU RỒNG", img: "https://i.ibb.co/xqBRK5v3/TRUY-T-M-KHO-B-U-R-NG.avif" },
+    { name: "VƯƠNG QUỐC CHINH PHỤC", img: "https://i.ibb.co/TxJH9y44/V-NG-QU-C-CHINH-PH-C.avif" }
+];
+
+let pgGames = [...originalPGGames, ...originalPGGames, ...originalPGGames];
+let currentHall = "pg";
+let currentPage = 0;
+const gamesPerPage = 10;
+let filteredGames = pgGames.slice();
+let recommendedIndex = 0;
+
+// ====================== RENDER HALLS (SHARP HUD) ======================
+function renderHalls() {
+    const grid = document.getElementById('hall-grid');
+    grid.innerHTML = '';
+
+    halls.forEach(hall => {
+        const winRate = Math.floor(Math.random() * 18) + 80;
+        const bigWinRate = Math.floor(Math.random() * 22) + 68;
+
+        const div = document.createElement('div');
+        div.className = `hall-card rounded-3xl p-6 cursor-pointer`;
+        div.innerHTML = `
+            <div class="text-center mb-5">
+                <h3 class="text-4xl font-bold neon-gold tracking-widest">${hall.name}</h3>
+            </div>
             <div class="flex justify-center">
-                <div onclick="showAnalysis()" class="text-center">
-                    <img src="https://i.ibb.co/SXYM0VGD/channels4-profile.jpg" 
-                         alt="Wild Bounty Showdown" 
-                         class="game-avatar mx-auto">
-                    
-                    <p class="mt-6 text-2xl font-bold neon-cyan tracking-wide">WILD BOUNTY SHOWDOWN</p>
-                    
-                    <!-- Thanh % Tỉ lệ nhả -->
-                    <div class="ratio-container px-8">
-                        <div class="flex justify-between text-sm mb-1.5 text-white/80">
-                            <span>DỰ ĐOÁN TỈ LỆ NHẢ</span>
-                            <span id="ratio-text" class="font-bold text-emerald-400">84%</span>
-                        </div>
-                        <div class="ratio-bar">
-                            <div id="ratio-fill" class="ratio-fill" style="width: 84%"></div>
-                        </div>
+                <img src="${hall.img}" class="hall-logo" alt="${hall.name}">
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <div class="flex justify-between text-sm mb-2 text-white/90">
+                        <span>TỈ LỆ THẮNG</span>
+                        <span class="font-bold text-emerald-400">${winRate}%</span>
                     </div>
+                    <div class="ratio-bar"><div class="ratio-fill-win" style="width: ${winRate}%"></div></div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm mb-2 text-white/90">
+                        <span>NỔ CỰC LỚN</span>
+                        <span class="font-bold text-amber-400">${bigWinRate}%</span>
+                    </div>
+                    <div class="ratio-bar"><div class="ratio-fill-big" style="width: ${bigWinRate}%"></div></div>
                 </div>
             </div>
-        </div>
+        `;
+        div.onclick = () => selectHall(hall.id);
+        grid.appendChild(div);
+    });
+}
 
-        <!-- Analysis Screen -->
-        <div id="analysis-screen" class="hidden">
-            <button onclick="backToHome()" 
-                    class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white transition-colors">
-                ← QUAY LẠI SẢNH PG
-            </button>
+// Các hàm còn lại (giữ nguyên logic cũ)
+function selectHall(hallId) {
+    currentHall = hallId;
+    document.getElementById('hall-screen').classList.add('hidden');
+    if (hallId === "pg") {
+        document.getElementById('pg-screen').classList.remove('hidden');
+        initPGScreen();
+    } else {
+        document.getElementById('other-screen').classList.remove('hidden');
+        const hall = halls.find(h => h.id === hallId);
+        document.getElementById('current-hall-name').textContent = hall.name;
+        document.getElementById('current-hall-logo').innerHTML = `<img src="${hall.img}" class="hall-logo">`;
+    }
+}
 
-            <div id="matrix-loading" class="hidden h-80 relative mb-8 rounded-3xl overflow-hidden">
-                <canvas id="matrix-canvas"></canvas>
-                <div class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black/50">
-                    <div class="text-6xl mb-4 animate-pulse">⟡</div>
-                    <p class="text-cyan-300 text-xl font-medium">ĐANG KẾT NỐI MA TRẬN...</p>
-                    <div class="w-72 h-1 bg-cyan-950 mt-10 rounded-full overflow-hidden">
-                        <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-400 to-purple-500 w-0 transition-all"></div>
-                    </div>
+function backToHall() {
+    document.getElementById('pg-screen').classList.add('hidden');
+    document.getElementById('other-screen').classList.add('hidden');
+    document.getElementById('analysis-screen').classList.add('hidden');
+    document.getElementById('hall-screen').classList.remove('hidden');
+}
+
+function backToCurrentScreen() {
+    document.getElementById('analysis-screen').classList.add('hidden');
+    if (currentHall === "pg") document.getElementById('pg-screen').classList.remove('hidden');
+    else document.getElementById('other-screen').classList.remove('hidden');
+}
+
+function initPGScreen() {
+    getRandomRecommended();
+    filteredGames = pgGames.slice();
+    currentPage = 0;
+    renderGamesPG();
+    const searchInput = document.getElementById('search-input');
+    searchInput.value = '';
+    searchInput.addEventListener('input', (e) => filterGamesPG(e.target.value));
+}
+
+function getRandomRecommended() {
+    recommendedIndex = Math.floor(Math.random() * pgGames.length);
+    const game = pgGames[recommendedIndex];
+    const ratio = Math.floor(Math.random() * 25) + 75;
+    document.getElementById('recommended-img').src = game.img;
+    document.getElementById('recommended-name').textContent = game.name;
+    document.getElementById('recommended-ratio').textContent = ratio + "%";
+    document.getElementById('recommended-fill').style.width = ratio + "%";
+}
+
+function renderGamesPG() {
+    const grid = document.getElementById('game-grid');
+    grid.innerHTML = '';
+    const start = currentPage * gamesPerPage;
+    const end = start + gamesPerPage;
+    const pageGames = filteredGames.slice(start, end);
+
+    pageGames.forEach((game) => {
+        const actualIndex = pgGames.indexOf(game);
+        const ratio = Math.floor(Math.random() * 28) + 72;
+        const div = document.createElement('div');
+        div.className = 'text-center cursor-pointer';
+        div.innerHTML = `
+            <img src="${game.img}" class="game-avatar mx-auto" alt="${game.name}">
+            <p class="mt-3 text-sm font-bold neon-cyan px-1 line-clamp-2">${game.name}</p>
+            <div class="mt-3 px-4">
+                <div class="flex justify-between text-[10px] mb-1 text-white/70">
+                    <span>NHẢ</span>
+                    <span class="font-bold text-emerald-400">${ratio}%</span>
+                </div>
+                <div class="ratio-bar">
+                    <div class="ratio-fill-win" style="width: ${ratio}%"></div>
                 </div>
             </div>
+        `;
+        div.onclick = () => showAnalysis(actualIndex);
+        grid.appendChild(div);
+    });
 
-            <div id="future-result" class="hidden analysis-frame rounded-3xl p-6 relative">
-                <div id="particle-container"></div>
+    const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
+    document.getElementById('page-info').textContent = `Trang ${currentPage + 1}/${totalPages}`;
+    renderPaginationPG(totalPages);
+}
 
-                <div class="text-center mb-6">
-                    <h1 class="title-font text-3xl neon-gold tracking-widest">WILD BOUNTY SHOWDOWN</h1>
-                    <div class="inline-flex items-center gap-3 bg-[#1e2937] border border-cyan-400 rounded-full px-7 py-3 mt-4">
-                        <span class="text-base font-bold tracking-wider">A.I ĐANG PHÂN TÍCH</span>
-                        <span class="live-blink text-xl font-bold">● LIVE</span>
-                    </div>
-                </div>
+function renderPaginationPG(totalPages) {
+    const container = document.getElementById('pagination');
+    container.innerHTML = '';
+    for (let i = 0; i < totalPages; i++) {
+        const dot = document.createElement('div');
+        dot.className = `w-2.5 h-2.5 rounded-full transition-all ${i === currentPage ? 'bg-cyan-400 scale-125' : 'bg-cyan-400/30'}`;
+        dot.onclick = () => { currentPage = i; renderGamesPG(); };
+        container.appendChild(dot);
+    }
+}
 
-                <!-- Giờ Vàng + Cách Quay + Hack Scatter giữ nguyên như cũ -->
-                <div class="bg-[#0f172a] rounded-2xl p-5 mb-8 border border-cyan-500/40">
-                    <div class="flex items-center gap-4">
-                        <div class="future-wheel">
-                            <div class="wheel-border"></div>
-                            <div class="wheel-inner">
-                                <img src="https://i.ibb.co/SXYM0VGD/channels4-profile.jpg" class="cowgirl-img">
-                            </div>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-3xl">⏳</span>
-                                <p class="text-cyan-300 text-sm font-medium">GIỜ VÀNG QUAY</p>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div id="current-time" class="text-xl text-white/75 font-mono"></div>
-                                <span class="text-2xl text-cyan-400">→</span>
-                                <div id="golden-time" class="hacker-font neon-gold"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+function filterGamesPG(query) {
+    query = query.toLowerCase().trim();
+    filteredGames = pgGames.filter(game => game.name.toLowerCase().includes(query));
+    currentPage = 0;
+    renderGamesPG();
+}
 
-                <div class="mb-8">
-                    <div class="flex items-center gap-3 mb-5">
-                        <span class="text-4xl">🎰</span>
-                        <p class="text-2xl font-semibold neon-cyan">CÁCH QUAY</p>
-                    </div>
-                    <div class="bg-black/70 rounded-2xl p-6">
-                        <div class="flex justify-between mb-6">
-                            <div>
-                                <p class="text-xs text-gray-400 mb-1">TỔNG VÒNG QUAY</p>
-                                <div id="total-spins" class="text-6xl font-bold neon-gold"></div>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-xs text-cyan-400 mb-1">🐢 QUAY CHẬM</p>
-                                <div id="slow-spins" class="text-5xl font-bold text-cyan-300"></div>
-                            </div>
-                        </div>
-                        <div class="h-2.5 bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 rounded-full mb-5"></div>
-                        <div class="flex justify-between items-center text-sm">
-                            <div class="text-orange-300">
-                                ⚡ QUAY NHANH: <span id="fast-spins" class="font-bold"></span>
-                            </div>
-                            <div class="text-xs text-white/60">Tăng tốc nổ Scatter lớn</div>
-                        </div>
-                    </div>
-                </div>
+function showAnalysis(index) {
+    const game = pgGames[index];
+    document.getElementById('pg-screen').classList.add('hidden');
+    document.getElementById('other-screen').classList.add('hidden');
+    document.getElementById('analysis-screen').classList.remove('hidden');
 
-                <button onclick="hackScatter()" id="hackBtn"
-                        class="w-full py-6 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl text-xl font-bold border-4 border-purple-300 flex items-center justify-center gap-3 active:scale-95 transition-all">
-                    <span>HACK SCATTER NGAY</span>
-                    <span class="text-3xl">💎</span>
-                </button>
-            </div>
-        </div>
-    </div>
+    document.getElementById('game-title').textContent = game.name;
+    document.getElementById('game-avatar-analysis').src = game.img;
+    document.getElementById('wheel-image').src = game.img;
+    setTimeout(startMatrixPrediction, 300);
+}
 
-    <!-- Hack Loading & Modal (giữ nguyên) -->
-    <div id="hack-loading" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-[60]">
-        <div class="text-center">
-            <div class="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-            <p class="text-purple-300 text-xl font-medium mb-2">ĐANG PHÂN TÍCH MA TRẬN SCATTER...</p>
-            <p class="text-purple-400 text-sm">VIP FUNCTION • Vui lòng chờ trong giây lát</p>
-            <div class="w-64 h-1.5 bg-gray-800 rounded-full mx-auto mt-8 overflow-hidden">
-                <div id="hack-progress" class="h-full bg-gradient-to-r from-purple-400 to-pink-400 w-0 transition-all duration-300"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="hack-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[70]">
-        <div class="bg-gradient-to-br from-purple-900 via-violet-900 to-fuchsia-900 w-[92%] max-w-[340px] rounded-3xl p-8 text-center border-4 border-purple-400 shadow-2xl">
-            <div class="text-7xl mb-6">💎</div>
-            <h2 class="text-2xl font-bold text-white tracking-widest mb-1">HACK SCATTER</h2>
-            <h3 class="text-xl font-bold text-white mb-6">THÀNH CÔNG</h3>
-            <p class="text-purple-200 text-sm mb-4">Mức mua tối ưu được gợi ý:</p>
-            <div id="hack-amount" class="text-6xl font-bold text-white mb-8">900K</div>
-            <button onclick="closeModal()" class="w-full bg-white text-purple-900 font-bold py-4 rounded-2xl text-lg active:scale-95 transition-all flex items-center justify-center gap-2">
-                QUAY NGAY <span class="text-xl">🔥</span>
-            </button>
-            <p class="text-purple-300 text-sm mt-6 font-medium">THẮNG LỚN ĐỪNG QUÊN A !</p>
-        </div>
-    </div>
-
-    <script>
-        let canvas, ctx, drops = [], fontSize = 14;
-        let currentRatio = 84;
-
-        function initMatrix() {
-            canvas = document.getElementById('matrix-canvas');
-            ctx = canvas.getContext('2d');
-            const resize = () => {
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-                drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
-            };
-            resize();
-            window.addEventListener('resize', resize);
-
-            const chars = "01アイウエオ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            function draw() {
-                ctx.fillStyle = 'rgba(0,0,0,0.07)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#00f5ff';
-                ctx.font = fontSize + 'px monospace';
-                for (let i = 0; i < drops.length; i++) {
-                    ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize);
-                    if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
-                }
-            }
-            setInterval(draw, 35);
+function initMatrix() {
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    let drops = [];
+    const fontSize = 14;
+    const resize = () => {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
+    };
+    resize();
+    window.addEventListener('resize', resize);
+    const chars = "01アイウエオ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    function draw() {
+        ctx.fillStyle = 'rgba(0,0,0,0.07)';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = '#00f5ff';
+        ctx.font = fontSize + 'px monospace';
+        for (let i = 0; i < drops.length; i++) {
+            ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize);
+            if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
         }
+    }
+    setInterval(draw, 35);
+}
 
-        function updateRatio() {
-            const ratioText = document.getElementById('ratio-text');
-            const ratioFill = document.getElementById('ratio-fill');
-
-            currentRatio = Math.floor(Math.random() * 31) + 70;
-            ratioText.textContent = currentRatio + "%";
-            ratioFill.style.width = currentRatio + "%";
-
-            if (currentRatio >= 95) {
-                ratioFill.style.background = "linear-gradient(90deg, #eab308, #facc15)";
-            } else {
-                ratioFill.style.background = "linear-gradient(90deg, #22c55e, #86efac)";
-            }
+function startMatrixPrediction() {
+    const loading = document.getElementById('matrix-loading');
+    const result = document.getElementById('future-result');
+    loading.classList.remove('hidden');
+    result.classList.add('hidden');
+    let progress = 0;
+    const bar = document.getElementById('progress-bar');
+    const intv = setInterval(() => {
+        progress += Math.random()*15 + 8;
+        if (progress > 100) progress = 100;
+        bar.style.width = progress + '%';
+        if (progress >= 100) {
+            clearInterval(intv);
+            setTimeout(() => {
+                loading.classList.add('hidden');
+                result.classList.remove('hidden');
+                const now = new Date();
+                const future = new Date(now.getTime() + (Math.floor(Math.random() * 18) + 3) * 60000);
+                document.getElementById('current-time').textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+                document.getElementById('golden-time').textContent = `${String(future.getHours()).padStart(2,'0')}:${String(future.getMinutes()).padStart(2,'0')}`;
+            }, 400);
         }
+    }, 70);
+}
 
-        function createParticles() {
-            const container = document.getElementById('particle-container');
-            container.innerHTML = '';
-            for (let i = 0; i < 30; i++) {
-                const p = document.createElement('div');
-                p.className = 'absolute w-1 h-1 rounded-full';
-                p.style.background = Math.random() > 0.5 ? '#00f5ff' : '#ffd700';
-                p.style.left = Math.random()*100 + '%';
-                p.style.top = Math.random()*100 + '%';
-                container.appendChild(p);
-                let x = parseFloat(p.style.left);
-                let y = parseFloat(p.style.top);
-                let vx = (Math.random()-0.5)*0.7;
-                let vy = (Math.random()-0.5)*0.7 + 0.4;
-                function move() {
-                    x += vx; y += vy; vy += 0.01;
-                    if (y > 105) { y = -5; x = Math.random()*100; }
-                    p.style.left = x + '%';
-                    p.style.top = y + '%';
-                    requestAnimationFrame(move);
-                }
-                move();
-            }
+function hackScatter() {
+    document.getElementById('hack-loading').classList.remove('hidden');
+    let progress = 0;
+    const bar = document.getElementById('hack-progress-bar');
+    const percent = document.getElementById('hack-percentage');
+    const status = document.getElementById('hack-status');
+
+    const interval = setInterval(() => {
+        progress += Math.random() * 12 + 8;
+        if (progress > 100) progress = 100;
+        bar.style.width = progress + '%';
+        percent.textContent = Math.floor(progress) + '%';
+        if (progress > 30) status.textContent = "BREACHING SCATTER LAYER...";
+        if (progress > 65) status.textContent = "ALIGNING WIN PROTOCOL...";
+        if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                document.getElementById('hack-loading').classList.add('hidden');
+                document.getElementById('hack-modal').classList.remove('hidden');
+            }, 600);
         }
+    }, 80);
+}
 
-        function showAnalysis() {
-            document.getElementById('home-screen').classList.add('hidden');
-            document.getElementById('analysis-screen').classList.remove('hidden');
-            setTimeout(startMatrixPrediction, 300);
-        }
+function closeModal() {
+    document.getElementById('hack-modal').classList.add('hidden');
+    alert("🎉 Hack Scatter thành công! Chúc bạn nổ hũ lớn!");
+}
 
-        function backToHome() {
-            document.getElementById('analysis-screen').classList.add('hidden');
-            document.getElementById('home-screen').classList.remove('hidden');
-            document.getElementById('future-result').classList.add('hidden');
-            document.getElementById('matrix-loading').classList.add('hidden');
-        }
-
-        function startMatrixPrediction() {
-            const loading = document.getElementById('matrix-loading');
-            const result = document.getElementById('future-result');
-            loading.classList.remove('hidden');
-            result.classList.add('hidden');
-
-            let progress = 0;
-            const bar = document.getElementById('progress-bar');
-
-            const intv = setInterval(() => {
-                progress += Math.random()*15 + 8;
-                if (progress > 100) progress = 100;
-                bar.style.width = progress + '%';
-
-                if (progress >= 100) {
-                    clearInterval(intv);
-                    setTimeout(() => {
-                        loading.classList.add('hidden');
-                        result.classList.remove('hidden');
-
-                        const now = new Date();
-                        const future = new Date(now.getTime() + (Math.floor(Math.random() * 18) + 3) * 60000);
-
-                        document.getElementById('current-time').textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-                        document.getElementById('golden-time').textContent = `${String(future.getHours()).padStart(2,'0')}:${String(future.getMinutes()).padStart(2,'0')}`;
-
-                        const total = Math.floor(Math.random() * 129) + 10;
-                        const slow = Math.max(5, Math.floor(total * 0.3));
-                        document.getElementById('total-spins').textContent = total;
-                        document.getElementById('slow-spins').textContent = slow;
-                        document.getElementById('fast-spins').textContent = total - slow;
-
-                        createParticles();
-                    }, 400);
-                }
-            }, 70);
-        }
-
-        function hackScatter() {
-            const btn = document.getElementById('hackBtn');
-            const loadingScreen = document.getElementById('hack-loading');
-            btn.disabled = true;
-            btn.style.opacity = "0.6";
-            loadingScreen.classList.remove('hidden');
-
-            let progress = 0;
-            const progressBar = document.getElementById('hack-progress');
-
-            const interval = setInterval(() => {
-                progress += Math.random() * 13 + 7;
-                if (progress > 100) progress = 100;
-                progressBar.style.width = progress + '%';
-
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        loadingScreen.classList.add('hidden');
-                        btn.disabled = false;
-                        btn.style.opacity = "1";
-
-                        const amounts = ["75K","150K","175K","300K","450K","600K","900K","1.800K","2.400K","3.000K"];
-                        document.getElementById('hack-amount').textContent = amounts[Math.floor(Math.random() * amounts.length)];
-
-                        const modal = document.getElementById('hack-modal');
-                        modal.classList.remove('hidden');
-                        modal.classList.add('flex');
-                    }, 400);
-                }
-            }, 85);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('hack-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        window.onload = () => {
-            initMatrix();
-            updateRatio();                    // Hiển thị tỷ lệ lần đầu
-            setInterval(updateRatio, 180000); // Cập nhật mỗi 3 phút
-        };
-    </script>
+window.onload = () => {
+    renderHalls();
+    initMatrix();
+};
+</script>
 </body>
 </html>
