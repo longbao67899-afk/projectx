@@ -8,7 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-gold: #ffd700; --neon-cyan: #00f5ff; --neon-purple: #c026d3; }
+        :root { 
+            --neon-gold: #ffd700; 
+            --neon-cyan: #00f5ff; 
+            --neon-purple: #c026d3; 
+        }
         body { 
             background: #05050f; 
             font-family: 'Inter', system-ui, sans-serif; 
@@ -34,17 +38,6 @@
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        .hall-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border: 2px solid transparent;
-            background: linear-gradient(45deg, #00f5ff, #c026d3, #00f5ff) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.7;
-        }
         .hall-card:hover {
             transform: scale(1.07) translateY(-10px);
             box-shadow: 0 0 80px rgba(34, 211, 238, 0.95);
@@ -66,7 +59,6 @@
         }
         @keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
 
-        /* Analysis Loading */
         .loading-card {
             background: rgba(15, 23, 42, 0.95);
             border: 2px solid #00f5ff;
@@ -75,18 +67,19 @@
         .holo-ring { animation: holo-rotate 20s linear infinite; }
         @keyframes holo-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* Win Probability Bar dưới hình game */
-        .win-prob-bar {
-            height: 16px;
-            background: #1e2937;
-            border-radius: 9999px;
+        .analysis-table {
+            background: linear-gradient(145deg, #0f0a1f, #1a1433);
+            border: 3px solid #22d3ee;
+            border-radius: 24px;
             overflow: hidden;
-            border: 2px solid #22d3ee;
+            box-shadow: 0 0 60px rgba(34, 211, 238, 0.4);
         }
-        .win-prob-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #22c55e, #86efac, #22c55e);
-            box-shadow: 0 0 25px #22c55e;
+        .analysis-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+        }
+        .analysis-table tr:last-child td {
+            border-bottom: none;
         }
     </style>
 </head>
@@ -164,9 +157,10 @@
         </div>
     </div>
 
-    <!-- ====================== ANALYSIS SCREEN (ĐÃ CHỈNH SỬA) ====================== -->
+    <!-- ====================== ANALYSIS SCREEN (ĐÃ THIẾT KẾ LẠI ĐẸP HƠN) ====================== -->
     <div id="analysis-screen" class="hidden">
-        <button onclick="backToCurrentScreen()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg font-medium">
+        <button onclick="backToCurrentScreen()" 
+                class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg font-medium">
             ← QUAY LẠI MA TRẬN
         </button>
 
@@ -186,83 +180,91 @@
             </div>
         </div>
 
-        <!-- Future Result - Phiên bản đẹp nhất -->
-        <div id="future-result" class="hidden analysis-card rounded-3xl p-8 relative">
-            
-            <!-- Tên Game -->
-            <div class="text-center mb-6">
-                <h1 id="game-title" class="title-font text-[28px] leading-tight neon-gold tracking-widest glitch"></h1>
-            </div>
-
-            <!-- Hình Game -->
-            <div class="flex justify-center mb-6 relative">
-                <div class="relative">
-                    <img id="game-avatar-analysis" class="w-52 h-52 object-contain rounded-3xl border-4 border-cyan-400 shadow-[0_0_90px_-10px_#00f5ff]" alt="">
-                    <div class="holo-ring absolute -inset-8 border border-cyan-400/40 rounded-3xl"></div>
-                </div>
-            </div>
-
-            <!-- Thanh Xác Suất Nổ Hũ (đúng vị trí bạn yêu cầu) -->
-            <div class="mb-8 px-2">
-                <div class="flex justify-between items-center text-sm mb-2 px-1">
-                    <span class="font-medium text-white/80">XÁC SUẤT NỔ HŨ</span>
-                    <span id="win-prob-text" class="font-bold text-emerald-400 text-2xl">96%</span>
-                </div>
-                <div class="win-prob-bar">
-                    <div id="win-prob-fill" class="win-prob-fill transition-all" style="width: 96%"></div>
-                </div>
-            </div>
-
-            <!-- Golden Time -->
-            <div class="bg-[#0f172a] border border-cyan-400/60 rounded-3xl p-6 mb-8">
-                <div class="flex items-center gap-4">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="text-3xl">⏳</span>
-                            <p class="text-cyan-300 font-semibold tracking-widest">GIỜ VÀNG QUANTUM</p>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div id="current-time" class="text-3xl font-mono text-white/80"></div>
-                            <span class="text-cyan-400 text-4xl">→</span>
-                            <div id="golden-time" class="neon-gold text-4xl font-bold digital-number"></div>
+        <!-- Future Result - Thiết kế mới với bảng -->
+        <div id="future-result" class="hidden">
+            <div class="analysis-table mx-auto max-w-[380px]">
+                <!-- Game Title & Image -->
+                <div class="text-center pt-8 pb-6 border-b border-cyan-400/30">
+                    <h1 id="game-title" class="title-font text-[27px] leading-tight neon-gold tracking-widest glitch px-4"></h1>
+                    <div class="flex justify-center mt-6 relative">
+                        <div class="relative">
+                            <img id="game-avatar-analysis" class="w-52 h-52 object-contain rounded-3xl border-4 border-cyan-400 shadow-[0_0_90px_-10px_#00f5ff]" alt="">
+                            <div class="holo-ring absolute -inset-8 border border-cyan-400/40 rounded-3xl"></div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Spin Protocol -->
-            <div class="spin-protocol rounded-3xl p-6 mb-8 bg-[#0f172a]/80 border border-cyan-400/40">
-                <h3 class="text-center text-purple-300 font-bold tracking-widest text-lg mb-5 flex items-center justify-center gap-2">
-                    <span>⚡</span> SPIN PROTOCOL - HƯỚNG DẪN QUAY
-                </h3>
-                <div class="grid grid-cols-3 gap-4 text-center">
-                    <div>
-                        <p class="text-xs text-white/60 mb-1">TỔNG VÒNG</p>
-                        <p id="total-spins" class="text-5xl font-bold neon-cyan digital-number">87</p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-white/60 mb-1">QUAY THƯỜNG</p>
-                        <p id="normal-spins" class="text-4xl font-semibold text-emerald-400">62</p>
-                        <p class="text-[10px] text-white/50">vòng</p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-white/60 mb-1">QUAY NHANH</p>
-                        <p id="fast-spins" class="text-4xl font-semibold text-amber-400">25</p>
-                        <p class="text-[10px] text-white/50">vòng</p>
-                    </div>
-                </div>
-                <div class="mt-6 text-center text-xs text-cyan-400/80">
-                    • Khuyến nghị dùng Auto Spin theo protocol trên<br>
-                    • Bắt đầu quay thường → tăng tốc turbo ở giai đoạn sau để tối ưu scatter
+                <!-- Bảng phân tích -->
+                <table class="w-full text-sm">
+                    <tr>
+                        <td class="font-medium text-white/80">XÁC SUẤT NỔ HŨ</td>
+                        <td class="text-right">
+                            <span id="win-prob-text" class="font-bold text-emerald-400 text-3xl">91%</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="py-3">
+                            <div class="win-prob-bar h-4 bg-zinc-900 rounded-full overflow-hidden border border-cyan-400/60">
+                                <div id="win-prob-fill" class="win-prob-fill h-full bg-gradient-to-r from-emerald-400 to-cyan-400 transition-all" style="width: 91%"></div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="font-medium text-white/80">GIỜ VÀNG QUANTUM</td>
+                        <td class="text-right font-mono">
+                            <span id="current-time" class="text-white/70"></span>
+                            <span class="text-cyan-400 mx-2">→</span>
+                            <span id="golden-time" class="neon-gold text-xl font-bold"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" class="pt-6 pb-2">
+                            <h3 class="text-center text-purple-300 font-bold tracking-widest text-lg flex items-center justify-center gap-2">
+                                <span class="text-xl">⚡</span> SPIN PROTOCOL - HƯỚNG DẪN QUAY
+                            </h3>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-center">
+                            <p class="text-xs text-white/60">TỔNG VÒNG</p>
+                            <p id="total-spins" class="text-5xl font-bold neon-cyan">77</p>
+                        </td>
+                        <td class="text-center border-l border-cyan-400/30">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-xs text-white/60">QUAY THƯỜNG</p>
+                                    <p id="normal-spins" class="text-4xl font-semibold text-emerald-400">47</p>
+                                    <p class="text-[10px] text-white/50">vòng</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-white/60">QUAY NHANH</p>
+                                    <p id="fast-spins" class="text-4xl font-semibold text-amber-400">30</p>
+                                    <p class="text-[10px] text-white/50">vòng</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" class="text-[13px] text-cyan-400/80 leading-relaxed pt-4 px-6">
+                            • Khuyến nghị dùng <span class="font-bold text-white">Auto Spin</span> theo protocol trên<br>
+                            • Bắt đầu quay thường → tăng tốc turbo ở giai đoạn sau để tối ưu scatter
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Hack Button -->
+                <div class="p-6 pt-8 border-t border-cyan-400/30">
+                    <button onclick="hackScatter()" 
+                            class="w-full py-7 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 rounded-3xl text-2xl font-bold tracking-widest flex items-center justify-center gap-4 shadow-[0_0_60px_#c026d3] active:scale-95 transition-all">
+                        <span>HACK SCATTER NGAY</span>
+                        <span class="text-4xl">🌀</span>
+                    </button>
                 </div>
             </div>
-
-            <!-- Hack Button -->
-            <button onclick="hackScatter()" 
-                    class="w-full py-7 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 rounded-3xl text-2xl font-bold tracking-widest flex items-center justify-center gap-4 shadow-[0_0_60px_#c026d3] active:scale-95 transition-all">
-                <span>HACK SCATTER NGAY</span>
-                <span class="text-4xl">🌀</span>
-            </button>
         </div>
     </div>
 </div>
@@ -509,7 +511,7 @@ function showAnalysis(index) {
     document.getElementById('game-title').textContent = game.name;
     document.getElementById('game-avatar-analysis').src = game.img;
 
-    // Xác suất nổ hũ ngẫu nhiên
+    // Xác suất ngẫu nhiên
     const prob = Math.floor(Math.random() * 12) + 88;
     document.getElementById('win-prob-text').textContent = prob + "%";
     document.getElementById('win-prob-fill').style.width = prob + "%";
