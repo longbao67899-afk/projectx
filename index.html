@@ -1,3 +1,4 @@
+<FILE filename="index.html">
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -6,6 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>QUANTUM SẢNH • NEURAL 2049</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -26,13 +28,13 @@
             content: '';
             position: fixed;
             inset: 0;
-            background: linear-gradient(90deg, transparent 49%, rgba(0,245,255,0.02) 50%, transparent 51%),
-                        linear-gradient(transparent 49%, rgba(192,38,211,0.02) 50%, transparent 51%);
+            background: linear-gradient(90deg, transparent 49%, rgba(0,245,255,0.015) 50%, transparent 51%),
+                        linear-gradient(transparent 49%, rgba(192,38,211,0.015) 50%, transparent 51%);
             background-size: 80px 80px;
-            animation: gridFlow 35s linear infinite;
+            animation: gridFlow 40s linear infinite;
             pointer-events: none;
             z-index: -3;
-            opacity: 0.25;
+            opacity: 0.2;
         }
         @keyframes gridFlow {
             0% { background-position: 0 0; }
@@ -111,7 +113,7 @@
             <h1 id="main-title" class="title-font text-5xl neon-gold tracking-widest glitch">QUANTUM SẢNH</h1>
             <p class="text-cyan-400 mt-3 text-sm tracking-[5px] animate-pulse">NEURAL INTERFACE • 2049</p>
             <div class="h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent my-8"></div>
-            <p class="text-white/70 text-xs tracking-widest">CHỌN CỔNG • HƠN 120 TRÒ CHƠI QUANTUM</p>
+            <p class="text-white/70 text-xs tracking-widest">CHỌN CỔNG • HƠN 160 TRÒ CHƠI QUANTUM</p>
         </div>
         <div class="space-y-10" id="hall-grid"></div>
     </div>
@@ -228,46 +230,143 @@ const halls = [
 ];
 
 const originalPGGames = [ 
-    { name: "BA CHÚ HEO", img: "https://i.ibb.co/Y7TWMqH8/BA-CH-HEO.avif" },
-    { name: "BẠN VIÊN BẢO TÀNG", img: "https://i.ibb.co/7tvVVdJd/B-N-VI-N-B-O-T-NG.avif" },
-    { name: "CƠN SỐT TIỀN", img: "https://i.ibb.co/kLczq6k/CON-SOT-TIEN.avif" },
-    { name: "CƠN SỐT BĂNG", img: "https://i.ibb.co/jk36yDXH/C-N-S-T-B-NG.avif" },
-    { name: "CƠN SỐT QUAY TẠI QUÁN", img: "https://i.ibb.co/gFS37Bbh/C-N-S-T-QUAY-T-I-QU-N.avif" },
-    { name: "CƠN SỐT VÀNG KRAKEN", img: "https://i.ibb.co/LdVRFM7g/C-N-S-T-V-NG-KRAKEN.avif" },
-    { name: "CÁ CƯỢC NGƯỜI CHẾT", img: "https://i.ibb.co/wZ9BTQkB/C-A-C-I-NG-I-CH-T.avif" },
-    { name: "CUỘC ĐUA GRAFFITI", img: "https://i.ibb.co/spcc0ktF/CUOC-DUA-GRAFFITI.avif" },
-    { name: "CUỘC TẤN SÁT TẬN THẾ", img: "https://i.ibb.co/Fk59vMPc/CUOC-TAN-SAT-TAN-THE.avif" },
-    { name: "CUỘC ĐUA GÀ CON", img: "https://i.ibb.co/1fm6YwYN/CU-C-UA-G-CON.avif" },
-    { name: "CHIẾN THẮNG PIÑATA", img: "https://i.ibb.co/4gRKVtbJ/CHI-N-TH-NG-PINATA.avif" },
-    { name: "CHÚ RỒNG MAY MẮN", img: "https://i.ibb.co/HpfZD1S1/CHU-RONG-MAY-MAN.avif" },
-    { name: "CHÚ HUYỀN BÍ", img: "https://i.ibb.co/nqk92srG/CH-HUY-N-B.avif" },
-    { name: "ẢO ẢNH CHẲN LẺ", img: "https://i.ibb.co/svFPB59H/A-NG-C-H-N-LO-N.avif" },
-    { name: "NHÀ MÁY MAYA", img: "https://i.ibb.co/27hHtLd4/NH-M-NH-MAYA.avif" },
-    { name: "CỬ ĐẠI THẦN BÍ", img: "https://i.ibb.co/TxwhnD0h/C-D-C-TH-N-B.avif" },
+    // === TRÒ CŨ (giữ nguyên) ===
+    { name: "Ba Chú Heo", img: "https://i.ibb.co/Y7TWMqH8/BA-CH-HEO.avif" },
+    { name: "Bạn Viên Bảo Tàng", img: "https://i.ibb.co/7tvVVdJd/B-N-VI-N-B-O-T-NG.avif" },
+    { name: "Cơn Sốt Tiền", img: "https://i.ibb.co/kLczq6k/CON-SOT-TIEN.avif" },
+    { name: "Cơn Sốt Băng", img: "https://i.ibb.co/jk36yDXH/C-N-S-T-B-NG.avif" },
+    { name: "Cơn Sốt Quay Tại Quán", img: "https://i.ibb.co/gFS37Bbh/C-N-S-T-QUAY-T-I-QU-N.avif" },
+    { name: "Cơn Sốt Vàng Kraken", img: "https://i.ibb.co/LdVRFM7g/C-N-S-T-V-NG-KRAKEN.avif" },
+    { name: "Cá Cược Người Chết", img: "https://i.ibb.co/wZ9BTQkB/C-A-C-I-NG-I-CH-T.avif" },
+    { name: "Cuộc Đua Graffiti", img: "https://i.ibb.co/spcc0ktF/CUOC-DUA-GRAFFITI.avif" },
+    { name: "Cuộc Tấn Sát Tận Thế", img: "https://i.ibb.co/Fk59vMPc/CUOC-TAN-SAT-TAN-THE.avif" },
+    { name: "Cuộc Đua Gà Con", img: "https://i.ibb.co/1fm6YwYN/CU-C-UA-G-CON.avif" },
+    { name: "Chiến Thắng Piñata", img: "https://i.ibb.co/4gRKVtbJ/CHI-N-TH-NG-PINATA.avif" },
+    { name: "Chú Rồng May Mắn", img: "https://i.ibb.co/HpfZD1S1/CHU-RONG-MAY-MAN.avif" },
+    { name: "Chú Huyền Bí", img: "https://i.ibb.co/nqk92srG/CH-HUY-N-B.avif" },
+    { name: "Ảo Ảnh Chẵn Lẻ", img: "https://i.ibb.co/svFPB59H/A-NG-C-H-N-LO-N.avif" },
+    { name: "Nhà Máy Maya", img: "https://i.ibb.co/27hHtLd4/NH-M-NH-MAYA.avif" },
+    { name: "Cử Đại Thần Bí", img: "https://i.ibb.co/TxwhnD0h/C-D-C-TH-N-B.avif" },
     { name: "Iguazu", img: "https://i.ibb.co/CKqNTTpN/I-C-NH-IGUAZU.avif" },
-    { name: "GÁI TÀI CÁ MR. KHO BÁU", img: "https://i.ibb.co/nsn45ng2/GAI-T-I-C-A-MR-KHO-B-U.avif" },
-    { name: "GRIMM BOUNTY", img: "https://i.ibb.co/jPcQYYjV/GRIMM-BOUNTY.avif" },
-    { name: "GIÀU CÓ KNOCKOUT", img: "https://i.ibb.co/qM3hhNWp/GIAU-CO-KNOUKOUT.avif" },
-    { name: "HOÀNG TỐC PHARAOH", img: "https://i.ibb.co/j9NL1dX0/HO-NG-T-C-PHARAOH.avif" },
-    { name: "JACK", img: "https://i.ibb.co/hFgJCrX5/JACK.avif" },
-    { name: "KỲ QUAN BẦU TRỜI", img: "https://i.ibb.co/CTyjySt/K-QUAN-B-U-TR-I.avif" },
-    { name: "KỲ QUAN INCA", img: "https://i.ibb.co/dswcDcgh/K-QUAN-INCA.avif" },
-    { name: "KHO BÁU ALIBABA", img: "https://i.ibb.co/q36zDXhG/KHO-B-U-ALIBABA.avif" },
-    { name: "KHO BÁU GUARDIAN", img: "https://i.ibb.co/chyn3gLB/KHO-B-U-GUARDIAN.avif" },
-    { name: "KHO BÁU HOÀNG GIA", img: "https://i.ibb.co/CK0VqvzV/KHO-BAU-HOANG-GIA.avif" },
-    { name: "LOREN GIÀU CÓ", img: "https://i.ibb.co/v40hMctL/LO-REN-GIAU-CO.avif" },
-    { name: "LONG SINH 2", img: "https://i.ibb.co/k6zRYnxc/LONG-SINH-2.avif" },
-    { name: "MÓN NGON MIỆNG", img: "https://i.ibb.co/5X2jwjBd/M-N-NGON-MI-NG.avif" },
-    { name: "NGỰA MAY MẮN", img: "https://i.ibb.co/0wyxGdx/NG-A-MAY-M-N.avif" },
-    { name: "PHI VỤ CƯỚP TIỀN", img: "https://i.ibb.co/QFrfZZ97/PHI-VU-CUOP-TIEN.avif" },
-    { name: "RỒNG MAY MẮN", img: "https://i.ibb.co/KpCdGpST/R-N-MAY-M-N.avif" },
-    { name: "SOCOLA HÔN HỘ", img: "https://i.ibb.co/Dm5HxTY/SOCOLA-HO-N-H-O.avif" },
-    { name: "SỰ NGỦ MƠ", img: "https://i.ibb.co/RknTPK4x/S-NG-O-M-NG.avif" },
-    { name: "TIỀN THƯỞNG CƠ MỰC", img: "https://i.ibb.co/ptsRB9B/TI-N-TH-NG-C-M-P.avif" },
-    { name: "THÁM HIỂM NẺO", img: "https://i.ibb.co/1YB3bSsx/TH-M-NG-N-H.avif" },
-    { name: "THUẬT GIẢ KIM", img: "https://i.ibb.co/hJfwSSZd/THU-T-GI-KIM.avif" },
-    { name: "TRUY TÌM KHO BÁU RỒNG", img: "https://i.ibb.co/xqBRK5v3/TRUY-T-M-KHO-B-U-R-NG.avif" },
-    { name: "VƯƠNG QUỐC CHINH PHỤC", img: "https://i.ibb.co/TxJH9y44/V-NG-QU-C-CHINH-PH-C.avif" }
+    { name: "Gái Tài Cả Mr. Kho Báu", img: "https://i.ibb.co/nsn45ng2/GAI-T-I-C-A-MR-KHO-B-U.avif" },
+    { name: "Grimm Bounty", img: "https://i.ibb.co/jPcQYYjV/GRIMM-BOUNTY.avif" },
+    { name: "Giàu Có Knockout", img: "https://i.ibb.co/qM3hhNWp/GIAU-CO-KNOUKOUT.avif" },
+    { name: "Hoàng Tốc Pharaoh", img: "https://i.ibb.co/j9NL1dX0/HO-NG-T-C-PHARAOH.avif" },
+    { name: "Jack", img: "https://i.ibb.co/hFgJCrX5/JACK.avif" },
+    { name: "Kỳ Quan Bầu Trời", img: "https://i.ibb.co/CTyjySt/K-QUAN-B-U-TR-I.avif" },
+    { name: "Kỳ Quan Inca", img: "https://i.ibb.co/dswcDcgh/K-QUAN-INCA.avif" },
+    { name: "Kho Báu Alibaba", img: "https://i.ibb.co/q36zDXhG/KHO-B-U-ALIBABA.avif" },
+    { name: "Kho Báu Guardian", img: "https://i.ibb.co/chyn3gLB/KHO-B-U-GUARDIAN.avif" },
+    { name: "Kho Báu Hoàng Gia", img: "https://i.ibb.co/CK0VqvzV/KHO-BAU-HOANG-GIA.avif" },
+    { name: "Loren Giàu Có", img: "https://i.ibb.co/v40hMctL/LO-REN-GIAU-CO.avif" },
+    { name: "Long Sinh 2", img: "https://i.ibb.co/k6zRYnxc/LONG-SINH-2.avif" },
+    { name: "Món Ngon Miệng", img: "https://i.ibb.co/5X2jwjBd/M-N-NGON-MI-NG.avif" },
+    { name: "Ngựa May Mắn", img: "https://i.ibb.co/0wyxGdx/NG-A-MAY-M-N.avif" },
+    { name: "Phi Vụ Cướp Tiền", img: "https://i.ibb.co/QFrfZZ97/PHI-VU-CUOP-TIEN.avif" },
+    { name: "Rồng May Mắn", img: "https://i.ibb.co/KpCdGpST/R-N-MAY-M-N.avif" },
+    { name: "Socola Hôn Hộ", img: "https://i.ibb.co/Dm5HxTY/SOCOLA-HO-N-H-O.avif" },
+    { name: "Sự Ngủ Mơ", img: "https://i.ibb.co/RknTPK4x/S-NG-O-M-NG.avif" },
+    { name: "Tiền Thưởng Cơ Mực", img: "https://i.ibb.co/ptsRB9B/TI-N-TH-NG-C-M-P.avif" },
+    { name: "Thám Hiểm Nẻo", img: "https://i.ibb.co/1YB3bSsx/TH-M-NG-N-H.avif" },
+    { name: "Thuật Giả Kim", img: "https://i.ibb.co/hJfwSSZd/THU-T-GI-KIM.avif" },
+    { name: "Truy Tìm Kho Báu Rồng", img: "https://i.ibb.co/xqBRK5v3/TRUY-T-M-KHO-B-U-R-NG.avif" },
+    { name: "Vương Quốc Chinh Phục", img: "https://i.ibb.co/TxJH9y44/V-NG-QU-C-CHINH-PH-C.avif" },
+
+    // === TRÒ MỚI – ĐÃ CẢI THIỆN TÊN ===
+    { name: "3 Kỳ Ức", img: "https://i.ibb.co/rRPD75SB/3-I-U-C.avif" },
+    { name: "Ân Sủng Của Hoàng Đế", img: "https://i.ibb.co/RkG74K8j/AN-SUNG-CUA-HOANG-DE.avif" },
+    { name: "Asgard Trỗi Dậy", img: "https://i.ibb.co/wFC0Kyjs/ASGARD-TROI-DAY.avif" },
+    { name: "Ba Hộ Thú Hương", img: "https://i.ibb.co/bR2yYXH5/BA-HO-THU-HUONG.avif" },
+    { name: "Băng Giá Vui Nhộn", img: "https://i.ibb.co/n8NLp65r/BANG-GIA-VUI-NHON.avif" },
+    { name: "Bí Ước Của Tâm C", img: "https://i.ibb.co/vxLsYzXq/B-U-CUA-T-M-C.avif" },
+    { name: "Bí Mật Cleopatra", img: "https://i.ibb.co/hFSs0QP5/B-M-T-CLEOPATRA.avif" },
+    { name: "Biểu Tượng Ai Cập", img: "https://i.ibb.co/xKH3R8tS/BIEU-TUONG-AI-CAP.avif" },
+    { name: "K.O Bonanza", img: "https://i.ibb.co/wNPyjzDp/K-O-BONAZA.avif" },
+    { name: "Bùa Ma Cá Rồng", img: "https://i.ibb.co/DfrvyHFR/BUA-MA-CA-RONG.avif" },
+    { name: "Bá Tước Huyền Hoàn", img: "https://i.ibb.co/wF6kRV6Y/B-A-T-I-H-N-HOAN.avif" },
+    { name: "Cây Tài Lộc", img: "https://i.ibb.co/N2mBqT51/CAY-TAI-LOC.avif" },
+    { name: "Cây Tài Vàng", img: "https://i.ibb.co/S4whTwrX/C-Y-T-I-V-NG.avif" },
+    { name: "Cô Bé Quàng Khăn Đỏ", img: "https://i.ibb.co/BVJ1FQ2h/CO-BE-QUANG-KHAN-DO.avif" },
+    { name: "Cơn Thịnh Nộ Anubis", img: "https://i.ibb.co/6SwpLt1/CON-THINH-NO-ANUBIS.avif" },
+    { name: "Cơn Sốt Băng Uy Lực", img: "https://i.ibb.co/5WnyYCKS/C-PH-T-B-NG-UY-L-C.avif" },
+    { name: "Cuộc Chiến Hoàng Gia", img: "https://i.ibb.co/NgCsZjh4/CU-C-CHI-N-HO-NG-GIA.avif" },
+    { name: "Cuộc Di Sản Của Người Sói", img: "https://i.ibb.co/DgvrRVY1/CUOC-DI-SAN-CUA-NGUOI-SOI.avif" },
+    { name: "Cuộc Phiêu Lưu Đến Kho Báu", img: "https://i.ibb.co/ymt29fZX/CUOC-PHIEU-LUU-DEN-KHO-BAU.avif" },
+    { name: "Chiến Thắng Caishen", img: "https://i.ibb.co/rfxDKjPF/CHIEN-THANG-CAISHEN.avif" },
+    { name: "Chú B May Mắn", img: "https://i.ibb.co/1f8nJ34m/CH-B-MAY-M-N.avif" },
+    { name: "Chú Chuột May Mắn", img: "https://i.ibb.co/KjymGwsV/CHU-CHUOT-MAY-MAN.avif" },
+    { name: "Quỳ Ngũ N H", img: "https://i.ibb.co/0RQ2hDsh/QU-NG-N-H.avif" },
+    { name: "Quy Garuda", img: "https://i.ibb.co/W4rLQBd1/QU-GARUDA.avif" },
+    { name: "Đá Quý Và Vàng", img: "https://i.ibb.co/DP7f2p6y/DA-QUY-VA-VANG.avif" },
+    { name: "Đại Dịch Xác Sống", img: "https://i.ibb.co/jPk4rGrs/DAI-DICH-XAC-SONG.avif" },
+    { name: "Danh Dự Yakuza", img: "https://i.ibb.co/3m5h77D9/DANH-DU-YAKUZA.avif" },
+    { name: "Đêm Cocktail", img: "https://i.ibb.co/Pz0djx47/DEM-COCTAIL.avif" },
+    { name: "Điêu Chân", img: "https://i.ibb.co/LzFLW1jf/DIAO-CHAN.avif" },
+    { name: "Đội Bóng Thiếu Lâm", img: "https://i.ibb.co/HTqHPCLf/DOI-BONG-THIEU-LAM.avif" },
+    { name: "Du Thuyền Hoàng Gia", img: "https://i.ibb.co/SwX4jCGF/DU-THUY-N-HO-NG-GIA.avif" },
+    { name: "Dương Mật Chuộc 1", img: "https://i.ibb.co/NnY1WjMq/DUONG-MAT-CHUOC-1.avif" },
+    { name: "Dương Mật Chuột 2", img: "https://i.ibb.co/Y4Dfb2L2/DUONG-MAT-CHUOT-2.avif" },
+    { name: "G G Y", img: "https://i.ibb.co/VYWqR8T2/G-G-Y.avif" },
+    { name: "Ganesha Vàng", img: "https://i.ibb.co/Q7bH0Syk/GANESHA-VANG.avif" },
+    { name: "Gấu Trúc Hip Hop", img: "https://i.ibb.co/0RrmTnXX/GAU-TRUC-HIP-HOP.avif" },
+    { name: "Guong Quay Tình Yêu", img: "https://i.ibb.co/jvqhgPMQ/GUONG-QUAY-TINH-YEU.avif" },
+    { name: "Giấc Mơ Macao", img: "https://i.ibb.co/WWpNSXdT/GI-C-M-MACAO.avif" },
+    { name: "Hallow Win", img: "https://i.ibb.co/kg1dkv2p/HALLOW-WIN.avif" },
+    { name: "Hầm May Mắn Jane", img: "https://i.ibb.co/JFMgfdCX/H-M-M-MAY-M-N-JANE.avif" },
+    { name: "Hũ Vàng", img: "https://i.ibb.co/TqTYvGSn/H-U-V-NG.avif" },
+    { name: "Heo May Mắn", img: "https://i.ibb.co/992MxhbY/HEO-MAY-M-N.avif" },
+    { name: "Heo Vàng", img: "https://i.ibb.co/hhSbY5x/HEO-VANG.avif" },
+    { name: "H May Mắn", img: "https://i.ibb.co/N69SgMZ5/H-MAY-M-N.avif" },
+    { name: "Hoa Bướm", img: "https://i.ibb.co/8DX8KYQt/HOA-B-M.avif" },
+    { name: "Hotpot", img: "https://i.ibb.co/CsX0Pm5X/HOTPOT.avif" },
+    { name: "K.O Ngũ Tinh N", img: "https://i.ibb.co/HDQTc6C3/K-O-NG-T-B-NG-N.avif" },
+    { name: "K.O Chơi Cây", img: "https://i.ibb.co/nN1sGk2b/K-O-CH-I-C-Y.avif" },
+    { name: "K Ngh Bali", img: "https://i.ibb.co/67D2ZVKg/K-NGH-BALI.avif" },
+    { name: "Kỳ Quan Cổ Vật", img: "https://i.ibb.co/GQ4Dng98/K-QUAN-C-V-T.avif" },
+    { name: "Kỳ Quan Sông Thái Lan", img: "https://i.ibb.co/N6C40GGX/K-QUAN-S-NG-TH-I-LAN.avif" },
+    { name: "Kỳ Quan Thần Bí", img: "https://i.ibb.co/j9c644L7/K-QUAN-TH-N-B.avif" },
+    { name: "Kripto Allin", img: "https://i.ibb.co/XZvKpZP7/KRIPTO-ALLIN.avif" },
+    { name: "Kỳ Lân Mạch Nước", img: "https://i.ibb.co/DHGnbX39/KY-LAN-MACH-NUOC.avif" },
+    { name: "Khỉ Hoang Dã", img: "https://i.ibb.co/fdVqDzB4/KHI-HOANG-DA.avif" },
+    { name: "Kho Báu Aztec", img: "https://i.ibb.co/6c3pBz6h/KHO-BAU-AZTEC.avif" },
+    { name: "Kho Báu Cảm Xúc", img: "https://i.ibb.co/27bfb6zw/KHO-B-U-C-M-X-C.avif" },
+    { name: "Kho Báu Ganesha", img: "https://i.ibb.co/XZB6VWRC/KHO-BAU-GANESHA.avif" },
+    { name: "Kho Báu Huyền Vĩ", img: "https://i.ibb.co/DDq2SVhf/KHO-B-U-H-NG-V.avif" },
+    { name: "Kho Báu Khổng Lồ", img: "https://i.ibb.co/7NyXw8n8/KHO-BAU-KHONG-LO.avif" },
+    { name: "Kho Báu Midas", img: "https://i.ibb.co/hFvb8Shp/KHO-B-U-MIDAS.avif" },
+    { name: "Kho Báu Nữ Hoàng", img: "https://i.ibb.co/7Nz6CbSp/KHO-B-U-N-NG-TI-N-C.avif" },
+    { name: "Kho Báu Thuyền Trưởng", img: "https://i.ibb.co/6cyfcw2g/KHO-BAU-THUYEN-TRUONG.avif" },
+    { name: "Kho Báu Yêu Tình", img: "https://i.ibb.co/svhTmz9n/KHO-BAU-YEU-TINH.avif" },
+    { name: "Khu Rừng Vui Nhộn", img: "https://i.ibb.co/ycdtW2dT/KHU-RUNG-VUI-NHON.avif" },
+    { name: "Lễ Hội Mùa Thu", img: "https://i.ibb.co/1JfqrLNr/L-H-I-M-T-N.avif" },
+    { name: "Lễ Hội Tiền C", img: "https://i.ibb.co/mFgm4g0m/L-H-I-T-N-C.avif" },
+    { name: "Linh Hồn Thần Bí", img: "https://i.ibb.co/b5jfRfH3/LINH-H-N-TH-N-B.avif" },
+    { name: "Long Sinh", img: "https://i.ibb.co/Lh6d0gLY/LONG-SINH.avif" },
+    { name: "Mafia", img: "https://i.ibb.co/twTRJLbs/MAFIA.avif" },
+    { name: "Mặt Trời Và Mặt Trăng", img: "https://i.ibb.co/fYv2fQV2/M-T-TR-NG-V-M-T-TR-I.avif" },
+    { name: "Medusa 1", img: "https://i.ibb.co/zhXqJ2XQ/MEDUSA-1.avif" },
+    { name: "Medusa 2", img: "https://i.ibb.co/bM18F4Fb/MEDUSA-2.avif" },
+    { name: "Mãng Jack Frost", img: "https://i.ibb.co/9kFRkzVK/M-A-NG-JACK-FROST.avif" },
+    { name: "Mùa Sấm Thần Ga", img: "https://i.ibb.co/8DXmdMKM/MUA-S-M-TH-GA.avif" },
+    { name: "Neko May Mắn", img: "https://i.ibb.co/cSdPSxMS/NEKO-MAY-MAN.avif" },
+    { name: "Ninja Gù Mò", img: "https://i.ibb.co/xS1DBGDd/NINJA-G-U-M-O.avif" },
+    { name: "Ninja Vs Samurai", img: "https://i.ibb.co/FbwPNQ3y/NINJA-VS-SAMURAI.avif" },
+    { name: "Nữ Hoàng Tiền Thưởng", img: "https://i.ibb.co/W4QvGPWQ/NU-HOANG-TIEN-THUONG.avif" },
+    { name: "Ngự I Chiến", img: "https://i.ibb.co/spHWPVv7/NG-U-I-CHI-N.avif" },
+    { name: "Nhà Vô Địch Mùa Quay Thái", img: "https://i.ibb.co/gMNxy93q/NHA-VO-DICH-MUAQUAY-THAI.avif" },
+    { name: "Nhân Vật Cổ", img: "https://i.ibb.co/8H6W8Y3/NH-V-CH-T-C.avif" },
+    { name: "Plushie Fhenzy", img: "https://i.ibb.co/spSwgLMK/PLUSHIE-FHENZY.avif" },
+    { name: "Pháo Hoa Wild", img: "https://i.ibb.co/N2K0P8BC/PHAO-HOA-WILD.avif" },
+    { name: "Phượng Nữ Phượng Thần", img: "https://i.ibb.co/q3qjzvW0/PH-NG-NG-PH-N-TH-NH.avif" },
+    { name: "Phượng Hoàng Nữ Dạ", img: "https://i.ibb.co/ZnT4ZhN/PH-NG-HO-NG-N-I-D-Y.avif" },
+    { name: "Quà Của Ông Già Noel", img: "https://i.ibb.co/Q7g4p9yN/QUA-CUA-ONG-GIA-NOEL.avif" },
+    { name: "Quốc Cờ Ba Lá", img: "https://i.ibb.co/Xf1B2Z4H/QU-C-C-BA-L.avif" },
+    { name: "Quyết Chiến Tiền Thưởng", img: "https://i.ibb.co/QjjLYHV2/QUYET-CHIEN-TIEN-THUONG.avif" },
+    { name: "Quyết Sách Bí Ẩn Ai Cập", img: "https://i.ibb.co/DPH89yjr/QUYET-SACH-BI-AN-AI-CAP.avif" },
+    { name: "Rạp Xi Cảnh Mù", img: "https://i.ibb.co/PsHp2sWx/R-P-XI-C-NHI-M-M-U.avif" },
+    { name: "Rồng Hỏ May Mắn", img: "https://i.ibb.co/MybkFVZT/RONG-HO-MAY-MAN.avif" },
+    { name: "Rồng Truyền Thuyết", img: "https://i.ibb.co/zvypNs1/RONG-TRUYEN-THUYET.avif" },
+    { name: "Safari Hoàng Dã", img: "https://i.ibb.co/mCCZBmWz/SAFARI-HOANG-D.avif" }
 ];
 
 let pgGames = [...originalPGGames];
@@ -278,165 +377,130 @@ let filteredGames = pgGames.slice();
 let recommendedIndex = 0;
 let searchListenerAdded = false;
 
-// ====================== WEBGL SHADER – PHIÊN BẢN DỊU MẮT & TỐI ƯU ======================
-let gl, program, timeLoc, mouseLoc, resolutionLoc;
-let startTime = Date.now();
+// ====================== THREE.JS 3D NEON BACKGROUND ======================
+let scene, camera, renderer;
+let particleSystem, connectionLines;
+let particlesCount = 4200;
+let mouse = { x: 0, y: 0 };
+let time = 0;
 
-const vertexShaderSource = `
-    attribute vec2 a_position;
-    void main() {
-        gl_Position = vec4(a_position, 0.0, 1.0);
-    }
-`;
-
-const fragmentShaderSource = `
-    precision highp float;
-    uniform float u_time;
-    uniform vec2 u_mouse;
-    uniform vec2 u_resolution;
-
-    vec3 neonCyan   = vec3(0.0, 0.85, 0.95);
-    vec3 neonPurple = vec3(0.65, 0.12, 0.75);
-    vec3 neonGold   = vec3(0.98, 0.78, 0.15);
-
-    float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
-
-    float noise(vec2 p) {
-        vec2 i = floor(p);
-        vec2 f = fract(p);
-        float a = hash(i);
-        float b = hash(i + vec2(1.0, 0.0));
-        float c = hash(i + vec2(0.0, 1.0));
-        float d = hash(i + vec2(1.0, 1.0));
-        vec2 u = f * f * (3.0 - 2.0 * f);
-        return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
-    }
-
-    void main() {
-        vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-        vec2 p = (gl_FragCoord.xy - u_resolution * 0.5) / u_resolution.y;
-        vec2 mouse = (u_mouse - u_resolution * 0.5) / u_resolution.y;
-
-        float t = u_time * 0.25; // chậm hơn, dịu hơn
-
-        // Grid nhẹ nhàng
-        vec2 grid = fract(p * 9.0 + t * 0.4);
-        float gridLine = min(smoothstep(0.0, 0.04, grid.x), smoothstep(0.0, 0.04, grid.y)) * 0.35;
-
-        // Energy flow mượt mà
-        float flow = noise(p * 3.5 + t * 0.8) * noise(p * 7.0 - t * 0.6);
-
-        // Orb dịu mắt (giảm số lượng & cường độ)
-        float orb = 0.0;
-        for (int i = 0; i < 12; i++) {
-            float fi = float(i);
-            vec2 orbPos = vec2(sin(t * 0.45 + fi) * 0.75, cos(t * 0.55 + fi * 1.1) * 0.55);
-            float d = length(p - orbPos);
-            orb += exp(-d * 22.0) * (0.45 + 0.3 * sin(t * 2.0 + fi));
-        }
-
-        // Mouse glow nhẹ
-        float mouseDist = length(p - mouse);
-        float mouseGlow = exp(-mouseDist * 14.0) * 0.9;
-
-        // Màu dịu + tối
-        vec3 color = mix(neonCyan * 0.65, neonPurple * 0.75, flow * 1.1);
-        color = mix(color, neonGold * 0.6, gridLine * 0.8);
-        color += neonCyan * orb * 0.95;
-        color += neonGold * mouseGlow * 0.75;
-
-        // Vignette mạnh để giảm chói
-        float vignette = 1.0 - length(uv - 0.5) * 0.85;
-        color *= vignette * vignette * 0.92;
-
-        // Giảm tổng độ sáng
-        color *= 0.78;
-
-        gl_FragColor = vec4(color, 1.0);
-    }
-`;
-
-function createShader(gl, type, source) {
-    const shader = gl.createShader(type);
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        console.error("Shader error:", gl.getShaderInfoLog(shader));
-        gl.deleteShader(shader);
-        return null;
-    }
-    return shader;
-}
-
-function initWebGL() {
+function initThreeJS() {
     const canvas = document.getElementById('particle-bg');
-    gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
+    
+    scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x05050f, 8, 35);
 
-    if (!gl) {
-        console.warn("WebGL không hỗ trợ → bỏ qua shader");
-        return;
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 18);
+
+    renderer = new THREE.WebGLRenderer({ 
+        canvas: canvas, 
+        antialias: true, 
+        alpha: true 
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const positions = new Float32Array(particlesCount * 3);
+    const colors = new Float32Array(particlesCount * 3);
+    const sizes = new Float32Array(particlesCount);
+
+    const colorOptions = [
+        new THREE.Color(0x00f5ff),
+        new THREE.Color(0xc026d3),
+        new THREE.Color(0xffd700)
+    ];
+
+    for (let i = 0; i < particlesCount * 3; i += 3) {
+        const i3 = i / 3;
+        positions[i]     = (Math.random() - 0.5) * 50;
+        positions[i + 1] = (Math.random() - 0.5) * 50;
+        positions[i + 2] = (Math.random() - 0.5) * 30;
+
+        const col = colorOptions[Math.floor(Math.random() * 3)];
+        colors[i]     = col.r;
+        colors[i + 1] = col.g;
+        colors[i + 2] = col.b;
+
+        sizes[i3] = Math.random() * 0.12 + 0.04;
     }
 
-    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-    const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
-    program = gl.createProgram();
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        console.error("Link error");
-        return;
-    }
-
-    gl.useProgram(program);
-
-    const positionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    const positions = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
-    gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
-
-    const positionLocation = gl.getAttribLocation(program, "a_position");
-    gl.enableVertexAttribArray(positionLocation);
-    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-    timeLoc = gl.getUniformLocation(program, "u_time");
-    mouseLoc = gl.getUniformLocation(program, "u_mouse");
-    resolutionLoc = gl.getUniformLocation(program, "u_resolution");
-
-    let mouseX = canvas.width / 2;
-    let mouseY = canvas.height / 2;
-
-    document.addEventListener('mousemove', e => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+    const material = new THREE.PointsMaterial({
+        size: 0.08,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.92,
+        blending: THREE.AdditiveBlending,
+        depthTest: false
     });
 
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        gl.viewport(0, 0, canvas.width, canvas.height);
-        gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
+    particleSystem = new THREE.Points(geometry, material);
+    scene.add(particleSystem);
+
+    const lineGeometry = new THREE.BufferGeometry();
+    const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0x00f5ff,
+        transparent: true,
+        opacity: 0.12,
+        blending: THREE.AdditiveBlending
+    });
+    connectionLines = new THREE.LineSegments(lineGeometry, lineMaterial);
+    scene.add(connectionLines);
+
+    document.addEventListener('mousemove', (e) => {
+        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    function animate() {
+        time += 0.008;
+
+        camera.position.x = Math.sin(time * 0.2) * 3;
+        camera.position.z = 18 + Math.cos(time * 0.15) * 2;
+        camera.lookAt(0, 0, 0);
+
+        const positionsAttr = particleSystem.geometry.attributes.position;
+        for (let i = 0; i < particlesCount * 3; i += 3) {
+            positionsAttr.array[i + 1] += Math.sin(time * 2 + i) * 0.008;
+        }
+        positionsAttr.needsUpdate = true;
+
+        if (Math.floor(time * 8) % 3 === 0) {
+            const pos = positionsAttr.array;
+            const linePos = [];
+            for (let i = 0; i < particlesCount; i += 12) {
+                for (let j = i + 18; j < particlesCount; j += 18) {
+                    const dx = pos[i*3] - pos[j*3];
+                    const dy = pos[i*3+1] - pos[j*3+1];
+                    const dz = pos[i*3+2] - pos[j*3+2];
+                    const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                    if (dist < 9 && dist > 0.5) {
+                        linePos.push(pos[i*3], pos[i*3+1], pos[i*3+2]);
+                        linePos.push(pos[j*3], pos[j*3+1], pos[j*3+2]);
+                    }
+                }
+            }
+            connectionLines.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
+        }
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
     }
-    window.addEventListener('resize', resize);
-    resize();
-
-    function render() {
-        const elapsed = (Date.now() - startTime) / 1000;
-        gl.uniform1f(timeLoc, elapsed);
-        gl.uniform2f(mouseLoc, mouseX, mouseY);
-
-        gl.clearColor(0.03, 0.02, 0.09, 1.0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-
-        requestAnimationFrame(render);
-    }
-    render();
+    animate();
 }
 
-// ====================== CÁC HÀM GAME (giữ nguyên) ======================
+// ====================== GAME FUNCTIONS ======================
 function countUp(element, target, suffix = '', duration = 1400) {
     let start = 0;
     const startTimeVal = performance.now();
@@ -635,7 +699,7 @@ function filterGamesPG(query) {
 // ====================== INIT ======================
 window.onload = () => {
     renderHalls();
-    initWebGL();   // ← Shader WebGL đã được làm dịu mắt hoàn toàn
+    initThreeJS();
 
     setInterval(triggerRandomGlitch, 3800);
 
@@ -648,8 +712,9 @@ window.onload = () => {
         }, 600);
     }
 
-    console.log('%c🚀 QUANTUM SẢNH 2049 – WebGL Shader DỊU MẮT & TỐI ƯU!', 'color:#00f5ff; font-family:Orbitron; font-size:15px;');
+    console.log('%c🚀 QUANTUM SẢNH 2049 – Tên trò chơi đã được cải thiện đẹp hơn!', 'color:#00f5ff; font-family:Orbitron; font-size:15px; text-shadow:0 0 15px #00f5ff');
 };
 </script>
 </body>
 </html>
+</FILE>
