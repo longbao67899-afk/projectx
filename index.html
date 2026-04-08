@@ -57,8 +57,18 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .fade-in-up { animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
 
-        .hall-card, .game-card { transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); transform-style: preserve-3d; }
-        .hall-card:hover, .game-card:hover { transform: scale(1.08) translateY(-18px) rotateX(12deg) rotateY(12deg); box-shadow: 0 0 180px rgba(34, 211, 238, 0.95); }
+        .hall-card, .game-card, #recommended-card {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+        .hall-card:hover, .game-card:hover { 
+            transform: scale(1.08) translateY(-18px) rotateX(12deg) rotateY(12deg); 
+            box-shadow: 0 0 180px rgba(34, 211, 238, 0.95); 
+        }
 
         .analysis-card { background: linear-gradient(145deg, #0a0718, #1a1433); border: 4px solid #22d3ee; box-shadow: 0 0 100px rgba(34, 211, 238, 0.8); position: relative; overflow: hidden; }
         .analysis-card::before {
@@ -230,7 +240,7 @@ const halls = [
 ];
 
 const originalPGGames = [ 
-    // === TRÒ CŨ (giữ nguyên) ===
+    // TRÒ CŨ
     { name: "Ba Chú Heo", img: "https://i.ibb.co/Y7TWMqH8/BA-CH-HEO.avif" },
     { name: "Bạn Viên Bảo Tàng", img: "https://i.ibb.co/7tvVVdJd/B-N-VI-N-B-O-T-NG.avif" },
     { name: "Cơn Sốt Tiền", img: "https://i.ibb.co/kLczq6k/CON-SOT-TIEN.avif" },
@@ -272,7 +282,7 @@ const originalPGGames = [
     { name: "Truy Tìm Kho Báu Rồng", img: "https://i.ibb.co/xqBRK5v3/TRUY-T-M-KHO-B-U-R-NG.avif" },
     { name: "Vương Quốc Chinh Phục", img: "https://i.ibb.co/TxJH9y44/V-NG-QU-C-CHINH-PH-C.avif" },
 
-    // === TRÒ MỚI – ĐÃ CẢI THIỆN TÊN ===
+    // TRÒ MỚI – TÊN ĐÃ CẢI THIỆN
     { name: "3 Kỳ Ức", img: "https://i.ibb.co/rRPD75SB/3-I-U-C.avif" },
     { name: "Ân Sủng Của Hoàng Đế", img: "https://i.ibb.co/RkG74K8j/AN-SUNG-CUA-HOANG-DE.avif" },
     { name: "Asgard Trỗi Dậy", img: "https://i.ibb.co/wFC0Kyjs/ASGARD-TROI-DAY.avif" },
@@ -377,52 +387,34 @@ let filteredGames = pgGames.slice();
 let recommendedIndex = 0;
 let searchListenerAdded = false;
 
-// ====================== THREE.JS 3D NEON BACKGROUND ======================
-let scene, camera, renderer;
-let particleSystem, connectionLines;
+// ====================== THREE.JS ======================
+let scene, camera, renderer, particleSystem, connectionLines;
 let particlesCount = 4200;
-let mouse = { x: 0, y: 0 };
 let time = 0;
 
 function initThreeJS() {
     const canvas = document.getElementById('particle-bg');
-    
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog(0x05050f, 8, 35);
-
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 0, 18);
-
-    renderer = new THREE.WebGLRenderer({ 
-        canvas: canvas, 
-        antialias: true, 
-        alpha: true 
-    });
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     const positions = new Float32Array(particlesCount * 3);
     const colors = new Float32Array(particlesCount * 3);
     const sizes = new Float32Array(particlesCount);
-
-    const colorOptions = [
-        new THREE.Color(0x00f5ff),
-        new THREE.Color(0xc026d3),
-        new THREE.Color(0xffd700)
-    ];
+    const colorOptions = [new THREE.Color(0x00f5ff), new THREE.Color(0xc026d3), new THREE.Color(0xffd700)];
 
     for (let i = 0; i < particlesCount * 3; i += 3) {
-        const i3 = i / 3;
-        positions[i]     = (Math.random() - 0.5) * 50;
+        const idx = i / 3;
+        positions[i] = (Math.random() - 0.5) * 50;
         positions[i + 1] = (Math.random() - 0.5) * 50;
         positions[i + 2] = (Math.random() - 0.5) * 30;
-
         const col = colorOptions[Math.floor(Math.random() * 3)];
-        colors[i]     = col.r;
-        colors[i + 1] = col.g;
-        colors[i + 2] = col.b;
-
-        sizes[i3] = Math.random() * 0.12 + 0.04;
+        colors[i] = col.r; colors[i + 1] = col.g; colors[i + 2] = col.b;
+        sizes[idx] = Math.random() * 0.12 + 0.04;
     }
 
     const geometry = new THREE.BufferGeometry();
@@ -430,32 +422,17 @@ function initThreeJS() {
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
-    const material = new THREE.PointsMaterial({
-        size: 0.08,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.92,
-        blending: THREE.AdditiveBlending,
-        depthTest: false
-    });
-
-    particleSystem = new THREE.Points(geometry, material);
+    particleSystem = new THREE.Points(geometry, new THREE.PointsMaterial({
+        size: 0.08, vertexColors: true, transparent: true, opacity: 0.92,
+        blending: THREE.AdditiveBlending, depthTest: false
+    }));
     scene.add(particleSystem);
 
-    const lineGeometry = new THREE.BufferGeometry();
-    const lineMaterial = new THREE.LineBasicMaterial({
-        color: 0x00f5ff,
-        transparent: true,
-        opacity: 0.12,
-        blending: THREE.AdditiveBlending
-    });
-    connectionLines = new THREE.LineSegments(lineGeometry, lineMaterial);
+    connectionLines = new THREE.LineSegments(
+        new THREE.BufferGeometry(),
+        new THREE.LineBasicMaterial({ color: 0x00f5ff, transparent: true, opacity: 0.12, blending: THREE.AdditiveBlending })
+    );
     scene.add(connectionLines);
-
-    document.addEventListener('mousemove', (e) => {
-        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    });
 
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -465,27 +442,25 @@ function initThreeJS() {
 
     function animate() {
         time += 0.008;
-
         camera.position.x = Math.sin(time * 0.2) * 3;
         camera.position.z = 18 + Math.cos(time * 0.15) * 2;
         camera.lookAt(0, 0, 0);
 
-        const positionsAttr = particleSystem.geometry.attributes.position;
+        const posAttr = particleSystem.geometry.attributes.position;
         for (let i = 0; i < particlesCount * 3; i += 3) {
-            positionsAttr.array[i + 1] += Math.sin(time * 2 + i) * 0.008;
+            posAttr.array[i + 1] += Math.sin(time * 2 + i) * 0.008;
         }
-        positionsAttr.needsUpdate = true;
+        posAttr.needsUpdate = true;
 
         if (Math.floor(time * 8) % 3 === 0) {
-            const pos = positionsAttr.array;
+            const pos = posAttr.array;
             const linePos = [];
             for (let i = 0; i < particlesCount; i += 12) {
                 for (let j = i + 18; j < particlesCount; j += 18) {
                     const dx = pos[i*3] - pos[j*3];
                     const dy = pos[i*3+1] - pos[j*3+1];
                     const dz = pos[i*3+2] - pos[j*3+2];
-                    const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
-                    if (dist < 9 && dist > 0.5) {
+                    if (Math.sqrt(dx*dx + dy*dy + dz*dz) < 9) {
                         linePos.push(pos[i*3], pos[i*3+1], pos[i*3+2]);
                         linePos.push(pos[j*3], pos[j*3+1], pos[j*3+2]);
                     }
@@ -493,7 +468,6 @@ function initThreeJS() {
             }
             connectionLines.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
         }
-
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
     }
@@ -501,18 +475,16 @@ function initThreeJS() {
 }
 
 // ====================== GAME FUNCTIONS ======================
-function countUp(element, target, suffix = '', duration = 1400) {
+function countUp(el, target, suffix = '', duration = 1400) {
     let start = 0;
-    const startTimeVal = performance.now();
-    function animate(time) {
-        const elapsed = time - startTimeVal;
-        const progress = Math.min(elapsed / duration, 1);
-        const value = Math.floor(progress * target);
-        element.textContent = value + suffix;
-        if (progress < 1) requestAnimationFrame(animate);
-        else element.textContent = target + suffix;
+    const startTime = performance.now();
+    function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        el.textContent = Math.floor(progress * target) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target + suffix;
     }
-    requestAnimationFrame(animate);
+    requestAnimationFrame(step);
 }
 
 function triggerRandomGlitch() {
@@ -527,12 +499,12 @@ function triggerRandomGlitch() {
 function renderHalls() {
     const grid = document.getElementById('hall-grid');
     grid.innerHTML = '';
-    halls.forEach((hall, index) => {
+    halls.forEach((hall, i) => {
         const winRate = Math.floor(Math.random() * 15) + 83;
         const bigWinRate = Math.floor(Math.random() * 20) + 71;
         const div = document.createElement('div');
         div.className = `hall-card rounded-3xl p-8 cursor-pointer fade-in-up`;
-        div.style.animationDelay = `${index * 80}ms`;
+        div.style.animationDelay = `${i * 80}ms`;
         div.innerHTML = `
             <div class="text-center mb-6">
                 <h3 class="text-4xl font-bold neon-gold tracking-widest">${hall.name}</h3>
@@ -557,7 +529,10 @@ function renderHalls() {
                 </div>
             </div>
         `;
-        div.onclick = () => selectHall(hall.id);
+        div.addEventListener('click', (e) => {
+            e.preventDefault();
+            selectHall(hall.id);
+        });
         grid.appendChild(div);
     });
 }
@@ -669,7 +644,11 @@ function renderGamesPG() {
                 </div>
             </div>
         `;
-        div.onclick = () => showAnalysis(actualIndex);
+        div.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            showAnalysis(actualIndex);
+        });
         grid.appendChild(div);
     });
 
@@ -700,7 +679,6 @@ function filterGamesPG(query) {
 window.onload = () => {
     renderHalls();
     initThreeJS();
-
     setInterval(triggerRandomGlitch, 3800);
 
     const recCard = document.getElementById('recommended-card');
@@ -712,7 +690,7 @@ window.onload = () => {
         }, 600);
     }
 
-    console.log('%c🚀 QUANTUM SẢNH 2049 – Tên trò chơi đã được cải thiện đẹp hơn!', 'color:#00f5ff; font-family:Orbitron; font-size:15px; text-shadow:0 0 15px #00f5ff');
+    console.log('%c🚀 QUANTUM SẢNH 2049 – FILE HOÀN CHỈNH | Fix lỗi tuột + tên game đẹp!', 'color:#00f5ff; font-family:Orbitron; font-size:15px; text-shadow:0 0 15px #00f5ff');
 };
 </script>
 </body>
