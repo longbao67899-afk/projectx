@@ -1,413 +1,712 @@
-<FILE filename="index.html">
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>QUANTUM SẢNH • NEURAL 2049</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root { 
-            --neon-gold: #ffd700; 
-            --neon-cyan: #00f5ff; 
-            --neon-purple: #c026d3; 
-        }
-        body { 
-            background: #05050f; 
-            font-family: 'Inter', system-ui, sans-serif; 
-            min-height: 100vh; 
-            color: white; 
-            overflow-x: hidden;
-            position: relative;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>TOOL HỦ 2026 • QUANTUM SẢNH</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@500;700&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(90deg, transparent 49%, rgba(0,245,255,0.015) 50%, transparent 51%),
-                        linear-gradient(transparent 49%, rgba(192,38,211,0.015) 50%, transparent 51%);
-            background-size: 80px 80px;
-            animation: gridFlow 40s linear infinite;
-            pointer-events: none;
-            z-index: -3;
-            opacity: 0.2;
-        }
-        @keyframes gridFlow {
-            0% { background-position: 0 0; }
-            100% { background-position: 80px 80px; }
-        }
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@500;700&family=VT323&display=swap');
 
-        .title-font { font-family: 'Orbitron', sans-serif; letter-spacing: 8px; }
-        .neon-gold { color: var(--neon-gold); text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #c026d3, 0 0 70px #00f5ff; }
-        .neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 60px #00f5ff, 0 0 90px #00f5ff; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        @keyframes advancedGlitch { 0% { text-shadow: 4px 0 #ff00ff, -4px 0 #00ffff, 0 0 20px #ffd700; } 15% { text-shadow: -4px 0 #ff00ff, 4px 0 #00ffff, 0 0 30px #c026d3; } 30% { text-shadow: 3px 3px #00ffff, -3px -3px #ff00ff, 0 0 40px #ffd700; } 45% { text-shadow: -3px -3px #ff00ff, 3px 3px #00ffff, 0 0 25px #00f5ff; } 60% { text-shadow: 5px 0 #c026d3, -5px 0 #ffd700; } 75% { text-shadow: -2px 4px #00f5ff, 2px -4px #ff00ff; } 90% { text-shadow: 4px -2px #ffd700, -4px 2px #c026d3; } 100% { text-shadow: 4px 0 #ff00ff, -4px 0 #00ffff, 0 0 20px #ffd700; } }
-        .glitch { animation: advancedGlitch 0.6s linear infinite alternate; }
+    body {
+      background: #0a0f1f;
+      color: #00f0ff;
+      font-family: 'Orbitron', sans-serif;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        @keyframes energyPulse { 0%, 100% { box-shadow: 0 0 60px rgba(34, 211, 238, 0.7); } 50% { box-shadow: 0 0 180px rgba(34, 211, 238, 1), 0 0 220px rgba(192, 38, 211, 0.8); } }
-        .pulse-neon { animation: energyPulse 1.4s ease-in-out infinite; }
+    /* ==================== LOGIN STYLE ==================== */
+    .background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://i.ibb.co/FbptYgLq/BACKGROUND-DANG-NHAP.png') center/cover no-repeat; z-index: 1; }
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 12, 30, 0.68); z-index: 2; }
 
-        @keyframes floatQuantum { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-22px) rotate(8deg); } }
-        .float { animation: floatQuantum 3s ease-in-out infinite; }
+    .container {
+      position: relative; z-index: 3;
+      width: 100%; max-width: 420px; margin: 0 auto;
+      padding: 20px 15px; min-height: 100dvh;
+      display: flex; align-items: center; justify-content: center;
+    }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .fade-in-up { animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+    .cyber-card {
+      background: rgba(15, 20, 45, 0.48);
+      border: 3px solid #00f0ff;
+      border-radius: 18px;
+      width: 100%;
+      padding: 35px 20px 30px;
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.6), inset 0 0 25px rgba(0, 240, 255, 0.15);
+      backdrop-filter: blur(12px);
+    }
 
-        .hall-card, .game-card, #recommended-card {
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            -webkit-user-select: none;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            transform-style: preserve-3d;
-        }
-        .hall-card:hover, .game-card:hover { 
-            transform: scale(1.08) translateY(-18px) rotateX(12deg) rotateY(12deg); 
-            box-shadow: 0 0 180px rgba(34, 211, 238, 0.95); 
-        }
+    .header { text-align: center; margin-bottom: 35px; }
+    .logo {
+      font-family: 'Creepster', cursive;
+      font-size: 48px; line-height: 1.05;
+      color: #ffd700;
+      text-shadow: 0 0 15px #ffd700, 5px 5px 0 #00f0ff, -5px -5px 0 #ff00ff;
+      animation: neon-glow 1.6s infinite alternate;
+    }
 
-        .analysis-card { background: linear-gradient(145deg, #0a0718, #1a1433); border: 4px solid #22d3ee; box-shadow: 0 0 100px rgba(34, 211, 238, 0.8); position: relative; overflow: hidden; }
-        .analysis-card::before {
-            content: '';
-            position: absolute;
-            inset: -6px;
-            border: 4px solid transparent;
-            background: linear-gradient(45deg, #00f5ff, #c026d3, #ffd700, #00f5ff) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            animation: holographicShimmer 2.2s linear infinite;
-            z-index: -1;
-        }
-        @keyframes holographicShimmer { 0% { background-position: 0% 50%; } 50% { background-position: 200% 50%; } 100% { background-position: 0% 50%; } }
+    .label { font-size: 15.5px; color: #00f0ff; margin-bottom: 8px; text-shadow: 0 0 8px #00f0ff; }
+    .input-container { position: relative; margin-bottom: 22px; }
 
-        .holo-ring { animation: holoRotateAdvanced 12s linear infinite; }
-        @keyframes holoRotateAdvanced { from { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.05); } to { transform: rotate(360deg) scale(1); } }
+    .input {
+      width: 100%;
+      background: rgba(10, 20, 45, 0.75);
+      border: 2.5px solid #00f0ff;
+      color: #fff;
+      padding: 15px 16px;
+      font-size: 17px;
+      border-radius: 10px;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
 
-        .scanline::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(transparent 50%, rgba(0,245,255,0.2) 50%);
-            background-size: 100% 6px;
-            animation: scanAdvanced 2.8s linear infinite;
-            pointer-events: none;
-            z-index: 1;
-            mix-blend-mode: screen;
-        }
-        @keyframes scanAdvanced { 0% { transform: translateY(-150%); } 100% { transform: translateY(300%); } }
+    .input:focus {
+      outline: none;
+      border-color: #00ffff;
+      background: rgba(15, 30, 65, 0.92);
+      box-shadow: 0 0 20px #00ffff, 0 0 35px rgba(0, 255, 255, 0.6), inset 0 0 15px rgba(0, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
 
-        .ratio-bar { height: 10px; background: #1e2937; border-radius: 9999px; overflow: hidden; border: 2px solid rgba(34,211,238,0.5); }
-        .ratio-fill { transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .btn {
+      width: 100%; padding: 16px;
+      background: linear-gradient(90deg, #00f0ff, #0099ff);
+      color: #000; border: none; font-size: 19px; font-weight: bold;
+      letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      border-radius: 12px; margin: 12px 0;
+      position: relative; overflow: hidden;
+      box-shadow: 0 0 25px #00f0ff;
+      transition: all 0.25s ease;
+    }
 
-        #particle-bg { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            pointer-events: none; 
-            z-index: -2; 
-            opacity: 1;
-        }
-    </style>
+    .btn.loading { animation: btnPulse 1.4s infinite alternate ease-in-out; pointer-events: none; }
+    @keyframes btnPulse { 0% { box-shadow: 0 0 20px #00f0ff; } 100% { box-shadow: 0 0 45px #00ffff, 0 0 70px #00ffff; } }
+
+    .guide-link, .register-link {
+      display: block; text-align: center; margin: 18px 0 8px;
+      color: #00ccff; font-size: 15.5px; text-decoration: none;
+      text-shadow: 0 0 8px #00f0ff; cursor: pointer;
+    }
+
+    /* MODAL */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,30,0.88); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+    .modal-content {
+      background: rgba(15, 20, 45, 0.95);
+      border: 3px solid #00f0ff;
+      border-radius: 18px;
+      width: 100%; max-width: 380px;
+      padding: 32px 25px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.9);
+      animation: modalPop 0.4s ease forwards;
+    }
+    .modal-title { font-family: 'Creepster', cursive; font-size: 34px; color: #ffd700; text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ff00ff, 0 0 40px #00f0ff; animation: neon-title 1.8s infinite alternate; }
+    @keyframes modalPop { 0% { transform: scale(0.65) translateY(30px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+    @keyframes neon-glow { 0% { text-shadow: 0 0 15px #ffd700, 5px 5px 0 #00f0ff; } 100% { text-shadow: 0 0 25px #ffd700, 0 0 40px #ffd700, 6px 6px 0 #ff00ff; } }
+    @keyframes neon-title { 0% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ff00ff; } 100% { text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #ff00ff, 0 0 55px #00f0ff; } }
+
+    /* ==================== GAME STYLE ==================== */
+    :root { --neon-gold: #ffd700; --neon-cyan: #00f5ff; }
+    .title-font { font-family: 'Orbitron', sans-serif; letter-spacing: 8px; }
+    .neon-gold { color: var(--neon-gold); text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #c026d3, 0 0 70px #00f5ff; }
+    .neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 60px #00f5ff, 0 0 90px #00f5ff; }
+
+    @keyframes advancedGlitch { 0% { text-shadow: 4px 0 #ff00ff, -4px 0 #00ffff, 0 0 20px #ffd700; } 15% { text-shadow: -4px 0 #ff00ff, 4px 0 #00ffff, 0 0 30px #c026d3; } 30% { text-shadow: 3px 3px #00ffff, -3px -3px #ff00ff, 0 0 40px #ffd700; } 45% { text-shadow: -3px -3px #ff00ff, 3px 3px #00ffff, 0 0 25px #00f5ff; } 60% { text-shadow: 5px 0 #c026d3, -5px 0 #ffd700; } 75% { text-shadow: -2px 4px #00f5ff, 2px -4px #ff00ff; } 90% { text-shadow: 4px -2px #ffd700, -4px 2px #c026d3; } 100% { text-shadow: 4px 0 #ff00ff, -4px 0 #00ffff, 0 0 20px #ffd700; } }
+    .glitch { animation: advancedGlitch 0.6s linear infinite alternate; }
+
+    .game-screen {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 20px 15px;
+      min-height: 100dvh;
+      overflow-y: auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hall-card, .game-card, #recommended-card { transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+    .hall-card:hover, .game-card:hover { transform: scale(1.08) translateY(-18px) rotateX(12deg) rotateY(12deg); box-shadow: 0 0 180px rgba(34, 211, 238, 0.95); }
+
+    .ratio-bar { height: 10px; background: #1e2937; border-radius: 9999px; overflow: hidden; border: 2px solid rgba(34,211,238,0.5); }
+    .ratio-fill { transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+    #particle-bg { 
+      position: fixed !important; 
+      top: 0; left: 0; 
+      width: 100% !important; height: 100% !important; 
+      pointer-events: none; 
+      z-index: -2; 
+      opacity: 1;
+    }
+
+    /* ANALYSIS REDESIGN */
+    .analysis-card {
+      background: linear-gradient(145deg, #0a0718, #1a1433);
+      border: 4px solid #22d3ee;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 0 60px rgba(34, 211, 238, 0.9), inset 0 0 40px rgba(34, 211, 238, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 24px 0; }
+    .stat-box { background: rgba(15, 23, 42, 0.8); border: 2px solid #67e8f9; border-radius: 16px; padding: 14px; text-align: center; box-shadow: 0 0 20px rgba(103, 232, 249, 0.4); }
+    .stat-value { font-size: 28px; font-weight: bold; color: #67e8f9; text-shadow: 0 0 15px #67e8f9; }
+    .stat-label { font-size: 13px; color: #a5f3fc; margin-top: 4px; }
+  </style>
 </head>
-<body class="pb-20 scanline">
+<body>
 
-<div class="max-w-[420px] mx-auto px-4 pt-6 relative z-10">
+  <!-- ==================== LOGIN SCREEN ==================== -->
+  <div id="loginScreen">
+    <div class="background"></div>
+    <div class="overlay"></div>
+
+    <div class="container">
+      <div class="cyber-card">
+
+        <div id="loginSection">
+          <div class="header">
+            <div class="logo">TOOL HỦ<br>2026</div>
+          </div>
+
+          <form id="loginForm">
+            <div class="input-container">
+              <div class="label">USERNAME</div>
+              <input type="text" class="input" id="loginUser" placeholder="ENTER ALIAS" required>
+            </div>
+            <div class="input-container">
+              <div class="label">MẬT KHẨU</div>
+              <input type="password" class="input" id="loginPass" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn" id="connectBtn">KẾT NỐI</button>
+          </form>
+
+          <a href="#" class="guide-link" onclick="showGuideModal()">HƯỚNG DẪN SỬ DỤNG TOOL</a>
+          <a href="#" class="register-link" onclick="showRegisterChoiceModal()">ĐĂNG KÍ NGAY</a>
+        </div>
+
+        <div id="registerSection" style="display: none;">
+          <div class="header">
+            <div class="logo" style="font-size: 37px;">ĐĂNG KÍ TOOL</div>
+          </div>
+          <form id="registerForm">
+            <div class="input-container"><div class="label">USERNAME</div><input type="text" class="input" id="regUser" placeholder="CHỌN TÊN ĐĂNG NHẬP" required></div>
+            <div class="input-container"><div class="label">SỐ ĐIỆN THOẠI</div><input type="tel" class="input" id="regPhone" placeholder="0123 456 789" required></div>
+            <div class="input-container"><div class="label">MẬT KHẨU</div><input type="password" class="input" id="regPass" placeholder="TẠO MẬT KHẨU" required></div>
+            <button type="submit" class="btn">ĐĂNG KÍ</button>
+          </form>
+          <button onclick="showLogin()" class="btn" style="background: transparent; color: #00f0ff; border: 2.5px solid #00f0ff; font-size: 17px;">← QUAY LẠI</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,15,40,0.97); z-index:9999; flex-direction:column; align-items:center; justify-content:center; color:#00f0ff; font-family:'VT323',monospace;">
+      <div id="loadingText" style="font-size:26px; margin-bottom:35px; letter-spacing:3px;">CONNECTING TO SERVER...</div>
+      <div style="width:85%; max-width:280px; height:14px; background:rgba(0,240,255,0.15); border:2.5px solid #00f0ff; border-radius:10px; overflow:hidden; box-shadow:0 0 25px #00f0ff;">
+        <div id="progressBar" style="width:0%; height:100%; background:linear-gradient(90deg,#00f0ff,#0099ff); box-shadow:0 0 25px #00f0ff; transition:width 0.08s linear;"></div>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="guideModal">
+      <div class="modal-content">
+        <canvas id="particleGuide"></canvas>
+        <div class="modal-title">HƯỚNG DẪN</div>
+        <div class="modal-message">
+          BƯỚC 1: ĐĂNG KÍ TÀI KHOẢN GAME:<br>
+          <strong>WWW.FLY8879.SITE</strong><br><br>
+          BƯỚC 2: ĐĂNG KÍ TK TOOL (GIỐNG TK GAME)<br><br>
+          BƯỚC 3: LÊN ĐIỂM VÀ ĐỢI NĂNG LƯỢNG TRONG TOOL LÊN
+        </div>
+        <button class="modal-btn" onclick="closeModal('guideModal')">ĐÓNG</button>
+      </div>
+    </div>
+
+    <div class="modal" id="registerChoiceModal">
+      <div class="modal-content">
+        <canvas id="particleChoice"></canvas>
+        <div class="modal-title">CHỌN ĐĂNG KÍ</div>
+        <button class="modal-option" onclick="registerTool()">ĐĂNG KÍ TÀI KHOẢN TOOL</button>
+        <button class="modal-option" onclick="registerGame()">ĐĂNG KÍ TÀI KHOẢN GAME</button>
+        <button class="modal-btn" onclick="closeModal('registerChoiceModal')" style="background:#444; box-shadow:0 0 20px #666;">HỦY</button>
+      </div>
+    </div>
+
+    <div class="modal" id="successModal">
+      <div class="modal-content">
+        <canvas id="particleSuccess"></canvas>
+        <div class="modal-title" id="modalTitle">THÀNH CÔNG</div>
+        <div class="modal-message" id="modalMessage"></div>
+        <button class="modal-btn" onclick="closeModal('successModal')">ĐÓNG</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GAME SCREEN ==================== -->
+  <div id="gameScreen" class="game-screen hidden">
 
     <!-- HALL SELECTION -->
     <div id="hall-screen">
-        <div class="text-center mb-12">
-            <h1 id="main-title" class="title-font text-5xl neon-gold tracking-widest glitch">QUANTUM SẢNH</h1>
-            <p class="text-cyan-400 mt-3 text-sm tracking-[5px] animate-pulse">NEURAL INTERFACE • 2049</p>
-            <div class="h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent my-8"></div>
-            <p class="text-white/70 text-xs tracking-widest">CHỌN CỔNG • HƠN 160 TRÒ CHƠI QUANTUM</p>
-        </div>
-        <div class="space-y-10" id="hall-grid"></div>
+      <div class="text-center mb-12">
+        <h1 id="main-title" class="title-font text-5xl neon-gold tracking-widest glitch">QUANTUM SẢNH</h1>
+        <p class="text-cyan-400 mt-3 text-sm tracking-[5px] animate-pulse">NEURAL INTERFACE • 2049</p>
+        <div class="h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent my-8"></div>
+        <p class="text-white/70 text-xs tracking-widest">CHỌN CỔNG • HƠN 160 TRÒ CHƠI QUANTUM</p>
+      </div>
+      <div class="space-y-10" id="hall-grid"></div>
     </div>
 
     <!-- PG SCREEN -->
     <div id="pg-screen" class="hidden">
-        <button onclick="backToHall()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg active:scale-95">← QUANTUM HUB</button>
-        <h1 class="title-font text-4xl neon-gold text-center mb-8 glitch">SẢNH PG</h1>
+      <button onclick="backToHall()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg active:scale-95">← QUANTUM HUB</button>
+      <h1 class="title-font text-4xl neon-gold text-center mb-8 glitch">SẢNH PG</h1>
 
-        <!-- RECOMMENDED -->
-        <div onclick="showAnalysis(recommendedIndex)" id="recommended-card" 
-             class="cursor-pointer bg-gradient-to-br from-purple-950 to-violet-950 rounded-3xl p-6 border-4 border-yellow-400 shadow-2xl mb-10 float pulse-neon">
-            <div class="text-center mb-4">
-                <span class="text-yellow-400 text-xs font-bold tracking-widest">⭐ NEURAL RECOMMENDATION</span>
-            </div>
-            <div class="flex justify-center">
-                <img id="recommended-img" class="game-img-large w-52 h-52 object-contain" alt="">
-            </div>
-            <p id="recommended-name" class="text-center mt-6 text-2xl font-bold neon-cyan"></p>
-            <div class="mt-6">
-                <div class="flex justify-between text-xs mb-2 text-white/80">
-                    <span>TỈ LỆ NHẢ</span>
-                    <span id="recommended-ratio" class="font-bold text-emerald-400">88%</span>
-                </div>
-                <div class="ratio-bar"><div id="recommended-fill" class="ratio-fill h-full bg-gradient-to-r from-emerald-400 to-cyan-400 w-0"></div></div>
-            </div>
+      <div onclick="showAnalysis(recommendedIndex)" id="recommended-card" class="cursor-pointer bg-gradient-to-br from-purple-950 to-violet-950 rounded-3xl p-6 border-4 border-yellow-400 shadow-2xl mb-10">
+        <div class="text-center mb-4"><span class="text-yellow-400 text-xs font-bold tracking-widest">⭐ NEURAL RECOMMENDATION</span></div>
+        <div class="flex justify-center"><img id="recommended-img" class="w-52 h-52 object-contain" alt=""></div>
+        <p id="recommended-name" class="text-center mt-6 text-2xl font-bold neon-cyan"></p>
+        <div class="mt-6">
+          <div class="flex justify-between text-xs mb-2 text-white/80"><span>TỈ LỆ NHẢ</span><span id="recommended-ratio" class="font-bold text-emerald-400">88%</span></div>
+          <div class="ratio-bar"><div id="recommended-fill" class="ratio-fill h-full bg-gradient-to-r from-emerald-400 to-cyan-400 w-0"></div></div>
         </div>
+      </div>
 
-        <div class="mb-6">
-            <input id="search-input" type="text" placeholder="🔍 TÌM TRÒ CHƠI QUANTUM..." 
-                   class="w-full px-6 py-4 rounded-2xl bg-[#0f172a] border-2 border-cyan-400 focus:border-cyan-300 text-white placeholder-gray-400 text-base">
-        </div>
+      <div class="mb-6"><input id="search-input" type="text" placeholder="🔍 TÌM TRÒ CHƠI QUANTUM..." class="w-full px-6 py-4 rounded-2xl bg-[#0f172a] border-2 border-cyan-400 focus:border-cyan-300 text-white placeholder-gray-400 text-base"></div>
 
-        <div class="flex justify-between items-center mb-5 px-1">
-            <h2 class="text-xl font-bold neon-gold">CÁC TRÒ CHƠI KHÁC</h2>
-            <div id="page-info" class="text-cyan-400 text-sm font-medium"></div>
-        </div>
+      <div class="flex justify-between items-center mb-5 px-1">
+        <h2 class="text-xl font-bold neon-gold">CÁC TRÒ CHƠI KHÁC</h2>
+        <div id="page-info" class="text-cyan-400 text-sm font-medium"></div>
+      </div>
 
-        <div id="game-grid" class="grid grid-cols-2 gap-6"></div>
-        <div class="flex justify-center gap-3 mt-10" id="pagination"></div>
+      <div id="game-grid" class="grid grid-cols-2 gap-6"></div>
+      <div class="flex justify-center gap-3 mt-10" id="pagination"></div>
 
-        <button onclick="backToHall()" class="mt-12 w-full py-5 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-3xl text-xl font-bold active:scale-95">← QUAY VỀ QUANTUM HUB</button>
+      <button onclick="backToHall()" class="mt-12 w-full py-5 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-3xl text-xl font-bold active:scale-95">← QUAY VỀ QUANTUM HUB</button>
     </div>
 
     <!-- OTHER HALL -->
     <div id="other-screen" class="hidden">
-        <button onclick="backToHall()" class="mb-8 flex items-center gap-2 text-cyan-300 hover:text-white active:scale-95">← QUAY VỀ QUANTUM HUB</button>
-        <div class="text-center mt-20">
-            <div id="current-hall-logo" class="mx-auto mb-8"></div>
-            <div id="current-hall-name" class="title-font text-4xl neon-gold mb-4"></div>
-            <p class="text-emerald-400 text-xl font-bold">ĐANG ĐỒNG BỘ HƠN 30 TRÒ CHƠI MỚI...</p>
-        </div>
+      <button onclick="backToHall()" class="mb-8 flex items-center gap-2 text-cyan-300 hover:text-white active:scale-95">← QUAY VỀ QUANTUM HUB</button>
+      <div class="text-center mt-20">
+        <div id="current-hall-logo" class="mx-auto mb-8"></div>
+        <div id="current-hall-name" class="title-font text-4xl neon-gold mb-4"></div>
+        <p class="text-emerald-400 text-xl font-bold">ĐANG ĐỒNG BỘ HƠN 30 TRÒ CHƠI MỚI...</p>
+      </div>
     </div>
 
-    <!-- ANALYSIS SCREEN -->
+    <!-- ANALYSIS SCREEN - ĐÃ REDESIGN ĐẦY ĐỦ -->
     <div id="analysis-screen" class="hidden">
-        <button onclick="backToCurrentScreen()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg active:scale-95">← QUAY LẠI</button>
+      <button onclick="backToCurrentScreen()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg active:scale-95">← QUAY LẠI</button>
 
-        <div id="future-result" class="analysis-card rounded-3xl p-8 fade-in-up">
-            <div class="text-center">
-                <h1 id="game-title" class="title-font text-[28px] leading-tight neon-gold glitch"></h1>
-                <div class="flex justify-center my-10 relative">
-                    <img id="game-avatar-analysis" class="w-64 h-64 object-contain game-img-large rounded-3xl border-4 border-cyan-400 shadow-[0_0_100px_-10px_#00f5ff]" alt="">
-                    <div class="holo-ring absolute -inset-14 border border-cyan-400/40 rounded-3xl"></div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-8 mb-12">
-                <div class="text-center">
-                    <p class="text-xs text-white/60 mb-3">XÁC SUẤT NỔ HŨ</p>
-                    <p id="win-prob-text" class="text-6xl font-bold text-emerald-400 count-up">0%</p>
-                    <div class="ratio-bar mt-5"><div id="win-prob-fill" class="ratio-fill h-full bg-gradient-to-r from-emerald-400 to-cyan-400 w-0"></div></div>
-                </div>
-                <div class="text-center border-l border-cyan-400/30">
-                    <p class="text-xs text-white/60 mb-3">GIỜ VÀNG QUANTUM</p>
-                    <div class="flex items-center justify-center gap-4 text-2xl">
-                        <span id="current-time" class="text-white/70 font-mono"></span>
-                        <span class="text-cyan-400">→</span>
-                        <span id="golden-time" class="neon-gold font-bold font-mono"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-cyan-400/30 pt-8">
-                <h3 class="text-center text-purple-300 font-bold tracking-widest text-lg mb-6">⚡ SPIN PROTOCOL</h3>
-                <div class="grid grid-cols-3 gap-6 text-center">
-                    <div>
-                        <p class="text-xs text-white/60">TỔNG VÒNG</p>
-                        <p id="total-spins" class="text-5xl font-bold neon-cyan count-up">0</p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-white/60">QUAY THƯỜNG</p>
-                        <p id="normal-spins" class="text-4xl font-semibold text-emerald-400 count-up">0</p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-white/60">QUAY NHANH</p>
-                        <p id="fast-spins" class="text-4xl font-semibold text-amber-400 count-up">0</p>
-                    </div>
-                </div>
-            </div>
+      <div class="analysis-card">
+        <div class="text-center mb-6">
+          <h1 id="game-title" class="title-font text-3xl neon-gold glitch"></h1>
         </div>
+
+        <div class="flex justify-center mb-8 relative">
+          <img id="game-avatar-analysis" class="w-64 h-64 object-contain rounded-3xl border-4 border-cyan-400 shadow-[0_0_80px_-10px_#22d3ee]" alt="">
+          <div class="absolute -inset-4 border border-cyan-400/30 rounded-3xl animate-pulse"></div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="stat-value" id="win-prob-text">93%</div>
+            <div class="stat-label">XÁC SUẤT NỔ HŨ</div>
+            <div class="h-2 bg-gray-800 rounded-full mt-3 overflow-hidden"><div id="win-prob-fill" class="h-2 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full" style="width:93%"></div></div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="rtp-value">96.8%</div>
+            <div class="stat-label">RTP</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="volatility-value">CAO</div>
+            <div class="stat-label">VOLATILITY</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="max-win-value">×8,500</div>
+            <div class="stat-label">MAX WIN</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="hit-frequency">1/3.8</div>
+            <div class="stat-label">HIT FREQUENCY</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value text-amber-400" id="neural-score">97</div>
+            <div class="stat-label">NEURAL AI SCORE</div>
+          </div>
+        </div>
+
+        <div class="border-t border-cyan-400/30 pt-6 mb-6">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-xs text-white/60">GIỜ VÀNG QUANTUM</p>
+              <div class="flex items-center gap-3 text-2xl">
+                <span id="current-time" class="font-mono">14:01</span>
+                <span class="text-cyan-400">→</span>
+                <span id="golden-time" class="neon-gold font-bold font-mono">14:08</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="text-emerald-400 text-sm font-bold" id="countdown-time">CÒN 7 PHÚT</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-cyan-400/30 pt-6">
+          <h3 class="text-center text-purple-300 font-bold tracking-widest mb-4">⚡ SPIN PROTOCOL</h3>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div><p class="text-xs text-white/60">TỔNG VÒNG</p><p id="total-spins" class="text-4xl font-bold neon-cyan">142</p></div>
+            <div><p class="text-xs text-white/60">QUAY THƯỜNG</p><p id="normal-spins" class="text-4xl font-semibold text-emerald-400">98</p></div>
+            <div><p class="text-xs text-white/60">QUAY NHANH</p><p id="fast-spins" class="text-4xl font-semibold text-amber-400">44</p></div>
+          </div>
+        </div>
+
+        <div class="mt-8 bg-black/40 border border-cyan-400/50 rounded-2xl p-5 text-sm leading-relaxed">
+          <p class="text-cyan-300 font-bold mb-2">NEURAL AI INSIGHT:</p>
+          <p id="ai-insight" class="text-white/90">Trò này đang ở giai đoạn “Quantum Hot”. Năng lượng tích tụ cực mạnh. Khuyến nghị spin tối thiểu 80 vòng với bet 2.5x để kích hoạt nổ hũ lớn.</p>
+        </div>
+
+        <button onclick="startQuantumSpin()" class="mt-8 w-full py-5 bg-gradient-to-r from-amber-400 to-yellow-400 text-black font-bold text-xl rounded-3xl shadow-[0_0_40px_#fcd34d] active:scale-95 transition-all">
+          🚀 BẮT ĐẦU QUANTUM SPIN
+        </button>
+      </div>
     </div>
-</div>
 
-<canvas id="particle-bg" width="420" height="800"></canvas>
+    <canvas id="particle-bg" width="420" height="800"></canvas>
+  </div>
 
-<script>
-// ====================== DATA ======================
-const halls = [
-    { id: "pg",   name: "SẢNH PG",   img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
-    { id: "jili", name: "SẢNH JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
-    { id: "168g", name: "SẢNH 168G", img: "https://i.ibb.co/rKdGGjyN/S-NH-168-GAME.png" },
-    { id: "fc",   name: "SẢNH FC",   img: "https://i.ibb.co/CrjMgMK/S-NH-FC.png" }
-];
+  <!-- AUDIO -->
+  <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/2578/2578.wav"></audio>
+  <audio id="breachSound" src="https://assets.mixkit.co/sfx/preview/2570/2570.wav"></audio>
+  <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/2572/2572.wav"></audio>
 
-const originalPGGames = [ 
-    // TRÒ CŨ
-    { name: "Ba Chú Heo", img: "https://i.ibb.co/Y7TWMqH8/BA-CH-HEO.avif" },
-    { name: "Bạn Viên Bảo Tàng", img: "https://i.ibb.co/7tvVVdJd/B-N-VI-N-B-O-T-NG.avif" },
-    { name: "Cơn Sốt Tiền", img: "https://i.ibb.co/kLczq6k/CON-SOT-TIEN.avif" },
-    { name: "Cơn Sốt Băng", img: "https://i.ibb.co/jk36yDXH/C-N-S-T-B-NG.avif" },
-    { name: "Cơn Sốt Quay Tại Quán", img: "https://i.ibb.co/gFS37Bbh/C-N-S-T-QUAY-T-I-QU-N.avif" },
-    { name: "Cơn Sốt Vàng Kraken", img: "https://i.ibb.co/LdVRFM7g/C-N-S-T-V-NG-KRAKEN.avif" },
-    { name: "Cá Cược Người Chết", img: "https://i.ibb.co/wZ9BTQkB/C-A-C-I-NG-I-CH-T.avif" },
-    { name: "Cuộc Đua Graffiti", img: "https://i.ibb.co/spcc0ktF/CUOC-DUA-GRAFFITI.avif" },
-    { name: "Cuộc Tấn Sát Tận Thế", img: "https://i.ibb.co/Fk59vMPc/CUOC-TAN-SAT-TAN-THE.avif" },
-    { name: "Cuộc Đua Gà Con", img: "https://i.ibb.co/1fm6YwYN/CU-C-UA-G-CON.avif" },
-    { name: "Chiến Thắng Piñata", img: "https://i.ibb.co/4gRKVtbJ/CHI-N-TH-NG-PINATA.avif" },
-    { name: "Chú Rồng May Mắn", img: "https://i.ibb.co/HpfZD1S1/CHU-RONG-MAY-MAN.avif" },
-    { name: "Chú Huyền Bí", img: "https://i.ibb.co/nqk92srG/CH-HUY-N-B.avif" },
-    { name: "Ảo Ảnh Chẵn Lẻ", img: "https://i.ibb.co/svFPB59H/A-NG-C-H-N-LO-N.avif" },
-    { name: "Nhà Máy Maya", img: "https://i.ibb.co/27hHtLd4/NH-M-NH-MAYA.avif" },
-    { name: "Cử Đại Thần Bí", img: "https://i.ibb.co/TxwhnD0h/C-D-C-TH-N-B.avif" },
-    { name: "Iguazu", img: "https://i.ibb.co/CKqNTTpN/I-C-NH-IGUAZU.avif" },
-    { name: "Gái Tài Cả Mr. Kho Báu", img: "https://i.ibb.co/nsn45ng2/GAI-T-I-C-A-MR-KHO-B-U.avif" },
-    { name: "Grimm Bounty", img: "https://i.ibb.co/jPcQYYjV/GRIMM-BOUNTY.avif" },
-    { name: "Giàu Có Knockout", img: "https://i.ibb.co/qM3hhNWp/GIAU-CO-KNOUKOUT.avif" },
-    { name: "Hoàng Tốc Pharaoh", img: "https://i.ibb.co/j9NL1dX0/HO-NG-T-C-PHARAOH.avif" },
-    { name: "Jack", img: "https://i.ibb.co/hFgJCrX5/JACK.avif" },
-    { name: "Kỳ Quan Bầu Trời", img: "https://i.ibb.co/CTyjySt/K-QUAN-B-U-TR-I.avif" },
-    { name: "Kỳ Quan Inca", img: "https://i.ibb.co/dswcDcgh/K-QUAN-INCA.avif" },
-    { name: "Kho Báu Alibaba", img: "https://i.ibb.co/q36zDXhG/KHO-B-U-ALIBABA.avif" },
-    { name: "Kho Báu Guardian", img: "https://i.ibb.co/chyn3gLB/KHO-B-U-GUARDIAN.avif" },
-    { name: "Kho Báu Hoàng Gia", img: "https://i.ibb.co/CK0VqvzV/KHO-BAU-HOANG-GIA.avif" },
-    { name: "Loren Giàu Có", img: "https://i.ibb.co/v40hMctL/LO-REN-GIAU-CO.avif" },
-    { name: "Long Sinh 2", img: "https://i.ibb.co/k6zRYnxc/LONG-SINH-2.avif" },
-    { name: "Món Ngon Miệng", img: "https://i.ibb.co/5X2jwjBd/M-N-NGON-MI-NG.avif" },
-    { name: "Ngựa May Mắn", img: "https://i.ibb.co/0wyxGdx/NG-A-MAY-M-N.avif" },
-    { name: "Phi Vụ Cướp Tiền", img: "https://i.ibb.co/QFrfZZ97/PHI-VU-CUOP-TIEN.avif" },
-    { name: "Rồng May Mắn", img: "https://i.ibb.co/KpCdGpST/R-N-MAY-M-N.avif" },
-    { name: "Socola Hôn Hộ", img: "https://i.ibb.co/Dm5HxTY/SOCOLA-HO-N-H-O.avif" },
-    { name: "Sự Ngủ Mơ", img: "https://i.ibb.co/RknTPK4x/S-NG-O-M-NG.avif" },
-    { name: "Tiền Thưởng Cơ Mực", img: "https://i.ibb.co/ptsRB9B/TI-N-TH-NG-C-M-P.avif" },
-    { name: "Thám Hiểm Nẻo", img: "https://i.ibb.co/1YB3bSsx/TH-M-NG-N-H.avif" },
-    { name: "Thuật Giả Kim", img: "https://i.ibb.co/hJfwSSZd/THU-T-GI-KIM.avif" },
-    { name: "Truy Tìm Kho Báu Rồng", img: "https://i.ibb.co/xqBRK5v3/TRUY-T-M-KHO-B-U-R-NG.avif" },
-    { name: "Vương Quốc Chinh Phục", img: "https://i.ibb.co/TxJH9y44/V-NG-QU-C-CHINH-PH-C.avif" },
+  <script>
+    // ==================== LOGIN JS ====================
+    const click = document.getElementById('clickSound');
+    const breach = document.getElementById('breachSound');
+    const successSound = document.getElementById('successSound');
 
-    // TRÒ MỚI – TÊN ĐÃ CẢI THIỆN
-    { name: "3 Kỳ Ức", img: "https://i.ibb.co/rRPD75SB/3-I-U-C.avif" },
-    { name: "Ân Sủng Của Hoàng Đế", img: "https://i.ibb.co/RkG74K8j/AN-SUNG-CUA-HOANG-DE.avif" },
-    { name: "Asgard Trỗi Dậy", img: "https://i.ibb.co/wFC0Kyjs/ASGARD-TROI-DAY.avif" },
-    { name: "Ba Hộ Thú Hương", img: "https://i.ibb.co/bR2yYXH5/BA-HO-THU-HUONG.avif" },
-    { name: "Băng Giá Vui Nhộn", img: "https://i.ibb.co/n8NLp65r/BANG-GIA-VUI-NHON.avif" },
-    { name: "Bí Ước Của Tâm C", img: "https://i.ibb.co/vxLsYzXq/B-U-CUA-T-M-C.avif" },
-    { name: "Bí Mật Cleopatra", img: "https://i.ibb.co/hFSs0QP5/B-M-T-CLEOPATRA.avif" },
-    { name: "Biểu Tượng Ai Cập", img: "https://i.ibb.co/xKH3R8tS/BIEU-TUONG-AI-CAP.avif" },
-    { name: "K.O Bonanza", img: "https://i.ibb.co/wNPyjzDp/K-O-BONAZA.avif" },
-    { name: "Bùa Ma Cá Rồng", img: "https://i.ibb.co/DfrvyHFR/BUA-MA-CA-RONG.avif" },
-    { name: "Bá Tước Huyền Hoàn", img: "https://i.ibb.co/wF6kRV6Y/B-A-T-I-H-N-HOAN.avif" },
-    { name: "Cây Tài Lộc", img: "https://i.ibb.co/N2mBqT51/CAY-TAI-LOC.avif" },
-    { name: "Cây Tài Vàng", img: "https://i.ibb.co/S4whTwrX/C-Y-T-I-V-NG.avif" },
-    { name: "Cô Bé Quàng Khăn Đỏ", img: "https://i.ibb.co/BVJ1FQ2h/CO-BE-QUANG-KHAN-DO.avif" },
-    { name: "Cơn Thịnh Nộ Anubis", img: "https://i.ibb.co/6SwpLt1/CON-THINH-NO-ANUBIS.avif" },
-    { name: "Cơn Sốt Băng Uy Lực", img: "https://i.ibb.co/5WnyYCKS/C-PH-T-B-NG-UY-L-C.avif" },
-    { name: "Cuộc Chiến Hoàng Gia", img: "https://i.ibb.co/NgCsZjh4/CU-C-CHI-N-HO-NG-GIA.avif" },
-    { name: "Cuộc Di Sản Của Người Sói", img: "https://i.ibb.co/DgvrRVY1/CUOC-DI-SAN-CUA-NGUOI-SOI.avif" },
-    { name: "Cuộc Phiêu Lưu Đến Kho Báu", img: "https://i.ibb.co/ymt29fZX/CUOC-PHIEU-LUU-DEN-KHO-BAU.avif" },
-    { name: "Chiến Thắng Caishen", img: "https://i.ibb.co/rfxDKjPF/CHIEN-THANG-CAISHEN.avif" },
-    { name: "Chú B May Mắn", img: "https://i.ibb.co/1f8nJ34m/CH-B-MAY-M-N.avif" },
-    { name: "Chú Chuột May Mắn", img: "https://i.ibb.co/KjymGwsV/CHU-CHUOT-MAY-MAN.avif" },
-    { name: "Quỳ Ngũ N H", img: "https://i.ibb.co/0RQ2hDsh/QU-NG-N-H.avif" },
-    { name: "Quy Garuda", img: "https://i.ibb.co/W4rLQBd1/QU-GARUDA.avif" },
-    { name: "Đá Quý Và Vàng", img: "https://i.ibb.co/DP7f2p6y/DA-QUY-VA-VANG.avif" },
-    { name: "Đại Dịch Xác Sống", img: "https://i.ibb.co/jPk4rGrs/DAI-DICH-XAC-SONG.avif" },
-    { name: "Danh Dự Yakuza", img: "https://i.ibb.co/3m5h77D9/DANH-DU-YAKUZA.avif" },
-    { name: "Đêm Cocktail", img: "https://i.ibb.co/Pz0djx47/DEM-COCTAIL.avif" },
-    { name: "Điêu Chân", img: "https://i.ibb.co/LzFLW1jf/DIAO-CHAN.avif" },
-    { name: "Đội Bóng Thiếu Lâm", img: "https://i.ibb.co/HTqHPCLf/DOI-BONG-THIEU-LAM.avif" },
-    { name: "Du Thuyền Hoàng Gia", img: "https://i.ibb.co/SwX4jCGF/DU-THUY-N-HO-NG-GIA.avif" },
-    { name: "Dương Mật Chuộc 1", img: "https://i.ibb.co/NnY1WjMq/DUONG-MAT-CHUOC-1.avif" },
-    { name: "Dương Mật Chuột 2", img: "https://i.ibb.co/Y4Dfb2L2/DUONG-MAT-CHUOT-2.avif" },
-    { name: "G G Y", img: "https://i.ibb.co/VYWqR8T2/G-G-Y.avif" },
-    { name: "Ganesha Vàng", img: "https://i.ibb.co/Q7bH0Syk/GANESHA-VANG.avif" },
-    { name: "Gấu Trúc Hip Hop", img: "https://i.ibb.co/0RrmTnXX/GAU-TRUC-HIP-HOP.avif" },
-    { name: "Guong Quay Tình Yêu", img: "https://i.ibb.co/jvqhgPMQ/GUONG-QUAY-TINH-YEU.avif" },
-    { name: "Giấc Mơ Macao", img: "https://i.ibb.co/WWpNSXdT/GI-C-M-MACAO.avif" },
-    { name: "Hallow Win", img: "https://i.ibb.co/kg1dkv2p/HALLOW-WIN.avif" },
-    { name: "Hầm May Mắn Jane", img: "https://i.ibb.co/JFMgfdCX/H-M-M-MAY-M-N-JANE.avif" },
-    { name: "Hũ Vàng", img: "https://i.ibb.co/TqTYvGSn/H-U-V-NG.avif" },
-    { name: "Heo May Mắn", img: "https://i.ibb.co/992MxhbY/HEO-MAY-M-N.avif" },
-    { name: "Heo Vàng", img: "https://i.ibb.co/hhSbY5x/HEO-VANG.avif" },
-    { name: "H May Mắn", img: "https://i.ibb.co/N69SgMZ5/H-MAY-M-N.avif" },
-    { name: "Hoa Bướm", img: "https://i.ibb.co/8DX8KYQt/HOA-B-M.avif" },
-    { name: "Hotpot", img: "https://i.ibb.co/CsX0Pm5X/HOTPOT.avif" },
-    { name: "K.O Ngũ Tinh N", img: "https://i.ibb.co/HDQTc6C3/K-O-NG-T-B-NG-N.avif" },
-    { name: "K.O Chơi Cây", img: "https://i.ibb.co/nN1sGk2b/K-O-CH-I-C-Y.avif" },
-    { name: "K Ngh Bali", img: "https://i.ibb.co/67D2ZVKg/K-NGH-BALI.avif" },
-    { name: "Kỳ Quan Cổ Vật", img: "https://i.ibb.co/GQ4Dng98/K-QUAN-C-V-T.avif" },
-    { name: "Kỳ Quan Sông Thái Lan", img: "https://i.ibb.co/N6C40GGX/K-QUAN-S-NG-TH-I-LAN.avif" },
-    { name: "Kỳ Quan Thần Bí", img: "https://i.ibb.co/j9c644L7/K-QUAN-TH-N-B.avif" },
-    { name: "Kripto Allin", img: "https://i.ibb.co/XZvKpZP7/KRIPTO-ALLIN.avif" },
-    { name: "Kỳ Lân Mạch Nước", img: "https://i.ibb.co/DHGnbX39/KY-LAN-MACH-NUOC.avif" },
-    { name: "Khỉ Hoang Dã", img: "https://i.ibb.co/fdVqDzB4/KHI-HOANG-DA.avif" },
-    { name: "Kho Báu Aztec", img: "https://i.ibb.co/6c3pBz6h/KHO-BAU-AZTEC.avif" },
-    { name: "Kho Báu Cảm Xúc", img: "https://i.ibb.co/27bfb6zw/KHO-B-U-C-M-X-C.avif" },
-    { name: "Kho Báu Ganesha", img: "https://i.ibb.co/XZB6VWRC/KHO-BAU-GANESHA.avif" },
-    { name: "Kho Báu Huyền Vĩ", img: "https://i.ibb.co/DDq2SVhf/KHO-B-U-H-NG-V.avif" },
-    { name: "Kho Báu Khổng Lồ", img: "https://i.ibb.co/7NyXw8n8/KHO-BAU-KHONG-LO.avif" },
-    { name: "Kho Báu Midas", img: "https://i.ibb.co/hFvb8Shp/KHO-B-U-MIDAS.avif" },
-    { name: "Kho Báu Nữ Hoàng", img: "https://i.ibb.co/7Nz6CbSp/KHO-B-U-N-NG-TI-N-C.avif" },
-    { name: "Kho Báu Thuyền Trưởng", img: "https://i.ibb.co/6cyfcw2g/KHO-BAU-THUYEN-TRUONG.avif" },
-    { name: "Kho Báu Yêu Tình", img: "https://i.ibb.co/svhTmz9n/KHO-BAU-YEU-TINH.avif" },
-    { name: "Khu Rừng Vui Nhộn", img: "https://i.ibb.co/ycdtW2dT/KHU-RUNG-VUI-NHON.avif" },
-    { name: "Lễ Hội Mùa Thu", img: "https://i.ibb.co/1JfqrLNr/L-H-I-M-T-N.avif" },
-    { name: "Lễ Hội Tiền C", img: "https://i.ibb.co/mFgm4g0m/L-H-I-T-N-C.avif" },
-    { name: "Linh Hồn Thần Bí", img: "https://i.ibb.co/b5jfRfH3/LINH-H-N-TH-N-B.avif" },
-    { name: "Long Sinh", img: "https://i.ibb.co/Lh6d0gLY/LONG-SINH.avif" },
-    { name: "Mafia", img: "https://i.ibb.co/twTRJLbs/MAFIA.avif" },
-    { name: "Mặt Trời Và Mặt Trăng", img: "https://i.ibb.co/fYv2fQV2/M-T-TR-NG-V-M-T-TR-I.avif" },
-    { name: "Medusa 1", img: "https://i.ibb.co/zhXqJ2XQ/MEDUSA-1.avif" },
-    { name: "Medusa 2", img: "https://i.ibb.co/bM18F4Fb/MEDUSA-2.avif" },
-    { name: "Mãng Jack Frost", img: "https://i.ibb.co/9kFRkzVK/M-A-NG-JACK-FROST.avif" },
-    { name: "Mùa Sấm Thần Ga", img: "https://i.ibb.co/8DXmdMKM/MUA-S-M-TH-GA.avif" },
-    { name: "Neko May Mắn", img: "https://i.ibb.co/cSdPSxMS/NEKO-MAY-MAN.avif" },
-    { name: "Ninja Gù Mò", img: "https://i.ibb.co/xS1DBGDd/NINJA-G-U-M-O.avif" },
-    { name: "Ninja Vs Samurai", img: "https://i.ibb.co/FbwPNQ3y/NINJA-VS-SAMURAI.avif" },
-    { name: "Nữ Hoàng Tiền Thưởng", img: "https://i.ibb.co/W4QvGPWQ/NU-HOANG-TIEN-THUONG.avif" },
-    { name: "Ngự I Chiến", img: "https://i.ibb.co/spHWPVv7/NG-U-I-CHI-N.avif" },
-    { name: "Nhà Vô Địch Mùa Quay Thái", img: "https://i.ibb.co/gMNxy93q/NHA-VO-DICH-MUAQUAY-THAI.avif" },
-    { name: "Nhân Vật Cổ", img: "https://i.ibb.co/8H6W8Y3/NH-V-CH-T-C.avif" },
-    { name: "Plushie Fhenzy", img: "https://i.ibb.co/spSwgLMK/PLUSHIE-FHENZY.avif" },
-    { name: "Pháo Hoa Wild", img: "https://i.ibb.co/N2K0P8BC/PHAO-HOA-WILD.avif" },
-    { name: "Phượng Nữ Phượng Thần", img: "https://i.ibb.co/q3qjzvW0/PH-NG-NG-PH-N-TH-NH.avif" },
-    { name: "Phượng Hoàng Nữ Dạ", img: "https://i.ibb.co/ZnT4ZhN/PH-NG-HO-NG-N-I-D-Y.avif" },
-    { name: "Quà Của Ông Già Noel", img: "https://i.ibb.co/Q7g4p9yN/QUA-CUA-ONG-GIA-NOEL.avif" },
-    { name: "Quốc Cờ Ba Lá", img: "https://i.ibb.co/Xf1B2Z4H/QU-C-C-BA-L.avif" },
-    { name: "Quyết Chiến Tiền Thưởng", img: "https://i.ibb.co/QjjLYHV2/QUYET-CHIEN-TIEN-THUONG.avif" },
-    { name: "Quyết Sách Bí Ẩn Ai Cập", img: "https://i.ibb.co/DPH89yjr/QUYET-SACH-BI-AN-AI-CAP.avif" },
-    { name: "Rạp Xi Cảnh Mù", img: "https://i.ibb.co/PsHp2sWx/R-P-XI-C-NHI-M-M-U.avif" },
-    { name: "Rồng Hỏ May Mắn", img: "https://i.ibb.co/MybkFVZT/RONG-HO-MAY-MAN.avif" },
-    { name: "Rồng Truyền Thuyết", img: "https://i.ibb.co/zvypNs1/RONG-TRUYEN-THUYET.avif" },
-    { name: "Safari Hoàng Dã", img: "https://i.ibb.co/mCCZBmWz/SAFARI-HOANG-D.avif" }
-];
+    function playClick() { click.currentTime = 0; click.play().catch(()=>{}); }
+    function playBreach() { breach.currentTime = 0; breach.play().catch(()=>{}); }
+    function playSuccess() { successSound.currentTime = 0; successSound.play().catch(()=>{}); }
 
-let pgGames = [...originalPGGames];
-let currentHall = "pg";
-let currentPage = 0;
-const gamesPerPage = 10;
-let filteredGames = pgGames.slice();
-let recommendedIndex = 0;
-let searchListenerAdded = false;
+    const neonColors = ['#00f0ff', '#ff00ff', '#ffd700', '#00ff9f'];
 
-// ====================== THREE.JS ======================
-let scene, camera, renderer, particleSystem, connectionLines;
-let particlesCount = 4200;
-let time = 0;
+    class NeonParticle {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height * 0.7;
+        this.size = Math.random() * 2.8 + 1.3;
+        this.speedX = Math.random() * 1.1 - 0.55;
+        this.speedY = Math.random() * 0.85 - 0.25;
+        this.color = neonColors[Math.floor(Math.random() * neonColors.length)];
+        this.opacity = Math.random() * 0.7 + 0.45;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > this.canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > this.canvas.height) this.speedY *= -1;
+        this.opacity = 0.45 + Math.sin(Date.now() / 280) * 0.35;
+      }
+      draw() {
+        this.ctx.save();
+        this.ctx.globalAlpha = this.opacity;
+        this.ctx.shadowBlur = 18;
+        this.ctx.shadowColor = this.color;
+        this.ctx.fillStyle = this.color;
+        this.ctx.beginPath();
+        this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.restore();
+      }
+    }
 
-function initThreeJS() {
-    const canvas = document.getElementById('particle-bg');
-    scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x05050f, 8, 35);
-    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 18);
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    function createParticleSystem(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return null;
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let animationFrame;
 
-    const positions = new Float32Array(particlesCount * 3);
-    const colors = new Float32Array(particlesCount * 3);
-    const sizes = new Float32Array(particlesCount);
-    const colorOptions = [new THREE.Color(0x00f5ff), new THREE.Color(0xc026d3), new THREE.Color(0xffd700)];
+      function resize() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+      }
 
-    for (let i = 0; i < particlesCount * 3; i += 3) {
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (particles.length < 68) particles.push(new NeonParticle(canvas));
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+          if (Math.random() < 0.011) { particles.splice(i, 1); i--; }
+        }
+        animationFrame = requestAnimationFrame(animate);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      animate();
+      return { stop: () => cancelAnimationFrame(animationFrame) };
+    }
+
+    function showLoading(callback) {
+      const loadingScreen = document.getElementById('loadingScreen');
+      const progressBar = document.getElementById('progressBar');
+      const loadingText = document.getElementById('loadingText');
+      loadingScreen.style.display = 'flex';
+      progressBar.style.width = '0%';
+      let progress = 0;
+
+      const interval = setInterval(() => {
+        progress += Math.random() * 13 + 8;
+        if (progress > 100) progress = 100;
+        progressBar.style.width = progress + '%';
+        if (progress > 40) loadingText.textContent = "AUTHENTICATING...";
+        if (progress > 75) loadingText.textContent = "ACCESS GRANTED";
+        if (progress >= 100) {
+          clearInterval(interval);
+          setTimeout(() => { loadingScreen.style.display = 'none'; callback(); }, 600);
+        }
+      }, 70);
+    }
+
+    function showSuccessModal(title, message) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalMessage').innerHTML = message.replace(/\n/g, '<br>');
+      document.getElementById('successModal').style.display = 'flex';
+      playSuccess();
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+      playClick();
+    }
+
+    function showGuideModal() {
+      playClick();
+      const modal = document.getElementById('guideModal');
+      modal.style.display = 'flex';
+      if (!window.particleSystems) window.particleSystems = {};
+      if (!window.particleSystems.guide) window.particleSystems.guide = createParticleSystem('particleGuide');
+    }
+
+    function showRegisterChoiceModal() {
+      playClick();
+      const modal = document.getElementById('registerChoiceModal');
+      modal.style.display = 'flex';
+      if (!window.particleSystems) window.particleSystems = {};
+      if (!window.particleSystems.choice) window.particleSystems.choice = createParticleSystem('particleChoice');
+    }
+
+    function registerTool() { closeModal('registerChoiceModal'); showRegister(); }
+    function registerGame() { 
+      closeModal('registerChoiceModal'); 
+      playClick(); 
+      window.open('https://www.fly8879.site', '_blank'); 
+    }
+
+    function showRegister() {
+      playClick();
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('registerSection').style.display = 'block';
+    }
+
+    function showLogin() {
+      playClick();
+      document.getElementById('loginSection').style.display = 'block';
+      document.getElementById('registerSection').style.display = 'none';
+    }
+
+    // ==================== GAME DATA ====================
+    const halls = [
+      { id: "pg",   name: "SẢNH PG",   img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
+      { id: "jili", name: "SẢNH JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
+      { id: "168g", name: "SẢNH 168G", img: "https://i.ibb.co/rKdGGjyN/S-NH-168-GAME.png" },
+      { id: "fc",   name: "SẢNH FC",   img: "https://i.ibb.co/CrjMgMK/S-NH-FC.png" }
+    ];
+
+    const originalPGGames = [
+      { name: "Ba Chú Heo", img: "https://i.ibb.co/Y7TWMqH8/BA-CH-HEO.avif" },
+      { name: "Bạn Viên Bảo Tàng", img: "https://i.ibb.co/7tvVVdJd/B-N-VI-N-B-O-T-NG.avif" },
+      { name: "Cơn Sốt Tiền", img: "https://i.ibb.co/kLczq6k/CON-SOT-TIEN.avif" },
+      { name: "Cơn Sốt Băng", img: "https://i.ibb.co/jk36yDXH/C-N-S-T-B-NG.avif" },
+      { name: "Cơn Sốt Quay Tại Quán", img: "https://i.ibb.co/gFS37Bbh/C-N-S-T-QUAY-T-I-QU-N.avif" },
+      { name: "Cơn Sốt Vàng Kraken", img: "https://i.ibb.co/LdVRFM7g/C-N-S-T-V-NG-KRAKEN.avif" },
+      { name: "Cá Cược Người Chết", img: "https://i.ibb.co/wZ9BTQkB/C-A-C-I-NG-I-CH-T.avif" },
+      { name: "Cuộc Đua Graffiti", img: "https://i.ibb.co/spcc0ktF/CUOC-DUA-GRAFFITI.avif" },
+      { name: "Cuộc Tấn Sát Tận Thế", img: "https://i.ibb.co/Fk59vMPc/CUOC-TAN-SAT-TAN-THE.avif" },
+      { name: "Cuộc Đua Gà Con", img: "https://i.ibb.co/1fm6YwYN/CU-C-UA-G-CON.avif" },
+      { name: "Chiến Thắng Piñata", img: "https://i.ibb.co/4gRKVtbJ/CHI-N-TH-NG-PINATA.avif" },
+      { name: "Chú Rồng May Mắn", img: "https://i.ibb.co/HpfZD1S1/CHU-RONG-MAY-MAN.avif" },
+      { name: "Chú Huyền Bí", img: "https://i.ibb.co/nqk92srG/CH-HUY-N-B.avif" },
+      { name: "Ảo Ảnh Chẵn Lẻ", img: "https://i.ibb.co/svFPB59H/A-NG-C-H-N-LO-N.avif" },
+      { name: "Nhà Máy Maya", img: "https://i.ibb.co/27hHtLd4/NH-M-NH-MAYA.avif" },
+      { name: "Cử Đại Thần Bí", img: "https://i.ibb.co/TxwhnD0h/C-D-C-TH-N-B.avif" },
+      { name: "Iguazu", img: "https://i.ibb.co/CKqNTTpN/I-C-NH-IGUAZU.avif" },
+      { name: "Gái Tài Cả Mr. Kho Báu", img: "https://i.ibb.co/nsn45ng2/GAI-T-I-C-A-MR-KHO-B-U.avif" },
+      { name: "Grimm Bounty", img: "https://i.ibb.co/jPcQYYjV/GRIMM-BOUNTY.avif" },
+      { name: "Giàu Có Knockout", img: "https://i.ibb.co/qM3hhNWp/GIAU-CO-KNOUKOUT.avif" },
+      { name: "Hoàng Tốc Pharaoh", img: "https://i.ibb.co/j9NL1dX0/HO-NG-T-C-PHARAOH.avif" },
+      { name: "Jack", img: "https://i.ibb.co/hFgJCrX5/JACK.avif" },
+      { name: "Kỳ Quan Bầu Trời", img: "https://i.ibb.co/CTyjySt/K-QUAN-B-U-TR-I.avif" },
+      { name: "Kỳ Quan Inca", img: "https://i.ibb.co/dswcDcgh/K-QUAN-INCA.avif" },
+      { name: "Kho Báu Alibaba", img: "https://i.ibb.co/q36zDXhG/KHO-B-U-ALIBABA.avif" },
+      { name: "Kho Báu Guardian", img: "https://i.ibb.co/chyn3gLB/KHO-B-U-GUARDIAN.avif" },
+      { name: "Kho Báu Hoàng Gia", img: "https://i.ibb.co/CK0VqvzV/KHO-BAU-HOANG-GIA.avif" },
+      { name: "Loren Giàu Có", img: "https://i.ibb.co/v40hMctL/LO-REN-GIAU-CO.avif" },
+      { name: "Long Sinh 2", img: "https://i.ibb.co/k6zRYnxc/LONG-SINH-2.avif" },
+      { name: "Món Ngon Miệng", img: "https://i.ibb.co/5X2jwjBd/M-N-NGON-MI-NG.avif" },
+      { name: "Ngựa May Mắn", img: "https://i.ibb.co/0wyxGdx/NG-A-MAY-M-N.avif" },
+      { name: "Phi Vụ Cướp Tiền", img: "https://i.ibb.co/QFrfZZ97/PHI-VU-CUOP-TIEN.avif" },
+      { name: "Rồng May Mắn", img: "https://i.ibb.co/KpCdGpST/R-N-MAY-M-N.avif" },
+      { name: "Socola Hôn Hộ", img: "https://i.ibb.co/Dm5HxTY/SOCOLA-HO-N-H-O.avif" },
+      { name: "Sự Ngủ Mơ", img: "https://i.ibb.co/RknTPK4x/S-NG-O-M-NG.avif" },
+      { name: "Tiền Thưởng Cơ Mực", img: "https://i.ibb.co/ptsRB9B/TI-N-TH-NG-C-M-P.avif" },
+      { name: "Thám Hiểm Nẻo", img: "https://i.ibb.co/1YB3bSsx/TH-M-NG-N-H.avif" },
+      { name: "Thuật Giả Kim", img: "https://i.ibb.co/hJfwSSZd/THU-T-GI-KIM.avif" },
+      { name: "Truy Tìm Kho Báu Rồng", img: "https://i.ibb.co/xqBRK5v3/TRUY-T-M-KHO-B-U-R-NG.avif" },
+      { name: "Vương Quốc Chinh Phục", img: "https://i.ibb.co/TxJH9y44/V-NG-QU-C-CHINH-PH-C.avif" },
+      { name: "3 Kỳ Ức", img: "https://i.ibb.co/rRPD75SB/3-I-U-C.avif" },
+      { name: "Ân Sủng Của Hoàng Đế", img: "https://i.ibb.co/RkG74K8j/AN-SUNG-CUA-HOANG-DE.avif" },
+      { name: "Asgard Trỗi Dậy", img: "https://i.ibb.co/wFC0Kyjs/ASGARD-TROI-DAY.avif" },
+      { name: "Ba Hộ Thú Hương", img: "https://i.ibb.co/bR2yYXH5/BA-HO-THU-HUONG.avif" },
+      { name: "Băng Giá Vui Nhộn", img: "https://i.ibb.co/n8NLp65r/BANG-GIA-VUI-NHON.avif" },
+      { name: "Bí Ước Của Tâm C", img: "https://i.ibb.co/vxLsYzXq/B-U-CUA-T-M-C.avif" },
+      { name: "Bí Mật Cleopatra", img: "https://i.ibb.co/hFSs0QP5/B-M-T-CLEOPATRA.avif" },
+      { name: "Biểu Tượng Ai Cập", img: "https://i.ibb.co/xKH3R8tS/BIEU-TUONG-AI-CAP.avif" },
+      { name: "K.O Bonanza", img: "https://i.ibb.co/wNPyjzDp/K-O-BONAZA.avif" },
+      { name: "Bùa Ma Cá Rồng", img: "https://i.ibb.co/DfrvyHFR/BUA-MA-CA-RONG.avif" },
+      { name: "Bá Tước Huyền Hoàn", img: "https://i.ibb.co/wF6kRV6Y/B-A-T-I-H-N-HOAN.avif" },
+      { name: "Cây Tài Lộc", img: "https://i.ibb.co/N2mBqT51/CAY-TAI-LOC.avif" },
+      { name: "Cây Tài Vàng", img: "https://i.ibb.co/S4whTwrX/C-Y-T-I-V-NG.avif" },
+      { name: "Cô Bé Quàng Khăn Đỏ", img: "https://i.ibb.co/BVJ1FQ2h/CO-BE-QUANG-KHAN-DO.avif" },
+      { name: "Cơn Thịnh Nộ Anubis", img: "https://i.ibb.co/6SwpLt1/CON-THINH-NO-ANUBIS.avif" },
+      { name: "Cơn Sốt Băng Uy Lực", img: "https://i.ibb.co/5WnyYCKS/C-PH-T-B-NG-UY-L-C.avif" },
+      { name: "Cuộc Chiến Hoàng Gia", img: "https://i.ibb.co/NgCsZjh4/CU-C-CHI-N-HO-NG-GIA.avif" },
+      { name: "Cuộc Di Sản Của Người Sói", img: "https://i.ibb.co/DgvrRVY1/CUOC-DI-SAN-CUA-NGUOI-SOI.avif" },
+      { name: "Cuộc Phiêu Lưu Đến Kho Báu", img: "https://i.ibb.co/ymt29fZX/CUOC-PHIEU-LUU-DEN-KHO-BAU.avif" },
+      { name: "Chiến Thắng Caishen", img: "https://i.ibb.co/rfxDKjPF/CHIEN-THANG-CAISHEN.avif" },
+      { name: "Chú B May Mắn", img: "https://i.ibb.co/1f8nJ34m/CH-B-MAY-M-N.avif" },
+      { name: "Chú Chuột May Mắn", img: "https://i.ibb.co/KjymGwsV/CHU-CHUOT-MAY-MAN.avif" },
+      { name: "Quỳ Ngũ N H", img: "https://i.ibb.co/0RQ2hDsh/QU-NG-N-H.avif" },
+      { name: "Quy Garuda", img: "https://i.ibb.co/W4rLQBd1/QU-GARUDA.avif" },
+      { name: "Đá Quý Và Vàng", img: "https://i.ibb.co/DP7f2p6y/DA-QUY-VA-VANG.avif" },
+      { name: "Đại Dịch Xác Sống", img: "https://i.ibb.co/jPk4rGrs/DAI-DICH-XAC-SONG.avif" },
+      { name: "Danh Dự Yakuza", img: "https://i.ibb.co/3m5h77D9/DANH-DU-YAKUZA.avif" },
+      { name: "Đêm Cocktail", img: "https://i.ibb.co/Pz0djx47/DEM-COCTAIL.avif" },
+      { name: "Điêu Chân", img: "https://i.ibb.co/LzFLW1jf/DIAO-CHAN.avif" },
+      { name: "Đội Bóng Thiếu Lâm", img: "https://i.ibb.co/HTqHPCLf/DOI-BONG-THIEU-LAM.avif" },
+      { name: "Du Thuyền Hoàng Gia", img: "https://i.ibb.co/SwX4jCGF/DU-THUY-N-HO-NG-GIA.avif" },
+      { name: "Dương Mật Chuộc 1", img: "https://i.ibb.co/NnY1WjMq/DUONG-MAT-CHUOC-1.avif" },
+      { name: "Dương Mật Chuột 2", img: "https://i.ibb.co/Y4Dfb2L2/DUONG-MAT-CHUOT-2.avif" },
+      { name: "G G Y", img: "https://i.ibb.co/VYWqR8T2/G-G-Y.avif" },
+      { name: "Ganesha Vàng", img: "https://i.ibb.co/Q7bH0Syk/GANESHA-VANG.avif" },
+      { name: "Gấu Trúc Hip Hop", img: "https://i.ibb.co/0RrmTnXX/GAU-TRUC-HIP-HOP.avif" },
+      { name: "Guong Quay Tình Yêu", img: "https://i.ibb.co/jvqhgPMQ/GUONG-QUAY-TINH-YEU.avif" },
+      { name: "Giấc Mơ Macao", img: "https://i.ibb.co/WWpNSXdT/GI-C-M-MACAO.avif" },
+      { name: "Hallow Win", img: "https://i.ibb.co/kg1dkv2p/HALLOW-WIN.avif" },
+      { name: "Hầm May Mắn Jane", img: "https://i.ibb.co/JFMgfdCX/H-M-M-MAY-M-N-JANE.avif" },
+      { name: "Hũ Vàng", img: "https://i.ibb.co/TqTYvGSn/H-U-V-NG.avif" },
+      { name: "Heo May Mắn", img: "https://i.ibb.co/992MxhbY/HEO-MAY-M-N.avif" },
+      { name: "Heo Vàng", img: "https://i.ibb.co/hhSbY5x/HEO-VANG.avif" },
+      { name: "H May Mắn", img: "https://i.ibb.co/N69SgMZ5/H-MAY-M-N.avif" },
+      { name: "Hoa Bướm", img: "https://i.ibb.co/8DX8KYQt/HOA-B-M.avif" },
+      { name: "Hotpot", img: "https://i.ibb.co/CsX0Pm5X/HOTPOT.avif" },
+      { name: "K.O Ngũ Tinh N", img: "https://i.ibb.co/HDQTc6C3/K-O-NG-T-B-NG-N.avif" },
+      { name: "K.O Chơi Cây", img: "https://i.ibb.co/nN1sGk2b/K-O-CH-I-C-Y.avif" },
+      { name: "K Ngh Bali", img: "https://i.ibb.co/67D2ZVKg/K-NGH-BALI.avif" },
+      { name: "Kỳ Quan Cổ Vật", img: "https://i.ibb.co/GQ4Dng98/K-QUAN-C-V-T.avif" },
+      { name: "Kỳ Quan Sông Thái Lan", img: "https://i.ibb.co/N6C40GGX/K-QUAN-S-NG-TH-I-LAN.avif" },
+      { name: "Kỳ Quan Thần Bí", img: "https://i.ibb.co/j9c644L7/K-QUAN-TH-N-B.avif" },
+      { name: "Kripto Allin", img: "https://i.ibb.co/XZvKpZP7/KRIPTO-ALLIN.avif" },
+      { name: "Kỳ Lân Mạch Nước", img: "https://i.ibb.co/DHGnbX39/KY-LAN-MACH-NUOC.avif" },
+      { name: "Khỉ Hoang Dã", img: "https://i.ibb.co/fdVqDzB4/KHI-HOANG-DA.avif" },
+      { name: "Kho Báu Aztec", img: "https://i.ibb.co/6c3pBz6h/KHO-BAU-AZTEC.avif" },
+      { name: "Kho Báu Cảm Xúc", img: "https://i.ibb.co/27bfb6zw/KHO-B-U-C-M-X-C.avif" },
+      { name: "Kho Báu Ganesha", img: "https://i.ibb.co/XZB6VWRC/KHO-BAU-GANESHA.avif" },
+      { name: "Kho Báu Huyền Vĩ", img: "https://i.ibb.co/DDq2SVhf/KHO-B-U-H-NG-V.avif" },
+      { name: "Kho Báu Khổng Lồ", img: "https://i.ibb.co/7NyXw8n8/KHO-BAU-KHONG-LO.avif" },
+      { name: "Kho Báu Midas", img: "https://i.ibb.co/hFvb8Shp/KHO-B-U-MIDAS.avif" },
+      { name: "Kho Báu Nữ Hoàng", img: "https://i.ibb.co/7Nz6CbSp/KHO-B-U-N-NG-TI-N-C.avif" },
+      { name: "Kho Báu Thuyền Trưởng", img: "https://i.ibb.co/6cyfcw2g/KHO-BAU-THUYEN-TRUONG.avif" },
+      { name: "Kho Báu Yêu Tình", img: "https://i.ibb.co/svhTmz9n/KHO-BAU-YEU-TINH.avif" },
+      { name: "Khu Rừng Vui Nhộn", img: "https://i.ibb.co/ycdtW2dT/KHU-RUNG-VUI-NHON.avif" },
+      { name: "Lễ Hội Mùa Thu", img: "https://i.ibb.co/1JfqrLNr/L-H-I-M-T-N.avif" },
+      { name: "Lễ Hội Tiền C", img: "https://i.ibb.co/mFgm4g0m/L-H-I-T-N-C.avif" },
+      { name: "Linh Hồn Thần Bí", img: "https://i.ibb.co/b5jfRfH3/LINH-H-N-TH-N-B.avif" },
+      { name: "Long Sinh", img: "https://i.ibb.co/Lh6d0gLY/LONG-SINH.avif" },
+      { name: "Mafia", img: "https://i.ibb.co/twTRJLbs/MAFIA.avif" },
+      { name: "Mặt Trời Và Mặt Trăng", img: "https://i.ibb.co/fYv2fQV2/M-T-TR-NG-V-M-T-TR-I.avif" },
+      { name: "Medusa 1", img: "https://i.ibb.co/zhXqJ2XQ/MEDUSA-1.avif" },
+      { name: "Medusa 2", img: "https://i.ibb.co/bM18F4Fb/MEDUSA-2.avif" },
+      { name: "Mãng Jack Frost", img: "https://i.ibb.co/9kFRkzVK/M-A-NG-JACK-FROST.avif" },
+      { name: "Mùa Sấm Thần Ga", img: "https://i.ibb.co/8DXmdMKM/MUA-S-M-TH-GA.avif" },
+      { name: "Neko May Mắn", img: "https://i.ibb.co/cSdPSxMS/NEKO-MAY-MAN.avif" },
+      { name: "Ninja Gù Mò", img: "https://i.ibb.co/xS1DBGDd/NINJA-G-U-M-O.avif" },
+      { name: "Ninja Vs Samurai", img: "https://i.ibb.co/FbwPNQ3y/NINJA-VS-SAMURAI.avif" },
+      { name: "Nữ Hoàng Tiền Thưởng", img: "https://i.ibb.co/W4QvGPWQ/NU-HOANG-TIEN-THUONG.avif" },
+      { name: "Ngự I Chiến", img: "https://i.ibb.co/spHWPVv7/NG-U-I-CHI-N.avif" },
+      { name: "Nhà Vô Địch Mùa Quay Thái", img: "https://i.ibb.co/gMNxy93q/NHA-VO-DICH-MUAQUAY-THAI.avif" },
+      { name: "Nhân Vật Cổ", img: "https://i.ibb.co/8H6W8Y3/NH-V-CH-T-C.avif" },
+      { name: "Plushie Fhenzy", img: "https://i.ibb.co/spSwgLMK/PLUSHIE-FHENZY.avif" },
+      { name: "Pháo Hoa Wild", img: "https://i.ibb.co/N2K0P8BC/PHAO-HOA-WILD.avif" },
+      { name: "Phượng Nữ Phượng Thần", img: "https://i.ibb.co/q3qjzvW0/PH-NG-NG-PH-N-TH-NH.avif" },
+      { name: "Phượng Hoàng Nữ Dạ", img: "https://i.ibb.co/ZnT4ZhN/PH-NG-HO-NG-N-I-D-Y.avif" },
+      { name: "Quà Của Ông Già Noel", img: "https://i.ibb.co/Q7g4p9yN/QUA-CUA-ONG-GIA-NOEL.avif" },
+      { name: "Quốc Cờ Ba Lá", img: "https://i.ibb.co/Xf1B2Z4H/QU-C-C-BA-L.avif" },
+      { name: "Quyết Chiến Tiền Thưởng", img: "https://i.ibb.co/QjjLYHV2/QUYET-CHIEN-TIEN-THUONG.avif" },
+      { name: "Quyết Sách Bí Ẩn Ai Cập", img: "https://i.ibb.co/DPH89yjr/QUYET-SACH-BI-AN-AI-CAP.avif" },
+      { name: "Rạp Xi Cảnh Mù", img: "https://i.ibb.co/PsHp2sWx/R-P-XI-C-NHI-M-M-U.avif" },
+      { name: "Rồng Hỏ May Mắn", img: "https://i.ibb.co/MybkFVZT/RONG-HO-MAY-MAN.avif" },
+      { name: "Rồng Truyền Thuyết", img: "https://i.ibb.co/zvypNs1/RONG-TRUYEN-THUYET.avif" },
+      { name: "Safari Hoàng Dã", img: "https://i.ibb.co/mCCZBmWz/SAFARI-HOANG-D.avif" }
+    ];
+
+    let pgGames = [...originalPGGames];
+    let currentHall = "pg";
+    let currentPage = 0;
+    const gamesPerPage = 10;
+    let filteredGames = pgGames.slice();
+    let recommendedIndex = 0;
+    let searchListenerAdded = false;
+
+    // Three.js
+    let scene, camera, renderer, particleSystem, connectionLines;
+    let particlesCount = 4200;
+    let time = 0;
+
+    function initThreeJS() {
+      const canvas = document.getElementById('particle-bg');
+      scene = new THREE.Scene();
+      scene.fog = new THREE.Fog(0x05050f, 8, 35);
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(0, 0, 18);
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      const positions = new Float32Array(particlesCount * 3);
+      const colors = new Float32Array(particlesCount * 3);
+      const sizes = new Float32Array(particlesCount);
+      const colorOptions = [new THREE.Color(0x00f5ff), new THREE.Color(0xc026d3), new THREE.Color(0xffd700)];
+
+      for (let i = 0; i < particlesCount * 3; i += 3) {
         const idx = i / 3;
         positions[i] = (Math.random() - 0.5) * 50;
         positions[i + 1] = (Math.random() - 0.5) * 50;
@@ -415,32 +714,32 @@ function initThreeJS() {
         const col = colorOptions[Math.floor(Math.random() * 3)];
         colors[i] = col.r; colors[i + 1] = col.g; colors[i + 2] = col.b;
         sizes[idx] = Math.random() * 0.12 + 0.04;
-    }
+      }
 
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
-    particleSystem = new THREE.Points(geometry, new THREE.PointsMaterial({
+      particleSystem = new THREE.Points(geometry, new THREE.PointsMaterial({
         size: 0.08, vertexColors: true, transparent: true, opacity: 0.92,
         blending: THREE.AdditiveBlending, depthTest: false
-    }));
-    scene.add(particleSystem);
+      }));
+      scene.add(particleSystem);
 
-    connectionLines = new THREE.LineSegments(
+      connectionLines = new THREE.LineSegments(
         new THREE.BufferGeometry(),
         new THREE.LineBasicMaterial({ color: 0x00f5ff, transparent: true, opacity: 0.12, blending: THREE.AdditiveBlending })
-    );
-    scene.add(connectionLines);
+      );
+      scene.add(connectionLines);
 
-    window.addEventListener('resize', () => {
+      window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+      });
 
-    function animate() {
+      function animate() {
         time += 0.008;
         camera.position.x = Math.sin(time * 0.2) * 3;
         camera.position.z = 18 + Math.cos(time * 0.15) * 2;
@@ -448,251 +747,276 @@ function initThreeJS() {
 
         const posAttr = particleSystem.geometry.attributes.position;
         for (let i = 0; i < particlesCount * 3; i += 3) {
-            posAttr.array[i + 1] += Math.sin(time * 2 + i) * 0.008;
+          posAttr.array[i + 1] += Math.sin(time * 2 + i) * 0.008;
         }
         posAttr.needsUpdate = true;
 
         if (Math.floor(time * 8) % 3 === 0) {
-            const pos = posAttr.array;
-            const linePos = [];
-            for (let i = 0; i < particlesCount; i += 12) {
-                for (let j = i + 18; j < particlesCount; j += 18) {
-                    const dx = pos[i*3] - pos[j*3];
-                    const dy = pos[i*3+1] - pos[j*3+1];
-                    const dz = pos[i*3+2] - pos[j*3+2];
-                    if (Math.sqrt(dx*dx + dy*dy + dz*dz) < 9) {
-                        linePos.push(pos[i*3], pos[i*3+1], pos[i*3+2]);
-                        linePos.push(pos[j*3], pos[j*3+1], pos[j*3+2]);
-                    }
-                }
+          const pos = posAttr.array;
+          const linePos = [];
+          for (let i = 0; i < particlesCount; i += 12) {
+            for (let j = i + 18; j < particlesCount; j += 18) {
+              const dx = pos[i*3] - pos[j*3];
+              const dy = pos[i*3+1] - pos[j*3+1];
+              const dz = pos[i*3+2] - pos[j*3+2];
+              if (Math.sqrt(dx*dx + dy*dy + dz*dz) < 9) {
+                linePos.push(pos[i*3], pos[i*3+1], pos[i*3+2]);
+                linePos.push(pos[j*3], pos[j*3+1], pos[j*3+2]);
+              }
             }
-            connectionLines.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
+          }
+          connectionLines.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
         }
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
+      }
+      animate();
     }
-    animate();
-}
 
-// ====================== GAME FUNCTIONS ======================
-function countUp(el, target, suffix = '', duration = 1400) {
-    let start = 0;
-    const startTime = performance.now();
-    function step(now) {
+    function countUp(el, target, suffix = '', duration = 1400) {
+      let start = 0;
+      const startTime = performance.now();
+      function step(now) {
         const progress = Math.min((now - startTime) / duration, 1);
         el.textContent = Math.floor(progress * target) + suffix;
         if (progress < 1) requestAnimationFrame(step);
         else el.textContent = target + suffix;
+      }
+      requestAnimationFrame(step);
     }
-    requestAnimationFrame(step);
-}
 
-function triggerRandomGlitch() {
-    const title = document.getElementById('main-title');
-    if (title) {
+    function triggerRandomGlitch() {
+      const title = document.getElementById('main-title');
+      if (title) {
         title.classList.remove('glitch');
         void title.offsetWidth;
         title.classList.add('glitch');
+      }
     }
-}
 
-function renderHalls() {
-    const grid = document.getElementById('hall-grid');
-    grid.innerHTML = '';
-    halls.forEach((hall, i) => {
+    function renderHalls() {
+      const grid = document.getElementById('hall-grid');
+      grid.innerHTML = '';
+      halls.forEach((hall, i) => {
         const winRate = Math.floor(Math.random() * 15) + 83;
         const bigWinRate = Math.floor(Math.random() * 20) + 71;
         const div = document.createElement('div');
-        div.className = `hall-card rounded-3xl p-8 cursor-pointer fade-in-up`;
+        div.className = `hall-card rounded-3xl p-8 cursor-pointer`;
         div.style.animationDelay = `${i * 80}ms`;
         div.innerHTML = `
-            <div class="text-center mb-6">
-                <h3 class="text-4xl font-bold neon-gold tracking-widest">${hall.name}</h3>
-            </div>
-            <div class="flex justify-center mb-10">
-                <img src="${hall.img}" class="hall-logo" alt="${hall.name}">
-            </div>
-            <div class="space-y-7">
-                <div>
-                    <div class="flex justify-between text-sm mb-2 text-white/90">
-                        <span>TỈ LỆ THẮNG</span>
-                        <span class="font-bold text-emerald-400">${winRate}%</span>
-                    </div>
-                    <div class="ratio-bar"><div class="ratio-fill h-full bg-gradient-to-r from-emerald-400 to-cyan-400" style="width: ${winRate}%"></div></div>
-                </div>
-                <div>
-                    <div class="flex justify-between text-sm mb-2 text-white/90">
-                        <span>NỔ CỰC LỚN</span>
-                        <span class="font-bold text-amber-400">${bigWinRate}%</span>
-                    </div>
-                    <div class="ratio-bar"><div class="ratio-fill h-full bg-gradient-to-r from-amber-400 to-yellow-400" style="width: ${bigWinRate}%"></div></div>
-                </div>
-            </div>
+          <div class="text-center mb-6"><h3 class="text-4xl font-bold neon-gold tracking-widest">${hall.name}</h3></div>
+          <div class="flex justify-center mb-10"><img src="${hall.img}" class="hall-logo" alt="${hall.name}"></div>
+          <div class="space-y-7">
+            <div><div class="flex justify-between text-sm mb-2 text-white/90"><span>TỈ LỆ THẮNG</span><span class="font-bold text-emerald-400">${winRate}%</span></div><div class="ratio-bar"><div class="ratio-fill h-full bg-gradient-to-r from-emerald-400 to-cyan-400" style="width: ${winRate}%"></div></div></div>
+            <div><div class="flex justify-between text-sm mb-2 text-white/90"><span>NỔ CỰC LỚN</span><span class="font-bold text-amber-400">${bigWinRate}%</span></div><div class="ratio-bar"><div class="ratio-fill h-full bg-gradient-to-r from-amber-400 to-yellow-400" style="width: ${bigWinRate}%"></div></div></div>
+          </div>
         `;
-        div.addEventListener('click', (e) => {
-            e.preventDefault();
-            selectHall(hall.id);
-        });
+        div.addEventListener('click', () => selectHall(hall.id));
         grid.appendChild(div);
-    });
-}
+      });
+    }
 
-function getRandomRecommended() {
-    recommendedIndex = Math.floor(Math.random() * pgGames.length);
-    const game = pgGames[recommendedIndex];
-    const ratio = Math.floor(Math.random() * 22) + 78;
-    document.getElementById('recommended-img').src = game.img;
-    document.getElementById('recommended-name').textContent = game.name;
-    document.getElementById('recommended-ratio').textContent = ratio + "%";
-    const fill = document.getElementById('recommended-fill');
-    fill.style.width = '0%';
-    setTimeout(() => fill.style.width = ratio + '%', 300);
-}
+    function getRandomRecommended() {
+      recommendedIndex = Math.floor(Math.random() * pgGames.length);
+      const game = pgGames[recommendedIndex];
+      const ratio = Math.floor(Math.random() * 22) + 78;
+      document.getElementById('recommended-img').src = game.img;
+      document.getElementById('recommended-name').textContent = game.name;
+      document.getElementById('recommended-ratio').textContent = ratio + "%";
+      const fill = document.getElementById('recommended-fill');
+      fill.style.width = '0%';
+      setTimeout(() => fill.style.width = ratio + '%', 300);
+    }
 
-function showAnalysis(index) {
-    const game = pgGames[index];
-    document.getElementById('pg-screen').classList.add('hidden');
-    document.getElementById('other-screen').classList.add('hidden');
-    document.getElementById('analysis-screen').classList.remove('hidden');
+    function showAnalysis(index) {
+      const game = pgGames[index];
+      document.getElementById('pg-screen').classList.add('hidden');
+      document.getElementById('other-screen').classList.add('hidden');
+      document.getElementById('analysis-screen').classList.remove('hidden');
 
-    document.getElementById('game-title').textContent = game.name;
-    document.getElementById('game-avatar-analysis').src = game.img;
+      document.getElementById('game-title').textContent = game.name;
+      document.getElementById('game-avatar-analysis').src = game.img;
 
-    const prob = Math.floor(Math.random() * 11) + 89;
-    const totalSpins = Math.floor(Math.random() * 90) + 55;
-    const normalSpins = Math.floor(totalSpins * 0.62);
-    const fastSpins = totalSpins - normalSpins;
+      const prob = Math.floor(Math.random() * 11) + 89;
+      document.getElementById('win-prob-text').textContent = prob + "%";
+      document.getElementById('win-prob-fill').style.width = prob + "%";
 
-    countUp(document.getElementById('win-prob-text'), prob, '%');
-    countUp(document.getElementById('total-spins'), totalSpins);
-    countUp(document.getElementById('normal-spins'), normalSpins);
-    countUp(document.getElementById('fast-spins'), fastSpins);
+      document.getElementById('rtp-value').textContent = (94 + Math.random() * 4).toFixed(1) + "%";
+      document.getElementById('volatility-value').textContent = Math.random() > 0.5 ? "CAO" : "TRUNG BÌNH";
+      document.getElementById('max-win-value').textContent = "×" + Math.floor(3000 + Math.random() * 6000);
+      document.getElementById('hit-frequency').textContent = "1/" + (3 + Math.random() * 4).toFixed(1);
+      document.getElementById('neural-score').textContent = Math.floor(88 + Math.random() * 12);
 
-    const probFill = document.getElementById('win-prob-fill');
-    probFill.style.width = '0%';
-    setTimeout(() => probFill.style.width = prob + '%', 400);
+      const now = new Date();
+      const future = new Date(now.getTime() + (Math.floor(Math.random() * 18) + 5) * 60000);
+      document.getElementById('current-time').textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      document.getElementById('golden-time').textContent = `${String(future.getHours()).padStart(2,'0')}:${String(future.getMinutes()).padStart(2,'0')}`;
 
-    const now = new Date();
-    const future = new Date(now.getTime() + (Math.floor(Math.random() * 18) + 5) * 60000);
-    document.getElementById('current-time').textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-    document.getElementById('golden-time').textContent = `${String(future.getHours()).padStart(2,'0')}:${String(future.getMinutes()).padStart(2,'0')}`;
-}
+      const totalSpins = Math.floor(Math.random() * 90) + 55;
+      const normalSpins = Math.floor(totalSpins * 0.62);
+      const fastSpins = totalSpins - normalSpins;
+      countUp(document.getElementById('total-spins'), totalSpins);
+      countUp(document.getElementById('normal-spins'), normalSpins);
+      countUp(document.getElementById('fast-spins'), fastSpins);
 
-function selectHall(hallId) {
-    currentHall = hallId;
-    document.getElementById('hall-screen').classList.add('hidden');
-    if (hallId === "pg") {
+      document.getElementById('ai-insight').textContent = "Trò này đang ở giai đoạn “Quantum Hot”. Năng lượng tích tụ cực mạnh. Khuyến nghị spin tối thiểu 80 vòng với bet 2.5x để kích hoạt nổ hũ lớn.";
+    }
+
+    function startQuantumSpin() {
+      alert("🔥 QUANTUM SPIN MODE ĐÃ KÍCH HOẠT!\n\nTool đang mô phỏng spin tự động với năng lượng tối đa...");
+    }
+
+    function selectHall(hallId) {
+      currentHall = hallId;
+      document.getElementById('hall-screen').classList.add('hidden');
+      if (hallId === "pg") {
         document.getElementById('pg-screen').classList.remove('hidden');
         initPGScreen();
-    } else {
+      } else {
         document.getElementById('other-screen').classList.remove('hidden');
         const hall = halls.find(h => h.id === hallId);
         document.getElementById('current-hall-name').textContent = hall.name;
         document.getElementById('current-hall-logo').innerHTML = `<img src="${hall.img}" class="hall-logo">`;
+      }
     }
-}
 
-function backToHall() {
-    document.getElementById('pg-screen').classList.add('hidden');
-    document.getElementById('other-screen').classList.add('hidden');
-    document.getElementById('analysis-screen').classList.add('hidden');
-    document.getElementById('hall-screen').classList.remove('hidden');
-}
+    function backToHall() {
+      document.getElementById('pg-screen').classList.add('hidden');
+      document.getElementById('other-screen').classList.add('hidden');
+      document.getElementById('analysis-screen').classList.add('hidden');
+      document.getElementById('hall-screen').classList.remove('hidden');
+    }
 
-function backToCurrentScreen() {
-    document.getElementById('analysis-screen').classList.add('hidden');
-    if (currentHall === "pg") document.getElementById('pg-screen').classList.remove('hidden');
-    else document.getElementById('other-screen').classList.remove('hidden');
-}
+    function backToCurrentScreen() {
+      document.getElementById('analysis-screen').classList.add('hidden');
+      if (currentHall === "pg") document.getElementById('pg-screen').classList.remove('hidden');
+      else document.getElementById('other-screen').classList.remove('hidden');
+    }
 
-function initPGScreen() {
-    getRandomRecommended();
-    filteredGames = pgGames.slice();
-    currentPage = 0;
-    renderGamesPG();
-    const searchInput = document.getElementById('search-input');
-    searchInput.value = '';
-    if (!searchListenerAdded) {
+    function initPGScreen() {
+      getRandomRecommended();
+      filteredGames = pgGames.slice();
+      currentPage = 0;
+      renderGamesPG();
+      const searchInput = document.getElementById('search-input');
+      searchInput.value = '';
+      if (!searchListenerAdded) {
         searchInput.addEventListener('input', (e) => filterGamesPG(e.target.value));
         searchListenerAdded = true;
+      }
     }
-}
 
-function renderGamesPG() {
-    const grid = document.getElementById('game-grid');
-    grid.innerHTML = '';
-    const start = currentPage * gamesPerPage;
-    const end = start + gamesPerPage;
-    const pageGames = filteredGames.slice(start, end);
+    function renderGamesPG() {
+      const grid = document.getElementById('game-grid');
+      grid.innerHTML = '';
+      const start = currentPage * gamesPerPage;
+      const end = start + gamesPerPage;
+      const pageGames = filteredGames.slice(start, end);
 
-    pageGames.forEach((game, index) => {
+      pageGames.forEach((game, index) => {
         const actualIndex = pgGames.indexOf(game);
         const ratio = Math.floor(Math.random() * 25) + 75;
         const div = document.createElement('div');
-        div.className = `text-center cursor-pointer game-card fade-in-up`;
+        div.className = `text-center cursor-pointer game-card`;
         div.style.animationDelay = `${index * 60}ms`;
         div.innerHTML = `
-            <img src="${game.img}" class="game-img-large mx-auto w-full aspect-square object-contain rounded-2xl bg-black/40 p-4" alt="${game.name}">
-            <p class="mt-4 text-sm font-bold neon-cyan px-2 line-clamp-2">${game.name}</p>
-            <div class="mt-4 px-4">
-                <div class="flex justify-between text-[10px] mb-1 text-white/70">
-                    <span>NHẢ</span>
-                    <span class="font-bold text-emerald-400">${ratio}%</span>
-                </div>
-                <div class="ratio-bar">
-                    <div class="ratio-fill h-full bg-gradient-to-r from-emerald-400 to-cyan-400" style="width: ${ratio}%"></div>
-                </div>
-            </div>
+          <img src="${game.img}" class="game-img-large mx-auto w-full aspect-square object-contain rounded-2xl bg-black/40 p-4" alt="${game.name}">
+          <p class="mt-4 text-sm font-bold neon-cyan px-2 line-clamp-2">${game.name}</p>
+          <div class="mt-4 px-4">
+            <div class="flex justify-between text-[10px] mb-1 text-white/70"><span>NHẢ</span><span class="font-bold text-emerald-400">${ratio}%</span></div>
+            <div class="ratio-bar"><div class="ratio-fill h-full bg-gradient-to-r from-emerald-400 to-cyan-400" style="width: ${ratio}%"></div></div>
+          </div>
         `;
-        div.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            showAnalysis(actualIndex);
-        });
+        div.addEventListener('click', () => showAnalysis(actualIndex));
         grid.appendChild(div);
-    });
+      });
 
-    const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
-    document.getElementById('page-info').textContent = `Trang ${currentPage + 1}/${totalPages}`;
-    renderPaginationPG(totalPages);
-}
+      const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
+      document.getElementById('page-info').textContent = `Trang ${currentPage + 1}/${totalPages}`;
+      renderPaginationPG(totalPages);
+    }
 
-function renderPaginationPG(totalPages) {
-    const container = document.getElementById('pagination');
-    container.innerHTML = '';
-    for (let i = 0; i < totalPages; i++) {
+    function renderPaginationPG(totalPages) {
+      const container = document.getElementById('pagination');
+      container.innerHTML = '';
+      for (let i = 0; i < totalPages; i++) {
         const dot = document.createElement('div');
         dot.className = `w-3 h-3 rounded-full cursor-pointer transition-all ${i === currentPage ? 'bg-cyan-400 scale-125 shadow-cyan-400/60' : 'bg-cyan-400/30'}`;
         dot.onclick = () => { currentPage = i; renderGamesPG(); };
         container.appendChild(dot);
-    }
-}
-
-function filterGamesPG(query) {
-    query = query.toLowerCase().trim();
-    filteredGames = pgGames.filter(game => game.name.toLowerCase().includes(query));
-    currentPage = 0;
-    renderGamesPG();
-}
-
-// ====================== INIT ======================
-window.onload = () => {
-    renderHalls();
-    initThreeJS();
-    setInterval(triggerRandomGlitch, 3800);
-
-    const recCard = document.getElementById('recommended-card');
-    if (recCard) {
-        recCard.style.opacity = '0';
-        setTimeout(() => {
-            recCard.style.transition = 'all 1.1s cubic-bezier(0.23,1,0.32,1)';
-            recCard.style.opacity = '1';
-        }, 600);
+      }
     }
 
-    console.log('%c🚀 QUANTUM SẢNH 2049 – FILE HOÀN CHỈNH | Fix lỗi tuột + tên game đẹp!', 'color:#00f5ff; font-family:Orbitron; font-size:15px; text-shadow:0 0 15px #00f5ff');
-};
-</script>
+    function filterGamesPG(query) {
+      query = query.toLowerCase().trim();
+      filteredGames = pgGames.filter(game => game.name.toLowerCase().includes(query));
+      currentPage = 0;
+      renderGamesPG();
+    }
+
+    function initGame() {
+      renderHalls();
+      initThreeJS();
+      setInterval(triggerRandomGlitch, 3800);
+    }
+
+    // ==================== LOGIN SUBMIT ====================
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      playClick(); playBreach();
+
+      const user = document.getElementById('loginUser').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+      const btn = document.getElementById('connectBtn');
+      const originalText = btn.textContent;
+
+      btn.classList.add('loading');
+      btn.textContent = "ĐANG KẾT NỐI...";
+      btn.disabled = true;
+
+      showLoading(() => {
+        btn.classList.remove('loading');
+        btn.textContent = originalText;
+        btn.disabled = false;
+
+        if (user === "admin" && pass === "123456") {
+          document.getElementById('loginScreen').classList.add('hidden');
+          document.getElementById('gameScreen').classList.remove('hidden');
+          initGame();
+          showSuccessModal("KẾT NỐI THÀNH CÔNG", `Chào mừng ${user.toUpperCase()}<br>đến với TOOL HỦ 2026`);
+        } else {
+          showSuccessModal("LỖI ĐĂNG NHẬP", "Username hoặc mật khẩu không đúng!<br><br>Thử lại với:<br><strong>admin / 123456</strong>");
+        }
+      });
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      playClick(); playBreach();
+      const user = document.getElementById('regUser').value.trim() || "USER";
+      const btn = this.querySelector('button');
+      const originalText = btn.textContent;
+
+      btn.classList.add('loading');
+      btn.textContent = "ĐANG ĐĂNG KÍ...";
+      btn.disabled = true;
+
+      showLoading(() => {
+        btn.classList.remove('loading');
+        btn.textContent = originalText;
+        btn.disabled = false;
+        showSuccessModal("ĐĂNG KÍ THÀNH CÔNG", `Username: ${user}<br>Chúc bạn nổ hũ lớn năm 2026!`);
+        showLogin();
+      });
+    });
+
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal(modal.id);
+      });
+    });
+
+    console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH 2049 | FILE ĐẦY ĐỦ HOÀN CHỈNH - ANALYSIS ĐÃ REDESIGN', 'color:#00f5ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #00f5ff');
+  </script>
 </body>
 </html>
-</FILE>
