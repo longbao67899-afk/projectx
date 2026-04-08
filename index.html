@@ -19,11 +19,6 @@
             min-height: 100vh; 
             color: white; 
             overflow-x: hidden;
-            background-image: 
-                linear-gradient(rgba(0,245,255,0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(192,38,211,0.08) 1px, transparent 1px);
-            background-size: 60px 60px;
-            -webkit-tap-highlight-color: transparent;
             position: relative;
         }
 
@@ -31,23 +26,20 @@
             content: '';
             position: fixed;
             inset: 0;
-            background: linear-gradient(90deg, transparent 49%, rgba(0,245,255,0.03) 50%, transparent 51%),
-                        linear-gradient(transparent 49%, rgba(192,38,211,0.03) 50%, transparent 51%);
+            background: linear-gradient(90deg, transparent 49%, rgba(0,245,255,0.02) 50%, transparent 51%),
+                        linear-gradient(transparent 49%, rgba(192,38,211,0.02) 50%, transparent 51%);
             background-size: 80px 80px;
-            animation: gridFlow 25s linear infinite;
+            animation: gridFlow 35s linear infinite;
             pointer-events: none;
-            z-index: -2;
-            opacity: 0.6;
+            z-index: -3;
+            opacity: 0.25;
         }
         @keyframes gridFlow {
             0% { background-position: 0 0; }
             100% { background-position: 80px 80px; }
         }
 
-        .title-font { 
-            font-family: 'Orbitron', sans-serif; 
-            letter-spacing: 8px; 
-        }
+        .title-font { font-family: 'Orbitron', sans-serif; letter-spacing: 8px; }
         .neon-gold { color: var(--neon-gold); text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #c026d3, 0 0 70px #00f5ff; }
         .neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 60px #00f5ff, 0 0 90px #00f5ff; }
 
@@ -99,7 +91,14 @@
         .ratio-bar { height: 10px; background: #1e2937; border-radius: 9999px; overflow: hidden; border: 2px solid rgba(34,211,238,0.5); }
         .ratio-fill { transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
-        #particle-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.4; }
+        #particle-bg { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            pointer-events: none; 
+            z-index: -2; 
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="pb-20 scanline">
@@ -279,186 +278,170 @@ let filteredGames = pgGames.slice();
 let recommendedIndex = 0;
 let searchListenerAdded = false;
 
-// ====================== ADVANCED PARTICLE SYSTEM (NÂNG CAO) ======================
-class QuantumParticle {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 2.2;
-        this.vy = (Math.random() - 0.5) * 2.2;
-        this.size = Math.random() * 3.8 + 1.2;
-        this.hue = Math.random() * 360;
-        this.life = 1;
-        this.type = Math.random() > 0.7 ? 'orb' : (Math.random() > 0.5 ? 'spark' : 'dot'); // 3 loại particle
-        this.glow = Math.random() * 15 + 8;
+// ====================== WEBGL SHADER – PHIÊN BẢN DỊU MẮT & TỐI ƯU ======================
+let gl, program, timeLoc, mouseLoc, resolutionLoc;
+let startTime = Date.now();
+
+const vertexShaderSource = `
+    attribute vec2 a_position;
+    void main() {
+        gl_Position = vec4(a_position, 0.0, 1.0);
+    }
+`;
+
+const fragmentShaderSource = `
+    precision highp float;
+    uniform float u_time;
+    uniform vec2 u_mouse;
+    uniform vec2 u_resolution;
+
+    vec3 neonCyan   = vec3(0.0, 0.85, 0.95);
+    vec3 neonPurple = vec3(0.65, 0.12, 0.75);
+    vec3 neonGold   = vec3(0.98, 0.78, 0.15);
+
+    float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
+
+    float noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        float a = hash(i);
+        float b = hash(i + vec2(1.0, 0.0));
+        float c = hash(i + vec2(0.0, 1.0));
+        float d = hash(i + vec2(1.0, 1.0));
+        vec2 u = f * f * (3.0 - 2.0 * f);
+        return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
     }
 
-    update(mouseX, mouseY, isRepelling) {
-        // Mouse interaction mạnh mẽ
-        const dx = mouseX - this.x;
-        const dy = mouseY - this.y;
-        const dist = Math.hypot(dx, dy) || 1;
+    void main() {
+        vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+        vec2 p = (gl_FragCoord.xy - u_resolution * 0.5) / u_resolution.y;
+        vec2 mouse = (u_mouse - u_resolution * 0.5) / u_resolution.y;
 
-        if (dist < 220) {
-            const force = (220 - dist) / 220;
-            if (isRepelling) {
-                this.vx -= dx / dist * force * 4.5;
-                this.vy -= dy / dist * force * 4.5;
-            } else {
-                this.vx += dx / dist * force * 2.8;
-                this.vy += dy / dist * force * 2.8;
-            }
+        float t = u_time * 0.25; // chậm hơn, dịu hơn
+
+        // Grid nhẹ nhàng
+        vec2 grid = fract(p * 9.0 + t * 0.4);
+        float gridLine = min(smoothstep(0.0, 0.04, grid.x), smoothstep(0.0, 0.04, grid.y)) * 0.35;
+
+        // Energy flow mượt mà
+        float flow = noise(p * 3.5 + t * 0.8) * noise(p * 7.0 - t * 0.6);
+
+        // Orb dịu mắt (giảm số lượng & cường độ)
+        float orb = 0.0;
+        for (int i = 0; i < 12; i++) {
+            float fi = float(i);
+            vec2 orbPos = vec2(sin(t * 0.45 + fi) * 0.75, cos(t * 0.55 + fi * 1.1) * 0.55);
+            float d = length(p - orbPos);
+            orb += exp(-d * 22.0) * (0.45 + 0.3 * sin(t * 2.0 + fi));
         }
 
-        // Velocity damping + quantum drift
-        this.vx *= 0.965;
-        this.vy *= 0.965;
-        this.x += this.vx;
-        this.y += this.vy;
+        // Mouse glow nhẹ
+        float mouseDist = length(p - mouse);
+        float mouseGlow = exp(-mouseDist * 14.0) * 0.9;
 
-        // Bounce edges
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        // Màu dịu + tối
+        vec3 color = mix(neonCyan * 0.65, neonPurple * 0.75, flow * 1.1);
+        color = mix(color, neonGold * 0.6, gridLine * 0.8);
+        color += neonCyan * orb * 0.95;
+        color += neonGold * mouseGlow * 0.75;
 
-        // Color shift (quantum energy)
-        this.hue = (this.hue + 1.8) % 360;
-        this.life = Math.max(0.3, this.life - 0.002);
+        // Vignette mạnh để giảm chói
+        float vignette = 1.0 - length(uv - 0.5) * 0.85;
+        color *= vignette * vignette * 0.92;
+
+        // Giảm tổng độ sáng
+        color *= 0.78;
+
+        gl_FragColor = vec4(color, 1.0);
     }
+`;
 
-    draw(ctx) {
-        ctx.save();
-        const alpha = this.life * (this.type === 'orb' ? 0.95 : 0.75);
-        ctx.globalAlpha = alpha;
-
-        if (this.type === 'orb') {
-            // Quantum orb glow
-            ctx.shadowBlur = this.glow;
-            ctx.shadowColor = `hsl(${this.hue}, 100%, 85%)`;
-            ctx.fillStyle = '#ffffff';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size * 1.6, 0, Math.PI * 2);
-            ctx.fill();
-        } else if (this.type === 'spark') {
-            // Spark line
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = '#c026d3';
-            ctx.strokeStyle = `hsl(${this.hue}, 100%, 90%)`;
-            ctx.lineWidth = this.size * 0.8;
-            ctx.beginPath();
-            ctx.moveTo(this.x - this.vx * 3, this.y - this.vy * 3);
-            ctx.lineTo(this.x, this.y);
-            ctx.stroke();
-        } else {
-            // Normal dot
-            ctx.shadowBlur = 12;
-            ctx.shadowColor = '#00f5ff';
-            ctx.fillStyle = `hsl(${this.hue}, 100%, 88%)`;
-            ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
-        }
-        ctx.restore();
+function createShader(gl, type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error("Shader error:", gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader);
+        return null;
     }
+    return shader;
 }
 
-let canvas, ctx, particles = [], mouseX = 0, mouseY = 0, isRepelling = false;
+function initWebGL() {
+    const canvas = document.getElementById('particle-bg');
+    gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
 
-function initAdvancedParticles() {
-    canvas = document.getElementById('particle-bg');
-    ctx = canvas.getContext('2d');
-
-    const resize = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', resize);
-    resize();
-
-    // Tạo 280 particles (rất mượt)
-    particles = [];
-    for (let i = 0; i < 280; i++) {
-        particles.push(new QuantumParticle());
+    if (!gl) {
+        console.warn("WebGL không hỗ trợ → bỏ qua shader");
+        return;
     }
 
-    // Mouse tracking
+    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+    const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+    program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        console.error("Link error");
+        return;
+    }
+
+    gl.useProgram(program);
+
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    const positions = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
+    gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+
+    const positionLocation = gl.getAttribLocation(program, "a_position");
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    timeLoc = gl.getUniformLocation(program, "u_time");
+    mouseLoc = gl.getUniformLocation(program, "u_mouse");
+    resolutionLoc = gl.getUniformLocation(program, "u_resolution");
+
+    let mouseX = canvas.width / 2;
+    let mouseY = canvas.height / 2;
+
     document.addEventListener('mousemove', e => {
         mouseX = e.clientX;
         mouseY = e.clientY;
     });
 
-    // Click burst + hold to repel
-    canvas.addEventListener('mousedown', e => {
-        isRepelling = true;
-        createEnergyBurst(e.clientX, e.clientY, 45);
-    });
-    canvas.addEventListener('mouseup', () => isRepelling = false);
-    canvas.addEventListener('mouseleave', () => isRepelling = false);
-
-    function animate() {
-        // Trail effect (clear nhẹ)
-        ctx.fillStyle = 'rgba(5, 5, 15, 0.12)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        particles.forEach((p, i) => {
-            p.update(mouseX, mouseY, isRepelling);
-            p.draw(ctx);
-
-            // Neural connections (nâng cao)
-            for (let j = i + 1; j < particles.length; j += 3) { // tối ưu hiệu suất
-                const p2 = particles[j];
-                const dx = p.x - p2.x;
-                const dy = p.y - p2.y;
-                const distance = Math.hypot(dx, dy);
-                if (distance < 135 && distance > 8) {
-                    ctx.save();
-                    ctx.globalAlpha = (135 - distance) / 135 * 0.28;
-                    ctx.strokeStyle = `hsl(${(p.hue + p2.hue) / 2}, 100%, 85%)`;
-                    ctx.lineWidth = 0.9;
-                    ctx.shadowBlur = 4;
-                    ctx.shadowColor = '#00f5ff';
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.stroke();
-                    ctx.restore();
-                }
-            }
-        });
-
-        // Occasional quantum pulse
-        if (Math.random() < 0.018) {
-            const centerX = Math.random() * canvas.width;
-            const centerY = Math.random() * canvas.height;
-            createEnergyBurst(centerX, centerY, 18);
-        }
-
-        requestAnimationFrame(animate);
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
     }
-    animate();
+    window.addEventListener('resize', resize);
+    resize();
+
+    function render() {
+        const elapsed = (Date.now() - startTime) / 1000;
+        gl.uniform1f(timeLoc, elapsed);
+        gl.uniform2f(mouseLoc, mouseX, mouseY);
+
+        gl.clearColor(0.03, 0.02, 0.09, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        requestAnimationFrame(render);
+    }
+    render();
 }
 
-function createEnergyBurst(x, y, count) {
-    for (let i = 0; i < count; i++) {
-        const p = new QuantumParticle();
-        p.x = x;
-        p.y = y;
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 7 + 3;
-        p.vx = Math.cos(angle) * speed;
-        p.vy = Math.sin(angle) * speed;
-        p.life = 1.4;
-        p.size = Math.random() * 4 + 2;
-        particles.push(p);
-
-        // Xóa particle cũ nếu quá nhiều
-        if (particles.length > 420) particles.shift();
-    }
-}
-
-// ====================== CÁC HÀM KHÁC (giữ nguyên) ======================
+// ====================== CÁC HÀM GAME (giữ nguyên) ======================
 function countUp(element, target, suffix = '', duration = 1400) {
     let start = 0;
-    const startTime = performance.now();
+    const startTimeVal = performance.now();
     function animate(time) {
-        const elapsed = time - startTime;
+        const elapsed = time - startTimeVal;
         const progress = Math.min(elapsed / duration, 1);
         const value = Math.floor(progress * target);
         element.textContent = value + suffix;
@@ -477,7 +460,7 @@ function triggerRandomGlitch() {
     }
 }
 
-function renderHalls() { /* ... giữ nguyên như phiên bản trước */ 
+function renderHalls() {
     const grid = document.getElementById('hall-grid');
     grid.innerHTML = '';
     halls.forEach((hall, index) => {
@@ -515,7 +498,7 @@ function renderHalls() { /* ... giữ nguyên như phiên bản trước */
     });
 }
 
-function getRandomRecommended() { /* ... giữ nguyên */ 
+function getRandomRecommended() {
     recommendedIndex = Math.floor(Math.random() * pgGames.length);
     const game = pgGames[recommendedIndex];
     const ratio = Math.floor(Math.random() * 22) + 78;
@@ -527,7 +510,7 @@ function getRandomRecommended() { /* ... giữ nguyên */
     setTimeout(() => fill.style.width = ratio + '%', 300);
 }
 
-function showAnalysis(index) { /* ... giữ nguyên */ 
+function showAnalysis(index) {
     const game = pgGames[index];
     document.getElementById('pg-screen').classList.add('hidden');
     document.getElementById('other-screen').classList.add('hidden');
@@ -556,7 +539,7 @@ function showAnalysis(index) { /* ... giữ nguyên */
     document.getElementById('golden-time').textContent = `${String(future.getHours()).padStart(2,'0')}:${String(future.getMinutes()).padStart(2,'0')}`;
 }
 
-function selectHall(hallId) { /* ... giữ nguyên */ 
+function selectHall(hallId) {
     currentHall = hallId;
     document.getElementById('hall-screen').classList.add('hidden');
     if (hallId === "pg") {
@@ -570,20 +553,20 @@ function selectHall(hallId) { /* ... giữ nguyên */
     }
 }
 
-function backToHall() { /* ... giữ nguyên */ 
+function backToHall() {
     document.getElementById('pg-screen').classList.add('hidden');
     document.getElementById('other-screen').classList.add('hidden');
     document.getElementById('analysis-screen').classList.add('hidden');
     document.getElementById('hall-screen').classList.remove('hidden');
 }
 
-function backToCurrentScreen() { /* ... giữ nguyên */ 
+function backToCurrentScreen() {
     document.getElementById('analysis-screen').classList.add('hidden');
     if (currentHall === "pg") document.getElementById('pg-screen').classList.remove('hidden');
     else document.getElementById('other-screen').classList.remove('hidden');
 }
 
-function initPGScreen() { /* ... giữ nguyên */ 
+function initPGScreen() {
     getRandomRecommended();
     filteredGames = pgGames.slice();
     currentPage = 0;
@@ -596,7 +579,7 @@ function initPGScreen() { /* ... giữ nguyên */
     }
 }
 
-function renderGamesPG() { /* ... giữ nguyên */ 
+function renderGamesPG() {
     const grid = document.getElementById('game-grid');
     grid.innerHTML = '';
     const start = currentPage * gamesPerPage;
@@ -631,7 +614,7 @@ function renderGamesPG() { /* ... giữ nguyên */
     renderPaginationPG(totalPages);
 }
 
-function renderPaginationPG(totalPages) { /* ... giữ nguyên */ 
+function renderPaginationPG(totalPages) {
     const container = document.getElementById('pagination');
     container.innerHTML = '';
     for (let i = 0; i < totalPages; i++) {
@@ -642,7 +625,7 @@ function renderPaginationPG(totalPages) { /* ... giữ nguyên */
     }
 }
 
-function filterGamesPG(query) { /* ... giữ nguyên */ 
+function filterGamesPG(query) {
     query = query.toLowerCase().trim();
     filteredGames = pgGames.filter(game => game.name.toLowerCase().includes(query));
     currentPage = 0;
@@ -652,7 +635,8 @@ function filterGamesPG(query) { /* ... giữ nguyên */
 // ====================== INIT ======================
 window.onload = () => {
     renderHalls();
-    initAdvancedParticles();        // ← Particle System NÂNG CAO
+    initWebGL();   // ← Shader WebGL đã được làm dịu mắt hoàn toàn
+
     setInterval(triggerRandomGlitch, 3800);
 
     const recCard = document.getElementById('recommended-card');
@@ -664,7 +648,7 @@ window.onload = () => {
         }, 600);
     }
 
-    console.log('%c🚀 QUANTUM SẢNH 2049 – Hiệu ứng Particle NÂNG CAO đã kích hoạt!', 'color:#00f5ff; font-family:Orbitron; font-size:15px; text-shadow: 0 0 10px #00f5ff;');
+    console.log('%c🚀 QUANTUM SẢNH 2049 – WebGL Shader DỊU MẮT & TỐI ƯU!', 'color:#00f5ff; font-family:Orbitron; font-size:15px;');
 };
 </script>
 </body>
