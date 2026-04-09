@@ -10,151 +10,45 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 
+  <!-- FIREBASE SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@500;700&family=VT323&display=swap');
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background: #0a0f1f;
-      color: #00f0ff;
-      font-family: 'Orbitron', sans-serif;
-      min-height: 100dvh;
-      overflow-x: hidden;
-      overflow-y: auto;
-      position: relative;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    body { background: #0a0f1f; color: #00f0ff; font-family: 'Orbitron', sans-serif; min-height: 100dvh; overflow-x: hidden; overflow-y: auto; position: relative; -webkit-tap-highlight-color: transparent; }
     .background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://i.ibb.co/FbptYgLq/BACKGROUND-DANG-NHAP.png') center/cover no-repeat; z-index: 1; }
     .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 12, 30, 0.68); z-index: 2; }
-
-    .container {
-      position: relative; z-index: 3;
-      width: 100%; max-width: 420px; margin: 0 auto;
-      padding: 20px 15px; min-height: 100dvh;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .cyber-card {
-      background: rgba(15, 20, 45, 0.48);
-      border: 3px solid #00f0ff;
-      border-radius: 18px;
-      width: 100%;
-      padding: 35px 20px 30px;
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.6), inset 0 0 25px rgba(0, 240, 255, 0.15);
-      backdrop-filter: blur(12px);
-    }
-
+    .container { position: relative; z-index: 3; width: 100%; max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; display: flex; align-items: center; justify-content: center; }
+    .cyber-card { background: rgba(15, 20, 45, 0.48); border: 3px solid #00f0ff; border-radius: 18px; width: 100%; padding: 35px 20px 30px; box-shadow: 0 0 35px rgba(0, 240, 255, 0.6), inset 0 0 25px rgba(0, 240, 255, 0.15); backdrop-filter: blur(12px); }
     .header { text-align: center; margin-bottom: 35px; }
-    .logo {
-      font-family: 'Creepster', cursive;
-      font-size: 48px; line-height: 1.05;
-      color: #ffd700;
-      text-shadow: 0 0 15px #ffd700, 5px 5px 0 #00f0ff, -5px -5px 0 #ff00ff;
-      animation: neon-glow 1.6s infinite alternate;
-    }
-
+    .logo { font-family: 'Creepster', cursive; font-size: 48px; line-height: 1.05; color: #ffd700; text-shadow: 0 0 15px #ffd700, 5px 5px 0 #00f0ff, -5px -5px 0 #ff00ff; animation: neon-glow 1.6s infinite alternate; }
     .label { font-size: 15.5px; color: #00f0ff; margin-bottom: 8px; text-shadow: 0 0 8px #00f0ff; }
     .input-container { position: relative; margin-bottom: 22px; }
-
-    .input {
-      width: 100%;
-      background: rgba(10, 20, 45, 0.75);
-      border: 2.5px solid #00f0ff;
-      color: #fff;
-      padding: 15px 16px;
-      font-size: 17px;
-      border-radius: 10px;
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    .input:focus {
-      outline: none;
-      border-color: #00ffff;
-      background: rgba(15, 30, 65, 0.92);
-      box-shadow: 0 0 20px #00ffff, 0 0 35px rgba(0, 255, 255, 0.6), inset 0 0 15px rgba(0, 255, 255, 0.3);
-      transform: translateY(-2px);
-    }
-
-    .btn {
-      width: 100%; padding: 16px;
-      background: linear-gradient(90deg, #00f0ff, #0099ff);
-      color: #000; border: none; font-size: 19px; font-weight: bold;
-      letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
-      border-radius: 12px; margin: 12px 0;
-      position: relative; overflow: hidden;
-      box-shadow: 0 0 25px #00f0ff;
-      transition: all 0.25s ease;
-    }
-
+    .input { width: 100%; background: rgba(10, 20, 45, 0.75); border: 2.5px solid #00f0ff; color: #fff; padding: 15px 16px; font-size: 17px; border-radius: 10px; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+    .input:focus { outline: none; border-color: #00ffff; background: rgba(15, 30, 65, 0.92); box-shadow: 0 0 20px #00ffff, 0 0 35px rgba(0, 255, 255, 0.6), inset 0 0 15px rgba(0, 255, 255, 0.3); transform: translateY(-2px); }
+    .btn { width: 100%; padding: 16px; background: linear-gradient(90deg, #00f0ff, #0099ff); color: #000; border: none; font-size: 19px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 12px; margin: 12px 0; position: relative; overflow: hidden; box-shadow: 0 0 25px #00f0ff; transition: all 0.25s ease; }
     .btn.loading { animation: btnPulse 1.4s infinite alternate ease-in-out; pointer-events: none; }
     @keyframes btnPulse { 0% { box-shadow: 0 0 20px #00f0ff; } 100% { box-shadow: 0 0 45px #00ffff, 0 0 70px #00ffff; } }
-
-    .guide-link, .register-link {
-      display: block; text-align: center; margin: 18px 0 8px;
-      color: #00ccff; font-size: 15.5px; text-decoration: none;
-      text-shadow: 0 0 8px #00f0ff; cursor: pointer;
-    }
-
+    .guide-link, .register-link { display: block; text-align: center; margin: 18px 0 8px; color: #00ccff; font-size: 15.5px; text-decoration: none; text-shadow: 0 0 8px #00f0ff; cursor: pointer; }
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,30,0.88); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
-    .modal-content {
-      background: rgba(15, 20, 45, 0.95);
-      border: 3px solid #00f0ff;
-      border-radius: 18px;
-      width: 100%; max-width: 380px;
-      padding: 32px 25px;
-      text-align: center;
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.9);
-      animation: modalPop 0.4s ease forwards;
-    }
+    .modal-content { background: rgba(15, 20, 45, 0.95); border: 3px solid #00f0ff; border-radius: 18px; width: 100%; max-width: 380px; padding: 32px 25px; text-align: center; box-shadow: 0 0 30px rgba(0, 240, 255, 0.9); animation: modalPop 0.4s ease forwards; }
     .modal-title { font-family: 'Creepster', cursive; font-size: 34px; color: #ffd700; text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ff00ff, 0 0 40px #00f0ff; animation: neon-title 1.8s infinite alternate; }
     @keyframes modalPop { 0% { transform: scale(0.65) translateY(30px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
     @keyframes neon-glow { 0% { text-shadow: 0 0 15px #ffd700, 5px 5px 0 #00f0ff; } 100% { text-shadow: 0 0 25px #ffd700, 0 0 40px #ffd700, 6px 6px 0 #ff00ff; } }
     @keyframes neon-title { 0% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ff00ff; } 100% { text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #ff00ff, 0 0 55px #00f0ff; } }
-
     :root { --neon-gold: #ffd700; --neon-cyan: #00f5ff; }
     .title-font { font-family: 'Orbitron', sans-serif; letter-spacing: 8px; }
     .neon-gold { color: var(--neon-gold); text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #c026d3, 0 0 70px #00f5ff; }
     .neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 60px #00f5ff, 0 0 90px #00f5ff; }
-
-    @keyframes advancedGlitch { 0% { text-shadow: 4px 0 #ff00ff, -4px 0 #00ffff, 0 0 20px #ffd700; } 15% { text-shadow: -4px 0 #ff00ff, 4px 0 #00ffff, 0 0 30px #c026d3; } 30% { text-shadow: 3px 3px #00ffff, -3px -3px #ff00ff, 0 0 40px #ffd700; } 45% { text-shadow: -3px -3px #ff00ff, 3px 3px #00ffff, 0 0 25px #00f5ff; } 60% { text-shadow: 5px 0 #c026d3, -5px 0 #ffd700; } 75% { text-shadow: -2px 4px #00f5ff, 2px -4px #ff00ff; } 90% { text-shadow: 4px -2px #ffd700, -4px 2px #c026d3; } 100% { text-shadow: 4px 0 #ff00ff, -4px 0 #00ffff, 0 0 20px #ffd700; } }
-    .glitch { animation: advancedGlitch 0.6s linear infinite alternate; }
-
-    .game-screen {
-      max-width: 420px;
-      margin: 0 auto;
-      padding: 20px 15px;
-      min-height: 100dvh;
-      overflow-y: auto;
-      position: relative;
-      z-index: 10;
-    }
-
+    .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; }
     .hall-card, .game-card, #recommended-card { transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
     .hall-card:hover, .game-card:hover { transform: scale(1.08) translateY(-18px) rotateX(12deg) rotateY(12deg); box-shadow: 0 0 180px rgba(34, 211, 238, 0.95); }
-
     .ratio-bar { height: 10px; background: #1e2937; border-radius: 9999px; overflow: hidden; border: 2px solid rgba(34,211,238,0.5); }
     .ratio-fill { transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-
-    #particle-bg { 
-      position: fixed !important; 
-      top: 0; left: 0; 
-      width: 100% !important; height: 100% !important; 
-      pointer-events: none; 
-      z-index: -2; 
-      opacity: 1;
-    }
-
-    .analysis-card {
-      background: linear-gradient(145deg, #0a0718, #1a1433);
-      border: 4px solid #22d3ee;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 0 60px rgba(34, 211, 238, 0.9), inset 0 0 40px rgba(34, 211, 238, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
+    #particle-bg { position: fixed !important; top: 0; left: 0; width: 100% !important; height: 100% !important; pointer-events: none; z-index: -2; opacity: 1; }
+    .analysis-card { background: linear-gradient(145deg, #0a0718, #1a1433); border: 4px solid #22d3ee; border-radius: 24px; padding: 24px; box-shadow: 0 0 60px rgba(34, 211, 238, 0.9), inset 0 0 40px rgba(34, 211, 238, 0.3); }
     .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 24px 0; }
     .stat-box { background: rgba(15, 23, 42, 0.8); border: 2px solid #67e8f9; border-radius: 16px; padding: 14px; text-align: center; box-shadow: 0 0 20px rgba(103, 232, 249, 0.4); }
     .stat-value { font-size: 28px; font-weight: bold; color: #67e8f9; text-shadow: 0 0 15px #67e8f9; }
@@ -167,35 +61,21 @@
   <div id="loginScreen">
     <div class="background"></div>
     <div class="overlay"></div>
-
     <div class="container">
       <div class="cyber-card">
-
         <div id="loginSection">
-          <div class="header">
-            <div class="logo">TOOL HỦ<br>2026</div>
-          </div>
-
+          <div class="header"><div class="logo">TOOL HỦ<br>2026</div></div>
           <form id="loginForm">
-            <div class="input-container">
-              <div class="label">USERNAME</div>
-              <input type="text" class="input" id="loginUser" placeholder="ENTER ALIAS" required>
-            </div>
-            <div class="input-container">
-              <div class="label">MẬT KHẨU</div>
-              <input type="password" class="input" id="loginPass" placeholder="••••••••" required>
-            </div>
+            <div class="input-container"><div class="label">USERNAME</div><input type="text" class="input" id="loginUser" placeholder="ENTER ALIAS" required></div>
+            <div class="input-container"><div class="label">MẬT KHẨU</div><input type="password" class="input" id="loginPass" placeholder="••••••••" required></div>
             <button type="submit" class="btn" id="connectBtn">KẾT NỐI</button>
           </form>
-
           <a href="#" class="guide-link" onclick="showGuideModal()">HƯỚNG DẪN SỬ DỤNG TOOL</a>
           <a href="#" class="register-link" onclick="showRegisterChoiceModal()">ĐĂNG KÍ NGAY</a>
         </div>
 
         <div id="registerSection" style="display: none;">
-          <div class="header">
-            <div class="logo" style="font-size: 37px;">ĐĂNG KÍ TOOL</div>
-          </div>
+          <div class="header"><div class="logo" style="font-size: 37px;">ĐĂNG KÍ TOOL</div></div>
           <form id="registerForm">
             <div class="input-container"><div class="label">USERNAME</div><input type="text" class="input" id="regUser" placeholder="CHỌN TÊN ĐĂNG NHẬP" required></div>
             <div class="input-container"><div class="label">SỐ ĐIỆN THOẠI</div><input type="tel" class="input" id="regPhone" placeholder="0123 456 789" required></div>
@@ -220,12 +100,7 @@
       <div class="modal-content">
         <canvas id="particleGuide"></canvas>
         <div class="modal-title">HƯỚNG DẪN</div>
-        <div class="modal-message">
-          BƯỚC 1: ĐĂNG KÍ TÀI KHOẢN GAME:<br>
-          <strong>WWW.FLY8879.SITE</strong><br><br>
-          BƯỚC 2: ĐĂNG KÍ TK TOOL (GIỐNG TK GAME)<br><br>
-          BƯỚC 3: LÊN ĐIỂM VÀ ĐỢI NĂNG LƯỢNG TRONG TOOL LÊN
-        </div>
+        <div class="modal-message">BƯỚC 1: ĐĂNG KÍ TÀI KHOẢN GAME:<br><strong>WWW.FLY8879.SITE</strong><br><br>BƯỚC 2: ĐĂNG KÍ TK TOOL (GIỐNG TK GAME)<br><br>BƯỚC 3: LÊN ĐIỂM VÀ ĐỢI NĂNG LƯỢNG TRONG TOOL LÊN</div>
         <button class="modal-btn" onclick="closeModal('guideModal')">ĐÓNG</button>
       </div>
     </div>
@@ -252,8 +127,6 @@
 
   <!-- GAME SCREEN -->
   <div id="gameScreen" class="game-screen hidden">
-
-    <!-- HALL SELECTION -->
     <div id="hall-screen">
       <div class="text-center mb-12">
         <h1 id="main-title" class="title-font text-5xl neon-gold tracking-widest glitch">QUANTUM SẢNH</h1>
@@ -264,11 +137,9 @@
       <div class="space-y-10" id="hall-grid"></div>
     </div>
 
-    <!-- PG SCREEN -->
     <div id="pg-screen" class="hidden">
       <button onclick="backToHall()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg active:scale-95">← QUANTUM HUB</button>
       <h1 class="title-font text-4xl neon-gold text-center mb-8 glitch">SẢNH PG</h1>
-
       <div onclick="showAnalysis(recommendedIndex)" id="recommended-card" class="cursor-pointer bg-gradient-to-br from-purple-950 to-violet-950 rounded-3xl p-6 border-4 border-yellow-400 shadow-2xl mb-10">
         <div class="text-center mb-4"><span class="text-yellow-400 text-xs font-bold tracking-widest">⭐ NEURAL RECOMMENDATION</span></div>
         <div class="flex justify-center"><img id="recommended-img" class="w-52 h-52 object-contain" alt=""></div>
@@ -278,21 +149,16 @@
           <div class="ratio-bar"><div id="recommended-fill" class="ratio-fill h-full bg-gradient-to-r from-emerald-400 to-cyan-400 w-0"></div></div>
         </div>
       </div>
-
       <div class="mb-6"><input id="search-input" type="text" placeholder="🔍 TÌM TRÒ CHƠI QUANTUM..." class="w-full px-6 py-4 rounded-2xl bg-[#0f172a] border-2 border-cyan-400 focus:border-cyan-300 text-white placeholder-gray-400 text-base"></div>
-
       <div class="flex justify-between items-center mb-5 px-1">
         <h2 class="text-xl font-bold neon-gold">CÁC TRÒ CHƠI KHÁC</h2>
         <div id="page-info" class="text-cyan-400 text-sm font-medium"></div>
       </div>
-
       <div id="game-grid" class="grid grid-cols-2 gap-6"></div>
       <div class="flex justify-center gap-3 mt-10" id="pagination"></div>
-
       <button onclick="backToHall()" class="mt-12 w-full py-5 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-3xl text-xl font-bold active:scale-95">← QUAY VỀ QUANTUM HUB</button>
     </div>
 
-    <!-- OTHER HALL -->
     <div id="other-screen" class="hidden">
       <button onclick="backToHall()" class="mb-8 flex items-center gap-2 text-cyan-300 hover:text-white active:scale-95">← QUAY VỀ QUANTUM HUB</button>
       <div class="text-center mt-20">
@@ -302,64 +168,28 @@
       </div>
     </div>
 
-    <!-- ANALYSIS SCREEN -->
     <div id="analysis-screen" class="hidden">
       <button onclick="backToCurrentScreen()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg active:scale-95">← QUAY LẠI</button>
-
       <div class="analysis-card">
-        <div class="text-center mb-6">
-          <h1 id="game-title" class="title-font text-3xl neon-gold glitch"></h1>
-        </div>
-
+        <div class="text-center mb-6"><h1 id="game-title" class="title-font text-3xl neon-gold glitch"></h1></div>
         <div class="flex justify-center mb-8 relative">
           <img id="game-avatar-analysis" class="w-64 h-64 object-contain rounded-3xl border-4 border-cyan-400 shadow-[0_0_80px_-10px_#22d3ee]" alt="">
           <div class="absolute -inset-4 border border-cyan-400/30 rounded-3xl animate-pulse"></div>
         </div>
-
         <div class="stat-grid">
-          <div class="stat-box">
-            <div class="stat-value" id="win-prob-text">93%</div>
-            <div class="stat-label">XÁC SUẤT NỔ HŨ</div>
-            <div class="h-2 bg-gray-800 rounded-full mt-3 overflow-hidden"><div id="win-prob-fill" class="h-2 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full" style="width:93%"></div></div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-value" id="rtp-value">96.8%</div>
-            <div class="stat-label">RTP</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-value" id="volatility-value">CAO</div>
-            <div class="stat-label">VOLATILITY</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-value" id="max-win-value">×8,500</div>
-            <div class="stat-label">MAX WIN</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-value" id="hit-frequency">1/3.8</div>
-            <div class="stat-label">HIT FREQUENCY</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-value text-amber-400" id="neural-score">97</div>
-            <div class="stat-label">NEURAL AI SCORE</div>
-          </div>
+          <div class="stat-box"><div class="stat-value" id="win-prob-text">93%</div><div class="stat-label">XÁC SUẤT NỔ HŨ</div><div class="h-2 bg-gray-800 rounded-full mt-3 overflow-hidden"><div id="win-prob-fill" class="h-2 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full" style="width:93%"></div></div></div>
+          <div class="stat-box"><div class="stat-value" id="rtp-value">96.8%</div><div class="stat-label">RTP</div></div>
+          <div class="stat-box"><div class="stat-value" id="volatility-value">CAO</div><div class="stat-label">VOLATILITY</div></div>
+          <div class="stat-box"><div class="stat-value" id="max-win-value">×8,500</div><div class="stat-label">MAX WIN</div></div>
+          <div class="stat-box"><div class="stat-value" id="hit-frequency">1/3.8</div><div class="stat-label">HIT FREQUENCY</div></div>
+          <div class="stat-box"><div class="stat-value text-amber-400" id="neural-score">97</div><div class="stat-label">NEURAL AI SCORE</div></div>
         </div>
-
         <div class="border-t border-cyan-400/30 pt-6 mb-6">
           <div class="flex justify-between items-center">
-            <div>
-              <p class="text-xs text-white/60">GIỜ VÀNG QUANTUM</p>
-              <div class="flex items-center gap-3 text-2xl">
-                <span id="current-time" class="font-mono">14:01</span>
-                <span class="text-cyan-400">→</span>
-                <span id="golden-time" class="neon-gold font-bold font-mono">14:08</span>
-              </div>
-            </div>
-            <div class="text-right">
-              <p class="text-emerald-400 text-sm font-bold" id="countdown-time">CÒN 7 PHÚT</p>
-            </div>
+            <div><p class="text-xs text-white/60">GIỜ VÀNG QUANTUM</p><div class="flex items-center gap-3 text-2xl"><span id="current-time" class="font-mono">14:01</span><span class="text-cyan-400">→</span><span id="golden-time" class="neon-gold font-bold font-mono">14:08</span></div></div>
+            <div class="text-right"><p class="text-emerald-400 text-sm font-bold" id="countdown-time">CÒN 7 PHÚT</p></div>
           </div>
         </div>
-
         <div class="border-t border-cyan-400/30 pt-6">
           <h3 class="text-center text-purple-300 font-bold tracking-widest mb-4">⚡ SPIN PROTOCOL</h3>
           <div class="grid grid-cols-3 gap-4 text-center">
@@ -368,7 +198,6 @@
             <div><p class="text-xs text-white/60">QUAY NHANH</p><p id="fast-spins" class="text-4xl font-semibold text-amber-400">44</p></div>
           </div>
         </div>
-
         <div class="mt-8 bg-black/40 border border-cyan-400/50 rounded-2xl p-5 text-sm leading-relaxed">
           <p class="text-cyan-300 font-bold mb-2">NEURAL AI INSIGHT:</p>
           <p id="ai-insight" class="text-white/90">Trò này đang ở giai đoạn “Quantum Hot”. Năng lượng tích tụ cực mạnh. Khuyến nghị spin tối thiểu 80 vòng với bet 2.5x để kích hoạt nổ hũ lớn.</p>
@@ -385,7 +214,20 @@
   <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/2572/2572.wav"></audio>
 
   <script>
-    // ==================== LOGIN JS ====================
+    // ==================== FIREBASE CONFIG ====================
+    const firebaseConfig = {
+      apiKey: "AIzaSyB-RQXa_hdwslP9ryEJZz8Idn51K3DvL3Y",
+      authDomain: "project-x-ebdcb.firebaseapp.com",
+      projectId: "project-x-ebdcb",
+      storageBucket: "project-x-ebdcb.firebasestorage.app",
+      messagingSenderId: "606237007295",
+      appId: "1:606237007295:web:20561f86cdb4ae9f4d950a",
+      measurementId: "G-Q60BY5GM13"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ==================== CÁC HÀM CƠ BẢN ====================
     const click = document.getElementById('clickSound');
     const breach = document.getElementById('breachSound');
     const successSound = document.getElementById('successSound');
@@ -394,69 +236,6 @@
     function playBreach() { breach.currentTime = 0; breach.play().catch(()=>{}); }
     function playSuccess() { successSound.currentTime = 0; successSound.play().catch(()=>{}); }
 
-    const neonColors = ['#00f0ff', '#ff00ff', '#ffd700', '#00ff9f'];
-
-    class NeonParticle {
-      constructor(canvas) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height * 0.7;
-        this.size = Math.random() * 2.8 + 1.3;
-        this.speedX = Math.random() * 1.1 - 0.55;
-        this.speedY = Math.random() * 0.85 - 0.25;
-        this.color = neonColors[Math.floor(Math.random() * neonColors.length)];
-        this.opacity = Math.random() * 0.7 + 0.45;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x < 0 || this.x > this.canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > this.canvas.height) this.speedY *= -1;
-        this.opacity = 0.45 + Math.sin(Date.now() / 280) * 0.35;
-      }
-      draw() {
-        this.ctx.save();
-        this.ctx.globalAlpha = this.opacity;
-        this.ctx.shadowBlur = 18;
-        this.ctx.shadowColor = this.color;
-        this.ctx.fillStyle = this.color;
-        this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        this.ctx.fill();
-        this.ctx.restore();
-      }
-    }
-
-    function createParticleSystem(canvasId) {
-      const canvas = document.getElementById(canvasId);
-      if (!canvas) return null;
-      const ctx = canvas.getContext('2d');
-      let particles = [];
-      let animationFrame;
-
-      function resize() {
-        const rect = canvas.parentElement.getBoundingClientRect();
-        canvas.width = rect.width;
-        canvas.height = rect.height;
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if (particles.length < 68) particles.push(new NeonParticle(canvas));
-        for (let i = 0; i < particles.length; i++) {
-          particles[i].update();
-          particles[i].draw();
-          if (Math.random() < 0.011) { particles.splice(i, 1); i--; }
-        }
-        animationFrame = requestAnimationFrame(animate);
-      }
-      resize();
-      window.addEventListener('resize', resize);
-      animate();
-      return { stop: () => cancelAnimationFrame(animationFrame) };
-    }
-
     function showLoading(callback) {
       const loadingScreen = document.getElementById('loadingScreen');
       const progressBar = document.getElementById('progressBar');
@@ -464,7 +243,6 @@
       loadingScreen.style.display = 'flex';
       progressBar.style.width = '0%';
       let progress = 0;
-
       const interval = setInterval(() => {
         progress += Math.random() * 13 + 8;
         if (progress > 100) progress = 100;
@@ -492,18 +270,12 @@
 
     function showGuideModal() {
       playClick();
-      const modal = document.getElementById('guideModal');
-      modal.style.display = 'flex';
-      if (!window.particleSystems) window.particleSystems = {};
-      if (!window.particleSystems.guide) window.particleSystems.guide = createParticleSystem('particleGuide');
+      document.getElementById('guideModal').style.display = 'flex';
     }
 
     function showRegisterChoiceModal() {
       playClick();
-      const modal = document.getElementById('registerChoiceModal');
-      modal.style.display = 'flex';
-      if (!window.particleSystems) window.particleSystems = {};
-      if (!window.particleSystems.choice) window.particleSystems.choice = createParticleSystem('particleChoice');
+      document.getElementById('registerChoiceModal').style.display = 'flex';
     }
 
     function registerTool() { closeModal('registerChoiceModal'); showRegister(); }
@@ -525,12 +297,100 @@
       document.getElementById('registerSection').style.display = 'none';
     }
 
-    // ==================== GAME DATA - FULL 161 TRÒ CHƠI ====================
+    // ==================== REGISTER FORM ====================
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      playClick(); playBreach();
+
+      const username = document.getElementById('regUser').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const password = document.getElementById('regPass').value.trim();
+
+      if (!username || !phone || !password) {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
+      }
+
+      const btn = this.querySelector('button');
+      const originalText = btn.textContent;
+      btn.classList.add('loading');
+      btn.textContent = "ĐANG LƯU VÀO FIREBASE...";
+      btn.disabled = true;
+
+      try {
+        await db.collection("users").add({
+          username: username,
+          phone: phone,
+          password: password,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          status: "active"
+        });
+
+        showSuccessModal("ĐĂNG KÍ THÀNH CÔNG", `Username: ${username}<br>SĐT: ${phone}<br>Đã lưu vào Firebase!`);
+        showLogin();
+      } catch (error) {
+        console.error("Lỗi Firebase:", error);
+        showSuccessModal("LỖI", "Không thể lưu vào Firebase.<br>Kiểm tra Firestore Rules.");
+      } finally {
+        btn.classList.remove('loading');
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    });
+
+    // ==================== LOGIN FORM - KIỂM TRA FIRESTORE ====================
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      playClick(); playBreach();
+
+      const username = document.getElementById('loginUser').value.trim();
+      const password = document.getElementById('loginPass').value.trim();
+      const btn = document.getElementById('connectBtn');
+      const originalText = btn.textContent;
+
+      btn.classList.add('loading');
+      btn.textContent = "ĐANG KIỂM TRA...";
+      btn.disabled = true;
+
+      try {
+        const querySnapshot = await db.collection("users")
+          .where("username", "==", username)
+          .get();
+
+        if (querySnapshot.empty) {
+          showSuccessModal("LỖI ĐĂNG NHẬP", "Tài khoản không tồn tại!");
+          return;
+        }
+
+        let userData = null;
+        querySnapshot.forEach(doc => {
+          userData = doc.data();
+        });
+
+        if (userData && userData.password === password) {
+          document.getElementById('loginScreen').classList.add('hidden');
+          document.getElementById('gameScreen').classList.remove('hidden');
+          initGame();
+          showSuccessModal("ĐĂNG NHẬP THÀNH CÔNG", `Chào mừng ${username.toUpperCase()}<br>đến với TOOL HỦ 2026`);
+        } else {
+          showSuccessModal("LỖI ĐĂNG NHẬP", "Mật khẩu không đúng!");
+        }
+      } catch (error) {
+        console.error("Lỗi Firebase:", error);
+        showSuccessModal("LỖI", "Không thể kết nối Firebase.");
+      } finally {
+        btn.classList.remove('loading');
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    });
+
+    // ==================== GAME DATA - 161 TRÒ CHƠI ====================
     const halls = [
-      { id: "pg",   name: "SẢNH PG",   img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
+      { id: "pg", name: "SẢNH PG", img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
       { id: "jili", name: "SẢNH JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
       { id: "168g", name: "SẢNH 168G", img: "https://i.ibb.co/rKdGGjyN/S-NH-168-GAME.png" },
-      { id: "fc",   name: "SẢNH FC",   img: "https://i.ibb.co/CrjMgMK/S-NH-FC.png" }
+      { id: "fc", name: "SẢNH FC", img: "https://i.ibb.co/CrjMgMK/S-NH-FC.png" }
     ];
 
     const originalPGGames = [
@@ -678,7 +538,7 @@
     let recommendedIndex = 0;
     let searchListenerAdded = false;
 
-    // Three.js Particle Background
+    // ==================== THREE.JS & GAME FUNCTIONS ====================
     let scene, camera, renderer, particleSystem, connectionLines;
     let particlesCount = 4200;
     let time = 0;
@@ -763,27 +623,6 @@
         requestAnimationFrame(animate);
       }
       animate();
-    }
-
-    function countUp(el, target, suffix = '', duration = 1400) {
-      let start = 0;
-      const startTime = performance.now();
-      function step(now) {
-        const progress = Math.min((now - startTime) / duration, 1);
-        el.textContent = Math.floor(progress * target) + suffix;
-        if (progress < 1) requestAnimationFrame(step);
-        else el.textContent = target + suffix;
-      }
-      requestAnimationFrame(step);
-    }
-
-    function triggerRandomGlitch() {
-      const title = document.getElementById('main-title');
-      if (title) {
-        title.classList.remove('glitch');
-        void title.offsetWidth;
-        title.classList.add('glitch');
-      }
     }
 
     function renderHalls() {
@@ -948,63 +787,28 @@
       setInterval(triggerRandomGlitch, 3800);
     }
 
-    // LOGIN SUBMIT
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      playClick(); playBreach();
+    function triggerRandomGlitch() {
+      const title = document.getElementById('main-title');
+      if (title) {
+        title.classList.remove('glitch');
+        void title.offsetWidth;
+        title.classList.add('glitch');
+      }
+    }
 
-      const user = document.getElementById('loginUser').value.trim();
-      const pass = document.getElementById('loginPass').value.trim();
-      const btn = document.getElementById('connectBtn');
-      const originalText = btn.textContent;
+    function countUp(el, target, suffix = '', duration = 1400) {
+      let start = 0;
+      const startTime = performance.now();
+      function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        el.textContent = Math.floor(progress * target) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target + suffix;
+      }
+      requestAnimationFrame(step);
+    }
 
-      btn.classList.add('loading');
-      btn.textContent = "ĐANG KẾT NỐI...";
-      btn.disabled = true;
-
-      showLoading(() => {
-        btn.classList.remove('loading');
-        btn.textContent = originalText;
-        btn.disabled = false;
-
-        if (user === "admin" && pass === "123456") {
-          document.getElementById('loginScreen').classList.add('hidden');
-          document.getElementById('gameScreen').classList.remove('hidden');
-          initGame();
-          showSuccessModal("KẾT NỐI THÀNH CÔNG", `Chào mừng ${user.toUpperCase()}<br>đến với TOOL HỦ 2026`);
-        } else {
-          showSuccessModal("LỖI ĐĂNG NHẬP", "Username hoặc mật khẩu không đúng!<br><br>Thử lại với:<br><strong>admin / 123456</strong>");
-        }
-      });
-    });
-
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      playClick(); playBreach();
-      const user = document.getElementById('regUser').value.trim() || "USER";
-      const btn = this.querySelector('button');
-      const originalText = btn.textContent;
-
-      btn.classList.add('loading');
-      btn.textContent = "ĐANG ĐĂNG KÍ...";
-      btn.disabled = true;
-
-      showLoading(() => {
-        btn.classList.remove('loading');
-        btn.textContent = originalText;
-        btn.disabled = false;
-        showSuccessModal("ĐĂNG KÍ THÀNH CÔNG", `Username: ${user}<br>Chúc bạn nổ hũ lớn năm 2026!`);
-        showLogin();
-      });
-    });
-
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal) closeModal(modal.id);
-      });
-    });
-
-    console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH 2049 | FULL 161 TRÒ CHƠI + SPIN PROTOCOL', 'color:#00f5ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #00f5ff');
+    console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH + FIREBASE FULL | 161 GAME HOÀN CHỈNH', 'color:#00f5ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #00f5ff');
   </script>
 </body>
 </html>
