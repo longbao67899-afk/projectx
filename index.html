@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>TOOL HỦ 2026 • QUANTUM SẢNH</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@500;700&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -28,7 +29,7 @@
     .input-container { position: relative; margin-bottom: 22px; }
     .input { width: 100%; background: rgba(10, 20, 45, 0.75); border: 2.5px solid #00f0ff; color: #fff; padding: 15px 16px; font-size: 17px; border-radius: 10px; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
     .input:focus { outline: none; border-color: #00ffff; background: rgba(15, 30, 65, 0.92); box-shadow: 0 0 20px #00ffff, 0 0 35px rgba(0, 255, 255, 0.6), inset 0 0 15px rgba(0, 255, 255, 0.3); transform: translateY(-2px); }
-    .btn { width: 100%; padding: 16px; background: linear-gradient(90deg, #00f0ff, #0099ff); color: #000; border: none; font-size: 19px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 12px; margin: 12px 0; position: relative; overflow: hidden; box-shadow: 0 0 25px #00f0ff; transition: all 0.25s ease; }
+    .btn { width: 100%; padding: 16px; background: linear-gradient(90deg, #00f0ff, #0099ff); color: #000; border: none; font-size: 19px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 12px; margin: 12px 0; position: relative; overflow: hidden; box-shadow: 0 0 25px #00f0ff; transition: all 0.25s ease; touch-action: manipulation; }
     .btn.loading { animation: btnPulse 1.4s infinite alternate ease-in-out; pointer-events: none; }
     @keyframes btnPulse { 0% { box-shadow: 0 0 20px #00f0ff; } 100% { box-shadow: 0 0 45px #00ffff, 0 0 70px #00ffff; } }
     .guide-link, .register-link { display: block; text-align: center; margin: 18px 0 8px; color: #00ccff; font-size: 15.5px; text-decoration: none; text-shadow: 0 0 8px #00f0ff; cursor: pointer; }
@@ -42,7 +43,7 @@
     .title-font { font-family: 'Orbitron', sans-serif; letter-spacing: 8px; }
     .neon-gold { color: var(--neon-gold); text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #c026d3, 0 0 70px #00f5ff; }
     .neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 60px #00f5ff, 0 0 90px #00f5ff; }
-    .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; }
+    .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; -webkit-overflow-scrolling: touch; }
     .hall-card, .game-card, #recommended-card { transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
     .hall-card:hover, .game-card:hover { transform: scale(1.08) translateY(-18px) rotateX(12deg) rotateY(12deg); box-shadow: 0 0 180px rgba(34, 211, 238, 0.95); }
     .ratio-bar { height: 10px; background: #1e2937; border-radius: 9999px; overflow: hidden; border: 2px solid rgba(34,211,238,0.5); }
@@ -53,6 +54,14 @@
     .stat-box { background: rgba(15, 23, 42, 0.8); border: 2px solid #67e8f9; border-radius: 16px; padding: 14px; text-align: center; box-shadow: 0 0 20px rgba(103, 232, 249, 0.4); }
     .stat-value { font-size: 28px; font-weight: bold; color: #67e8f9; text-shadow: 0 0 15px #67e8f9; }
     .stat-label { font-size: 13px; color: #a5f3fc; margin-top: 4px; }
+
+    /* TỐI ƯU MOBILE */
+    @media (max-width: 480px) {
+      .input, .btn { padding: 14px 16px; font-size: 16px; }
+      .logo { font-size: 42px; }
+      .modal-content { max-width: 92%; padding: 28px 20px; }
+      .game-screen { padding: 15px 10px; }
+    }
   </style>
 </head>
 <body>
@@ -338,7 +347,7 @@
       }
     });
 
-    // ==================== LOGIN FORM - KIỂM TRA FIRESTORE ====================
+    // ==================== LOGIN FORM - KHÔNG GỢI Ý ADMIN ====================
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       playClick(); playBreach();
@@ -385,7 +394,7 @@
       }
     });
 
-    // ==================== GAME DATA - 161 TRÒ CHƠI ====================
+    // ==================== GAME DATA - 161 TRÒ CHƠI FULL ====================
     const halls = [
       { id: "pg", name: "SẢNH PG", img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
       { id: "jili", name: "SẢNH JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
@@ -808,7 +817,7 @@
       requestAnimationFrame(step);
     }
 
-    console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH + FIREBASE FULL | 161 GAME HOÀN CHỈNH', 'color:#00f5ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #00f5ff');
+    console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH + FIREBASE FULL | 161 GAME + MOBILE OPTIMIZED', 'color:#00f5ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #00f5ff');
   </script>
 </body>
 </html>
