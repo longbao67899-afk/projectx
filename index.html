@@ -26,7 +26,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* ==================== LOGIN STYLE ==================== */
     .background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://i.ibb.co/FbptYgLq/BACKGROUND-DANG-NHAP.png') center/cover no-repeat; z-index: 1; }
     .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 12, 30, 0.68); z-index: 2; }
 
@@ -98,7 +97,6 @@
       text-shadow: 0 0 8px #00f0ff; cursor: pointer;
     }
 
-    /* MODAL */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,30,0.88); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
     .modal-content {
       background: rgba(15, 20, 45, 0.95);
@@ -115,7 +113,6 @@
     @keyframes neon-glow { 0% { text-shadow: 0 0 15px #ffd700, 5px 5px 0 #00f0ff; } 100% { text-shadow: 0 0 25px #ffd700, 0 0 40px #ffd700, 6px 6px 0 #ff00ff; } }
     @keyframes neon-title { 0% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ff00ff; } 100% { text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #ff00ff, 0 0 55px #00f0ff; } }
 
-    /* ==================== GAME STYLE ==================== */
     :root { --neon-gold: #ffd700; --neon-cyan: #00f5ff; }
     .title-font { font-family: 'Orbitron', sans-serif; letter-spacing: 8px; }
     .neon-gold { color: var(--neon-gold); text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #c026d3, 0 0 70px #00f5ff; }
@@ -149,7 +146,6 @@
       opacity: 1;
     }
 
-    /* ANALYSIS REDESIGN */
     .analysis-card {
       background: linear-gradient(145deg, #0a0718, #1a1433);
       border: 4px solid #22d3ee;
@@ -167,7 +163,7 @@
 </head>
 <body>
 
-  <!-- ==================== LOGIN SCREEN ==================== -->
+  <!-- LOGIN SCREEN -->
   <div id="loginScreen">
     <div class="background"></div>
     <div class="overlay"></div>
@@ -254,7 +250,7 @@
     </div>
   </div>
 
-  <!-- ==================== GAME SCREEN ==================== -->
+  <!-- GAME SCREEN -->
   <div id="gameScreen" class="game-screen hidden">
 
     <!-- HALL SELECTION -->
@@ -306,7 +302,7 @@
       </div>
     </div>
 
-    <!-- ANALYSIS SCREEN - ĐÃ REDESIGN ĐẦY ĐỦ -->
+    <!-- ANALYSIS SCREEN -->
     <div id="analysis-screen" class="hidden">
       <button onclick="backToCurrentScreen()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg active:scale-95">← QUAY LẠI</button>
 
@@ -377,10 +373,6 @@
           <p class="text-cyan-300 font-bold mb-2">NEURAL AI INSIGHT:</p>
           <p id="ai-insight" class="text-white/90">Trò này đang ở giai đoạn “Quantum Hot”. Năng lượng tích tụ cực mạnh. Khuyến nghị spin tối thiểu 80 vòng với bet 2.5x để kích hoạt nổ hũ lớn.</p>
         </div>
-
-        <button onclick="startQuantumSpin()" class="mt-8 w-full py-5 bg-gradient-to-r from-amber-400 to-yellow-400 text-black font-bold text-xl rounded-3xl shadow-[0_0_40px_#fcd34d] active:scale-95 transition-all">
-          🚀 BẮT ĐẦU QUANTUM SPIN
-        </button>
       </div>
     </div>
 
@@ -533,7 +525,7 @@
       document.getElementById('registerSection').style.display = 'none';
     }
 
-    // ==================== GAME DATA ====================
+    // ==================== GAME DATA - FULL 161 TRÒ CHƠI ====================
     const halls = [
       { id: "pg",   name: "SẢNH PG",   img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
       { id: "jili", name: "SẢNH JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
@@ -686,7 +678,7 @@
     let recommendedIndex = 0;
     let searchListenerAdded = false;
 
-    // Three.js
+    // Three.js Particle Background
     let scene, camera, renderer, particleSystem, connectionLines;
     let particlesCount = 4200;
     let time = 0;
@@ -862,10 +854,6 @@
       document.getElementById('ai-insight').textContent = "Trò này đang ở giai đoạn “Quantum Hot”. Năng lượng tích tụ cực mạnh. Khuyến nghị spin tối thiểu 80 vòng với bet 2.5x để kích hoạt nổ hũ lớn.";
     }
 
-    function startQuantumSpin() {
-      alert("🔥 QUANTUM SPIN MODE ĐÃ KÍCH HOẠT!\n\nTool đang mô phỏng spin tự động với năng lượng tối đa...");
-    }
-
     function selectHall(hallId) {
       currentHall = hallId;
       document.getElementById('hall-screen').classList.add('hidden');
@@ -960,7 +948,7 @@
       setInterval(triggerRandomGlitch, 3800);
     }
 
-    // ==================== LOGIN SUBMIT ====================
+    // LOGIN SUBMIT
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
       playClick(); playBreach();
@@ -1016,7 +1004,7 @@
       });
     });
 
-    console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH 2049 | FILE ĐẦY ĐỦ HOÀN CHỈNH - ANALYSIS ĐÃ REDESIGN', 'color:#00f5ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #00f5ff');
+    console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH 2049 | FULL 161 TRÒ CHƠI + SPIN PROTOCOL', 'color:#00f5ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #00f5ff');
   </script>
 </body>
 </html>
