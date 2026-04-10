@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>TOOL HỦ 2026 • QUANTUM SẢNH</title>
   
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@500;700&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 
@@ -16,51 +16,231 @@
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@500;700&family=VT323&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=VT323&family=Inter:wght@400;500;600;700&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #0a0f1f; color: #00f0ff; font-family: 'Orbitron', sans-serif; min-height: 100dvh; overflow-x: hidden; overflow-y: auto; position: relative; -webkit-tap-highlight-color: transparent; }
+
+    /* BACKGROUND & MATRIX */
     .background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://i.ibb.co/FbptYgLq/BACKGROUND-DANG-NHAP.png') center/cover no-repeat; z-index: 1; }
-    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 12, 30, 0.68); z-index: 2; }
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 12, 30, 0.78); z-index: 2; }
+    #matrixRain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.18; pointer-events: none; }
+
     .container { position: relative; z-index: 3; width: 100%; max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; display: flex; align-items: center; justify-content: center; }
-    .cyber-card { background: rgba(15, 20, 45, 0.48); border: 3px solid #00f0ff; border-radius: 18px; width: 100%; padding: 35px 20px 30px; box-shadow: 0 0 35px rgba(0, 240, 255, 0.6), inset 0 0 25px rgba(0, 240, 255, 0.15); backdrop-filter: blur(12px); }
-    .header { text-align: center; margin-bottom: 35px; }
-    .logo { font-family: 'Creepster', cursive; font-size: 48px; line-height: 1.05; color: #ffd700; text-shadow: 0 0 15px #ffd700, 5px 5px 0 #00f0ff, -5px -5px 0 #ff00ff; animation: neon-glow 1.6s infinite alternate; }
-    .label { font-size: 15.5px; color: #00f0ff; margin-bottom: 8px; text-shadow: 0 0 8px #00f0ff; }
-    .input-container { position: relative; margin-bottom: 22px; }
-    .input { width: 100%; background: rgba(10, 20, 45, 0.75); border: 2.5px solid #00f0ff; color: #fff; padding: 15px 16px; font-size: 17px; border-radius: 10px; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
-    .input:focus { outline: none; border-color: #00ffff; background: rgba(15, 30, 65, 0.92); box-shadow: 0 0 20px #00ffff, 0 0 35px rgba(0, 255, 255, 0.6), inset 0 0 15px rgba(0, 255, 255, 0.3); transform: translateY(-2px); }
-    .btn { width: 100%; padding: 16px; background: linear-gradient(90deg, #00f0ff, #0099ff); color: #000; border: none; font-size: 19px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 12px; margin: 12px 0; position: relative; overflow: hidden; box-shadow: 0 0 25px #00f0ff; transition: all 0.25s ease; touch-action: manipulation; }
-    .btn.loading { animation: btnPulse 1.4s infinite alternate ease-in-out; pointer-events: none; }
-    @keyframes btnPulse { 0% { box-shadow: 0 0 20px #00f0ff; } 100% { box-shadow: 0 0 45px #00ffff, 0 0 70px #00ffff; } }
-    .guide-link, .register-link { display: block; text-align: center; margin: 18px 0 8px; color: #00ccff; font-size: 15.5px; text-decoration: none; text-shadow: 0 0 8px #00f0ff; cursor: pointer; }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,30,0.88); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
-    .modal-content { background: rgba(15, 20, 45, 0.95); border: 3px solid #00f0ff; border-radius: 18px; width: 100%; max-width: 380px; padding: 32px 25px; text-align: center; box-shadow: 0 0 30px rgba(0, 240, 255, 0.9); animation: modalPop 0.4s ease forwards; }
-    .modal-title { font-family: 'Creepster', cursive; font-size: 34px; color: #ffd700; text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ff00ff, 0 0 40px #00f0ff; animation: neon-title 1.8s infinite alternate; }
+
+    /* CYBER CARD */
+    .cyber-card { 
+      background: rgba(12, 18, 38, 0.92); 
+      border: 4px solid #00f0ff; 
+      border-radius: 20px; 
+      width: 100%; 
+      padding: 40px 25px 35px; 
+      box-shadow: 0 0 45px rgba(0, 240, 255, 0.85), inset 0 0 30px rgba(0, 240, 255, 0.3), 0 0 80px rgba(255, 215, 0, 0.4);
+      backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+    }
+    .cyber-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(transparent, rgba(0, 240, 255, 0.08), transparent);
+      animation: scanline 4s linear infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(400%); } }
+
+    .header { text-align: center; margin-bottom: 40px; position: relative; z-index: 2; }
+    .logo { 
+      font-family: 'Orbitron', sans-serif; 
+      font-size: 52px; 
+      line-height: 1.05; 
+      font-weight: 700;
+      letter-spacing: -2px;
+      color: #ffd700; 
+      text-shadow: 0 0 15px #ffd700, 0 0 30px #00f0ff, 0 0 50px #00f0ff, 4px 4px 0 #ff00ff, -4px -4px 0 #00ffff;
+      animation: neon-hacker 1.4s infinite alternate ease-in-out;
+    }
+    @keyframes neon-hacker {
+      0% { text-shadow: 0 0 15px #ffd700, 0 0 30px #00f0ff, 4px 4px 0 #ff00ff; }
+      100% { text-shadow: 0 0 25px #ffd700, 0 0 45px #00f0ff, 0 0 70px #00ffff, 6px 6px 0 #ff00ff; }
+    }
+
+    .terminal-text { font-family: 'VT323', monospace; font-size: 15px; color: #67e8f9; letter-spacing: 4px; margin-top: 8px; min-height: 22px; }
+    .blinking-cursor { animation: blink 0.8s infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .label { font-family: 'VT323', monospace; font-size: 17px; color: #67e8f9; margin-bottom: 6px; text-shadow: 0 0 10px #67e8f9; letter-spacing: 3px; display: flex; align-items: center; gap: 8px; }
+    .label::before { content: '>>'; color: #ff00ff; }
+
+    .input { width: 100%; background: rgba(10, 20, 45, 0.95); border: 3px solid #00f0ff; color: #fff; padding: 16px 20px 16px 50px; font-family: 'VT323', monospace; font-size: 18px; border-radius: 12px; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
+    .input:focus { outline: none; border-color: #67e8f9; background: rgba(15, 30, 65, 0.98); box-shadow: 0 0 25px #67e8f9, 0 0 45px rgba(103,232,249,0.7), inset 0 0 20px rgba(0,255,255,0.4); transform: translateY(-3px); }
+    .input::placeholder { color: #88f0ff; opacity: 0.7; }
+
+    .btn { width: 100%; padding: 18px; background: linear-gradient(90deg, #00f0ff, #00aaff, #ff00ff); color: #000; border: none; font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; border-radius: 14px; margin: 15px 0; position: relative; overflow: hidden; box-shadow: 0 0 30px #00f0ff, 0 0 60px rgba(255,0,255,0.4); transition: all 0.3s ease; }
+    .btn::before { content: '>>'; position: absolute; left: 24px; font-size: 22px; }
+    .btn:hover { transform: scale(1.05); box-shadow: 0 0 50px #67e8f9; }
+    .btn.loading { animation: btnPulse 1.3s infinite alternate ease-in-out; pointer-events: none; }
+    @keyframes btnPulse { 0% { box-shadow: 0 0 30px #00f0ff; } 100% { box-shadow: 0 0 70px #67e8f9, 0 0 100px #ff00ff; } }
+
+    .guide-link, .register-link { display: block; text-align: center; margin: 20px 0 10px; color: #67e8f9; font-family: 'VT323', monospace; font-size: 16px; text-decoration: none; text-shadow: 0 0 10px #67e8f9; cursor: pointer; letter-spacing: 2px; }
+
+    /* MODAL HOÀN CHỈNH */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,30,0.92); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+    .modal-content { background: rgba(12, 18, 38, 0.98); border: 4px solid #00f0ff; border-radius: 20px; width: 100%; max-width: 380px; padding: 35px 25px; text-align: center; box-shadow: 0 0 50px rgba(0,240,255,0.95); animation: modalPop 0.4s ease forwards; position: relative; overflow: hidden; }
+    .modal-content::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(transparent, rgba(103,232,249,0.06), transparent); animation: scanline 3s linear infinite; pointer-events: none; z-index: 1; }
+    .modal-title { font-family: 'Orbitron', sans-serif; font-size: 36px; color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 40px #00f0ff; animation: neon-title 1.6s infinite alternate; position: relative; z-index: 2; }
+    .modal-message { font-family: 'VT323', monospace; font-size: 18px; color: #a5f3fc; line-height: 1.7; margin: 24px 0; text-shadow: 0 0 8px #67e8f9; position: relative; z-index: 2; }
+    .modal-btn, .modal-option { width: 100%; padding: 16px; margin: 12px 0; border: none; font-family: 'VT323', monospace; font-size: 18px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border-radius: 12px; transition: all 0.3s ease; position: relative; z-index: 2; }
+    .modal-btn { background: linear-gradient(90deg, #00f0ff, #67e8f9); color: #000; box-shadow: 0 0 25px #00f0ff; }
+    .modal-option { background: rgba(15, 23, 42, 0.9); border: 3px solid #ff00ff; color: #fff; }
+    .modal-option:hover { background: #ff00ff; color: #000; box-shadow: 0 0 30px #ff00ff; }
     @keyframes modalPop { 0% { transform: scale(0.65) translateY(30px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
-    @keyframes neon-glow { 0% { text-shadow: 0 0 15px #ffd700, 5px 5px 0 #00f0ff; } 100% { text-shadow: 0 0 25px #ffd700, 0 0 40px #ffd700, 6px 6px 0 #ff00ff; } }
-    @keyframes neon-title { 0% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ff00ff; } 100% { text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #ff00ff, 0 0 55px #00f0ff; } }
-    :root { --neon-gold: #ffd700; --neon-cyan: #00f5ff; }
-    .title-font { font-family: 'Orbitron', sans-serif; letter-spacing: 8px; }
-    .neon-gold { color: var(--neon-gold); text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 45px #c026d3, 0 0 70px #00f5ff; }
-    .neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 60px #00f5ff, 0 0 90px #00f5ff; }
-    .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; -webkit-overflow-scrolling: touch; }
+
+    /* ==================== ANALYSIS SCREEN - REDESIGN THEO ẢNH BẠN GỬI ==================== */
+    .analysis-card {
+      background: linear-gradient(145deg, #0a0718, #1a1433);
+      border: 4px solid #22d3ee;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 0 60px rgba(34, 211, 238, 0.9), inset 0 0 40px rgba(34, 211, 238, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .analysis-card::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(103,232,249,0.15) 0%, transparent 70%);
+      animation: glowPulse 8s ease infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @keyframes glowPulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+    #game-avatar-analysis {
+      width: 100%;
+      max-width: 260px;
+      margin: 0 auto 20px;
+      display: block;
+      border: 6px solid #22d3ee;
+      border-radius: 18px;
+      box-shadow: 0 0 40px #22d3ee, 0 0 80px rgba(34,211,238,0.6);
+      position: relative;
+      z-index: 2;
+    }
+
+    .pg-overlay {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: #000;
+      color: #00f0ff;
+      font-family: 'VT323', monospace;
+      font-size: 28px;
+      padding: 4px 14px;
+      border: 3px solid #00f0ff;
+      box-shadow: 0 0 20px #00f0ff;
+      border-radius: 6px;
+      z-index: 3;
+      letter-spacing: 2px;
+    }
+
+    .stat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin: 24px 0;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'VT323', monospace;
+      font-size: 17px;
+    }
+    .stat-label { color: #a5f3fc; }
+    .stat-value { color: #67e8f9; font-weight: bold; text-shadow: 0 0 12px #67e8f9; }
+
+    .win-prob-container {
+      margin: 20px 0;
+    }
+    .win-prob-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'VT323', monospace;
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+    .win-prob-bar {
+      height: 14px;
+      background: #1e2937;
+      border-radius: 9999px;
+      overflow: hidden;
+      border: 3px solid #22d3ee;
+    }
+    .win-prob-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #22d3ee, #67e8f9);
+      box-shadow: 0 0 20px #67e8f9;
+      transition: width 1.2s ease;
+    }
+
+    .golden-time {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(15,23,42,0.6);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin: 24px 0;
+      border: 2px solid #22d3ee;
+    }
+
+    .spin-protocol {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .spin-protocol h3 {
+      font-family: 'VT323', monospace;
+      letter-spacing: 4px;
+      color: #ff00ff;
+      margin-bottom: 12px;
+    }
+    .spin-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+    .spin-item {
+      background: rgba(15,23,42,0.8);
+      border-radius: 14px;
+      padding: 14px 10px;
+      border: 2px solid #67e8f9;
+    }
+    .spin-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #67e8f9;
+      text-shadow: 0 0 15px #67e8f9;
+    }
+    .spin-label {
+      font-size: 13px;
+      color: #a5f3fc;
+      margin-top: 4px;
+    }
+
+    /* GAME SCREEN */
+    .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; }
     .hall-card, .game-card, #recommended-card { transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
     .hall-card:hover, .game-card:hover { transform: scale(1.08) translateY(-18px) rotateX(12deg) rotateY(12deg); box-shadow: 0 0 180px rgba(34, 211, 238, 0.95); }
     .ratio-bar { height: 10px; background: #1e2937; border-radius: 9999px; overflow: hidden; border: 2px solid rgba(34,211,238,0.5); }
     .ratio-fill { transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
     #particle-bg { position: fixed !important; top: 0; left: 0; width: 100% !important; height: 100% !important; pointer-events: none; z-index: -2; opacity: 1; }
-    .analysis-card { background: linear-gradient(145deg, #0a0718, #1a1433); border: 4px solid #22d3ee; border-radius: 24px; padding: 24px; box-shadow: 0 0 60px rgba(34, 211, 238, 0.9), inset 0 0 40px rgba(34, 211, 238, 0.3); }
-    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 24px 0; }
-    .stat-box { background: rgba(15, 23, 42, 0.8); border: 2px solid #67e8f9; border-radius: 16px; padding: 14px; text-align: center; box-shadow: 0 0 20px rgba(103, 232, 249, 0.4); }
-    .stat-value { font-size: 28px; font-weight: bold; color: #67e8f9; text-shadow: 0 0 15px #67e8f9; }
-    .stat-label { font-size: 13px; color: #a5f3fc; margin-top: 4px; }
 
-    /* TỐI ƯU MOBILE */
     @media (max-width: 480px) {
-      .input, .btn { padding: 14px 16px; font-size: 16px; }
-      .logo { font-size: 42px; }
-      .modal-content { max-width: 92%; padding: 28px 20px; }
-      .game-screen { padding: 15px 10px; }
+      .input, .btn { padding: 15px 20px 15px 48px; font-size: 17px; }
+      .logo { font-size: 46px; }
+      .modal-content { max-width: 92%; padding: 30px 20px; }
     }
   </style>
 </head>
@@ -68,39 +248,66 @@
 
   <!-- LOGIN SCREEN -->
   <div id="loginScreen">
+    <canvas id="matrixRain"></canvas>
     <div class="background"></div>
     <div class="overlay"></div>
+    
     <div class="container">
       <div class="cyber-card">
         <div id="loginSection">
-          <div class="header"><div class="logo">TOOL HỦ<br>2026</div></div>
+          <div class="header">
+            <div class="logo">TOOL HỦ<br>2026</div>
+            <div class="terminal-text">
+              <span id="typingText"></span><span id="cursor" class="blinking-cursor">_</span>
+            </div>
+          </div>
           <form id="loginForm">
-            <div class="input-container"><div class="label">USERNAME</div><input type="text" class="input" id="loginUser" placeholder="ENTER ALIAS" required></div>
-            <div class="input-container"><div class="label">MẬT KHẨU</div><input type="password" class="input" id="loginPass" placeholder="••••••••" required></div>
-            <button type="submit" class="btn" id="connectBtn">KẾT NỐI</button>
+            <div class="input-container">
+              <div class="label">USERNAME</div>
+              <input type="text" class="input" id="loginUser" placeholder="ENTER ALIAS" required>
+            </div>
+            <div class="input-container">
+              <div class="label">MẬT KHẨU</div>
+              <input type="password" class="input" id="loginPass" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn" id="connectBtn">>> KẾT NỐI QUANTUM</button>
           </form>
           <a href="#" class="guide-link" onclick="showGuideModal()">HƯỚNG DẪN SỬ DỤNG TOOL</a>
-          <a href="#" class="register-link" onclick="showRegisterChoiceModal()">ĐĂNG KÍ NGAY</a>
+          <a href="#" class="register-link" onclick="showRegisterChoiceModal()">ĐĂNG KÍ NGAY • BREACH ACCESS</a>
         </div>
 
         <div id="registerSection" style="display: none;">
-          <div class="header"><div class="logo" style="font-size: 37px;">ĐĂNG KÍ TOOL</div></div>
+          <div class="header">
+            <div class="logo" style="font-size: 38px;">ĐĂNG KÍ TOOL</div>
+            <div class="terminal-text">
+              <span id="typingTextReg"></span><span id="cursorReg" class="blinking-cursor">_</span>
+            </div>
+          </div>
           <form id="registerForm">
-            <div class="input-container"><div class="label">USERNAME</div><input type="text" class="input" id="regUser" placeholder="CHỌN TÊN ĐĂNG NHẬP" required></div>
-            <div class="input-container"><div class="label">SỐ ĐIỆN THOẠI</div><input type="tel" class="input" id="regPhone" placeholder="0123 456 789" required></div>
-            <div class="input-container"><div class="label">MẬT KHẨU</div><input type="password" class="input" id="regPass" placeholder="TẠO MẬT KHẨU" required></div>
-            <button type="submit" class="btn">ĐĂNG KÍ</button>
+            <div class="input-container">
+              <div class="label">USERNAME</div>
+              <input type="text" class="input" id="regUser" placeholder="CHỌN TÊN ĐĂNG NHẬP" required>
+            </div>
+            <div class="input-container">
+              <div class="label">SỐ ĐIỆN THOẠI</div>
+              <input type="tel" class="input" id="regPhone" placeholder="0123 456 789" required>
+            </div>
+            <div class="input-container">
+              <div class="label">MẬT KHẨU</div>
+              <input type="password" class="input" id="regPass" placeholder="TẠO MẬT KHẨU" required>
+            </div>
+            <button type="submit" class="btn">>> ĐĂNG KÍ NEURAL ID</button>
           </form>
-          <button onclick="showLogin()" class="btn" style="background: transparent; color: #00f0ff; border: 2.5px solid #00f0ff; font-size: 17px;">← QUAY LẠI</button>
+          <button onclick="showLogin()" class="btn" style="background: transparent; color: #00f0ff; border: 3px solid #00f0ff; font-size: 17px;">← QUAY LẠI TERMINAL</button>
         </div>
       </div>
     </div>
 
-    <!-- Loading Screen -->
+    <!-- Loading -->
     <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,15,40,0.97); z-index:9999; flex-direction:column; align-items:center; justify-content:center; color:#00f0ff; font-family:'VT323',monospace;">
-      <div id="loadingText" style="font-size:26px; margin-bottom:35px; letter-spacing:3px;">CONNECTING TO SERVER...</div>
-      <div style="width:85%; max-width:280px; height:14px; background:rgba(0,240,255,0.15); border:2.5px solid #00f0ff; border-radius:10px; overflow:hidden; box-shadow:0 0 25px #00f0ff;">
-        <div id="progressBar" style="width:0%; height:100%; background:linear-gradient(90deg,#00f0ff,#0099ff); box-shadow:0 0 25px #00f0ff; transition:width 0.08s linear;"></div>
+      <div id="loadingText" style="font-size:26px; margin-bottom:35px; letter-spacing:3px;">CONNECTING TO QUANTUM CORE...</div>
+      <div style="width:85%; max-width:280px; height:14px; background:rgba(0,240,255,0.15); border:3px solid #00f0ff; border-radius:10px; overflow:hidden; box-shadow:0 0 25px #00f0ff;">
+        <div id="progressBar" style="width:0%; height:100%; background:linear-gradient(90deg,#00f0ff,#67e8f9); box-shadow:0 0 25px #67e8f9; transition:width 0.08s linear;"></div>
       </div>
     </div>
 
@@ -109,7 +316,7 @@
       <div class="modal-content">
         <canvas id="particleGuide"></canvas>
         <div class="modal-title">HƯỚNG DẪN</div>
-        <div class="modal-message">BƯỚC 1: ĐĂNG KÍ TÀI KHOẢN GAME:<br><strong>WWW.FLY8879.SITE</strong><br><br>BƯỚC 2: ĐĂNG KÍ TK TOOL (GIỐNG TK GAME)<br><br>BƯỚC 3: LÊN ĐIỂM VÀ ĐỢI NĂNG LƯỢNG TRONG TOOL LÊN</div>
+        <div class="modal-message" id="guideMessage">BƯỚC 1: ĐĂNG KÍ TÀI KHOẢN GAME:<br><strong>WWW.FLY8879.SITE</strong><br><br>BƯỚC 2: ĐĂNG KÍ TK TOOL (GIỐNG TK GAME)<br><br>BƯỚC 3: LÊN ĐIỂM VÀ ĐỢI NĂNG LƯỢNG TRONG TOOL LÊN</div>
         <button class="modal-btn" onclick="closeModal('guideModal')">ĐÓNG</button>
       </div>
     </div>
@@ -118,9 +325,10 @@
       <div class="modal-content">
         <canvas id="particleChoice"></canvas>
         <div class="modal-title">CHỌN ĐĂNG KÍ</div>
+        <div class="modal-message">Chọn loại tài khoản bạn muốn tạo</div>
         <button class="modal-option" onclick="registerTool()">ĐĂNG KÍ TÀI KHOẢN TOOL</button>
         <button class="modal-option" onclick="registerGame()">ĐĂNG KÍ TÀI KHOẢN GAME</button>
-        <button class="modal-btn" onclick="closeModal('registerChoiceModal')" style="background:#444; box-shadow:0 0 20px #666;">HỦY</button>
+        <button class="modal-btn" onclick="closeModal('registerChoiceModal')" style="background:#444;">HỦY</button>
       </div>
     </div>
 
@@ -177,36 +385,75 @@
       </div>
     </div>
 
+    <!-- ==================== ANALYSIS SCREEN - ĐÃ REDESIGN THEO ẢNH BẠN GỬI ==================== -->
     <div id="analysis-screen" class="hidden">
       <button onclick="backToCurrentScreen()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg active:scale-95">← QUAY LẠI</button>
+      
       <div class="analysis-card">
-        <div class="text-center mb-6"><h1 id="game-title" class="title-font text-3xl neon-gold glitch"></h1></div>
-        <div class="flex justify-center mb-8 relative">
-          <img id="game-avatar-analysis" class="w-64 h-64 object-contain rounded-3xl border-4 border-cyan-400 shadow-[0_0_80px_-10px_#22d3ee]" alt="">
-          <div class="absolute -inset-4 border border-cyan-400/30 rounded-3xl animate-pulse"></div>
+        <div class="text-center mb-6">
+          <h1 id="game-title" class="title-font text-3xl neon-gold glitch"></h1>
         </div>
-        <div class="stat-grid">
-          <div class="stat-box"><div class="stat-value" id="win-prob-text">93%</div><div class="stat-label">XÁC SUẤT NỔ HŨ</div><div class="h-2 bg-gray-800 rounded-full mt-3 overflow-hidden"><div id="win-prob-fill" class="h-2 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full" style="width:93%"></div></div></div>
-          <div class="stat-box"><div class="stat-value" id="rtp-value">96.8%</div><div class="stat-label">RTP</div></div>
-          <div class="stat-box"><div class="stat-value" id="volatility-value">CAO</div><div class="stat-label">VOLATILITY</div></div>
-          <div class="stat-box"><div class="stat-value" id="max-win-value">×8,500</div><div class="stat-label">MAX WIN</div></div>
-          <div class="stat-box"><div class="stat-value" id="hit-frequency">1/3.8</div><div class="stat-label">HIT FREQUENCY</div></div>
-          <div class="stat-box"><div class="stat-value text-amber-400" id="neural-score">97</div><div class="stat-label">NEURAL AI SCORE</div></div>
+
+        <!-- Image frame + PG overlay -->
+        <div class="relative mx-auto" style="max-width: 260px;">
+          <img id="game-avatar-analysis" class="w-full rounded-2xl" alt="">
+          <div id="pg-overlay" class="pg-overlay">PG</div>
         </div>
-        <div class="border-t border-cyan-400/30 pt-6 mb-6">
-          <div class="flex justify-between items-center">
-            <div><p class="text-xs text-white/60">GIỜ VÀNG QUANTUM</p><div class="flex items-center gap-3 text-2xl"><span id="current-time" class="font-mono">14:01</span><span class="text-cyan-400">→</span><span id="golden-time" class="neon-gold font-bold font-mono">14:08</span></div></div>
-            <div class="text-right"><p class="text-emerald-400 text-sm font-bold" id="countdown-time">CÒN 7 PHÚT</p></div>
+
+        <!-- Win probability -->
+        <div class="win-prob-container">
+          <div class="win-prob-label">
+            <span id="win-prob-text" class="font-bold text-2xl">95%</span>
+            <span class="stat-label">XÁC SUẤT NỔ HŨ</span>
+          </div>
+          <div class="win-prob-bar">
+            <div id="win-prob-fill" class="win-prob-fill" style="width: 95%"></div>
           </div>
         </div>
-        <div class="border-t border-cyan-400/30 pt-6">
-          <h3 class="text-center text-purple-300 font-bold tracking-widest mb-4">⚡ SPIN PROTOCOL</h3>
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div><p class="text-xs text-white/60">TỔNG VÒNG</p><p id="total-spins" class="text-4xl font-bold neon-cyan">142</p></div>
-            <div><p class="text-xs text-white/60">QUAY THƯỜNG</p><p id="normal-spins" class="text-4xl font-semibold text-emerald-400">98</p></div>
-            <div><p class="text-xs text-white/60">QUAY NHANH</p><p id="fast-spins" class="text-4xl font-semibold text-amber-400">44</p></div>
+
+        <!-- Vertical stats -->
+        <div class="stat-list">
+          <div class="stat-row"><span class="stat-label">RTP</span><span id="rtp-value" class="stat-value">96.8%</span></div>
+          <div class="stat-row"><span class="stat-label">VOLATILITY</span><span id="volatility-value" class="stat-value">CAO</span></div>
+          <div class="stat-row"><span class="stat-label">MAX WIN</span><span id="max-win-value" class="stat-value">×4211</span></div>
+          <div class="stat-row"><span class="stat-label">HIT FREQUENCY</span><span id="hit-frequency" class="stat-value">1/5.6</span></div>
+          <div class="stat-row"><span class="stat-label">NEURAL AI SCORE</span><span id="neural-score" class="stat-value">93</span></div>
+        </div>
+
+        <!-- Golden time -->
+        <div class="golden-time">
+          <div>
+            <p class="text-xs text-white/60 mb-1">GIỜ VÀNG QUANTUM</p>
+            <div class="flex items-center gap-3 text-2xl font-mono">
+              <span id="current-time">14:26</span>
+              <span class="text-cyan-400">→</span>
+              <span id="golden-time" class="neon-gold">14:40</span>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="text-emerald-400 text-sm font-bold" id="countdown-time">CÒN 7 PHÚT</p>
           </div>
         </div>
+
+        <!-- Spin Protocol -->
+        <div class="spin-protocol">
+          <h3 class="text-purple-300 font-bold tracking-widest mb-4">⚡ SPIN PROTOCOL</h3>
+          <div class="spin-grid">
+            <div class="spin-item">
+              <div id="total-spins" class="spin-value">96</div>
+              <div class="spin-label">TỔNG VÒNG</div>
+            </div>
+            <div class="spin-item">
+              <div id="normal-spins" class="spin-value">59</div>
+              <div class="spin-label">QUAY THƯỜNG</div>
+            </div>
+            <div class="spin-item">
+              <div id="fast-spins" class="spin-value">37</div>
+              <div class="spin-label">QUAY NHANH</div>
+            </div>
+          </div>
+        </div>
+
         <div class="mt-8 bg-black/40 border border-cyan-400/50 rounded-2xl p-5 text-sm leading-relaxed">
           <p class="text-cyan-300 font-bold mb-2">NEURAL AI INSIGHT:</p>
           <p id="ai-insight" class="text-white/90">Trò này đang ở giai đoạn “Quantum Hot”. Năng lượng tích tụ cực mạnh. Khuyến nghị spin tối thiểu 80 vòng với bet 2.5x để kích hoạt nổ hũ lớn.</p>
@@ -277,27 +524,16 @@
       playClick();
     }
 
-    function showGuideModal() {
-      playClick();
-      document.getElementById('guideModal').style.display = 'flex';
-    }
-
-    function showRegisterChoiceModal() {
-      playClick();
-      document.getElementById('registerChoiceModal').style.display = 'flex';
-    }
-
+    function showGuideModal() { playClick(); document.getElementById('guideModal').style.display = 'flex'; }
+    function showRegisterChoiceModal() { playClick(); document.getElementById('registerChoiceModal').style.display = 'flex'; }
     function registerTool() { closeModal('registerChoiceModal'); showRegister(); }
-    function registerGame() { 
-      closeModal('registerChoiceModal'); 
-      playClick(); 
-      window.open('https://www.fly8879.site', '_blank'); 
-    }
+    function registerGame() { closeModal('registerChoiceModal'); playClick(); window.open('https://www.fly8879.site', '_blank'); }
 
     function showRegister() {
       playClick();
       document.getElementById('loginSection').style.display = 'none';
       document.getElementById('registerSection').style.display = 'block';
+      startTypingReg();
     }
 
     function showLogin() {
@@ -306,19 +542,70 @@
       document.getElementById('registerSection').style.display = 'none';
     }
 
-    // ==================== REGISTER FORM ====================
+    // ==================== MATRIX RAIN ====================
+    function initMatrixRain() {
+      const canvas = document.getElementById('matrixRain');
+      const ctx = canvas.getContext('2d');
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const chars = '01QUANTUMHACKER2026TOOLHỦSẢNHNEURALBREACH';
+      const fontSize = 15;
+      let columns = canvas.width / fontSize;
+      let drops = Array(Math.floor(columns)).fill(1);
+
+      function draw() {
+        ctx.fillStyle = 'rgba(10, 15, 40, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#67e8f9';
+        ctx.font = `${fontSize}px VT323`;
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        }
+      }
+      setInterval(draw, 35);
+    }
+
+    // ==================== TERMINAL TYPING ====================
+    function typeWriter(element, text, speed = 40) {
+      let i = 0;
+      element.innerHTML = '';
+      function type() {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      type();
+    }
+
+    function startTyping() {
+      const textEl = document.getElementById('typingText');
+      typeWriter(textEl, "QUANTUM TERMINAL v2.026 • NEURAL BREACH PROTOCOL", 35);
+    }
+
+    function startTypingReg() {
+      const textEl = document.getElementById('typingTextReg');
+      typeWriter(textEl, "CREATE NEW NEURAL IDENTITY", 35);
+    }
+
+    // ==================== REGISTER & LOGIN ====================
     document.getElementById('registerForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       playClick(); playBreach();
-
       const username = document.getElementById('regUser').value.trim();
       const phone = document.getElementById('regPhone').value.trim();
       const password = document.getElementById('regPass').value.trim();
 
-      if (!username || !phone || !password) {
-        alert("Vui lòng nhập đầy đủ thông tin!");
-        return;
-      }
+      if (!username || !phone || !password) return alert("Vui lòng nhập đầy đủ thông tin!");
 
       const btn = this.querySelector('button');
       const originalText = btn.textContent;
@@ -334,12 +621,11 @@
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           status: "active"
         });
-
         showSuccessModal("ĐĂNG KÍ THÀNH CÔNG", `Username: ${username}<br>SĐT: ${phone}<br>Đã lưu vào Firebase!`);
         showLogin();
       } catch (error) {
         console.error("Lỗi Firebase:", error);
-        showSuccessModal("LỖI", "Không thể lưu vào Firebase.<br>Kiểm tra Firestore Rules.");
+        showSuccessModal("LỖI", "Không thể lưu vào Firebase.");
       } finally {
         btn.classList.remove('loading');
         btn.textContent = originalText;
@@ -347,34 +633,24 @@
       }
     });
 
-    // ==================== LOGIN FORM ====================
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       playClick(); playBreach();
-
       const username = document.getElementById('loginUser').value.trim();
       const password = document.getElementById('loginPass').value.trim();
       const btn = document.getElementById('connectBtn');
       const originalText = btn.textContent;
 
       btn.classList.add('loading');
-      btn.textContent = "ĐANG KIỂM TRA...";
+      btn.textContent = ">> BREACHING...";
       btn.disabled = true;
 
       try {
-        const querySnapshot = await db.collection("users")
-          .where("username", "==", username)
-          .get();
-
-        if (querySnapshot.empty) {
-          showSuccessModal("LỖI ĐĂNG NHẬP", "Tài khoản không tồn tại!");
-          return;
-        }
+        const querySnapshot = await db.collection("users").where("username", "==", username).get();
+        if (querySnapshot.empty) return showSuccessModal("LỖI ĐĂNG NHẬP", "Tài khoản không tồn tại!");
 
         let userData = null;
-        querySnapshot.forEach(doc => {
-          userData = doc.data();
-        });
+        querySnapshot.forEach(doc => userData = doc.data());
 
         if (userData && userData.password === password) {
           document.getElementById('loginScreen').classList.add('hidden');
@@ -547,7 +823,7 @@
     let recommendedIndex = 0;
     let searchListenerAdded = false;
 
-    // ==================== THREE.JS & GAME FUNCTIONS ====================
+    // ==================== THREE.JS ====================
     let scene, camera, renderer, particleSystem, connectionLines;
     let particlesCount = 4200;
     let time = 0;
@@ -588,10 +864,7 @@
       }));
       scene.add(particleSystem);
 
-      connectionLines = new THREE.LineSegments(
-        new THREE.BufferGeometry(),
-        new THREE.LineBasicMaterial({ color: 0x00f5ff, transparent: true, opacity: 0.12, blending: THREE.AdditiveBlending })
-      );
+      connectionLines = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0x00f5ff, transparent: true, opacity: 0.12, blending: THREE.AdditiveBlending }));
       scene.add(connectionLines);
 
       window.addEventListener('resize', () => {
@@ -677,6 +950,7 @@
       document.getElementById('game-title').textContent = game.name;
       document.getElementById('game-avatar-analysis').src = game.img;
 
+      // Random stats giống ảnh mẫu
       const prob = Math.floor(Math.random() * 11) + 89;
       document.getElementById('win-prob-text').textContent = prob + "%";
       document.getElementById('win-prob-fill').style.width = prob + "%";
@@ -817,7 +1091,12 @@
       requestAnimationFrame(step);
     }
 
-    console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH + FIREBASE FULL | 161 GAME', 'color:#00f5ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #00f5ff');
+    // ==================== KHỞI ĐỘNG ====================
+    window.onload = function() {
+      initMatrixRain();
+      startTyping();
+      console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH + FIREBASE FULL | 161 GAME | ANALYSIS SCREEN ĐÃ REDESIGN', 'color:#67e8f9; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #67e8f9');
+    };
   </script>
 </body>
 </html>
