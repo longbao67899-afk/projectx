@@ -68,91 +68,509 @@
     .label { font-family: 'VT323', monospace; font-size: 18px; color: #67e8f9; margin-bottom: 8px; text-shadow: 0 0 12px #67e8f9; letter-spacing: 4px; display: flex; align-items: center; gap: 10px; }
     .label::before { content: '>>'; color: #ff00ff; font-size: 20px; }
 
-    .input { width: 100%; background: rgba(10,20,45,0.98); border: 4px solid #00f0ff; color: #fff; padding: 18px 20px 18px 55px; font-family: 'VT323', monospace; font-size: 20px; border-radius: 14px; transition: all 0.3s cubic-bezier(0.23,1,0.32,1); }
-    .input:focus { outline: none; border-color: #67e8f9; background: rgba(15,30,65,0.99); box-shadow: 0 0 30px #67e8f9, 0 0 60px rgba(103,232,249,0.8), inset 0 0 25px rgba(0,255,255,0.5); transform: translateY(-4px); }
+    .input-wrapper {
+      position: relative;
+      margin-bottom: 22px;
+    }
+    .input {
+      width: 100%; 
+      background: rgba(10,20,45,0.98); 
+      border: 4px solid #00f0ff; 
+      color: #fff; 
+      padding: 18px 20px 18px 62px; 
+      font-family: 'VT323', monospace; 
+      font-size: 20px; 
+      border-radius: 14px; 
+      transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
+    }
+    .input:focus { 
+      outline: none; 
+      border-color: #67e8f9; 
+      background: rgba(15,30,65,0.99); 
+      box-shadow: 0 0 30px #67e8f9, 0 0 60px rgba(103,232,249,0.8), inset 0 0 25px rgba(0,255,255,0.5); 
+      transform: translateY(-4px); 
+    }
     .input::placeholder { color: #88f0ff; opacity: 0.75; }
 
-    .btn { width: 100%; padding: 20px; background: linear-gradient(90deg,#00f0ff,#00aaff,#ff00ff); color: #000; border: none; font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; cursor: pointer; border-radius: 16px; margin: 18px 0; position: relative; overflow: hidden; box-shadow: 0 0 40px #00f0ff, 0 0 80px rgba(255,0,255,0.5); transition: all 0.3s ease; }
-    .btn::before { content: '>>'; position: absolute; left: 28px; font-size: 24px; }
-    .btn:hover { transform: scale(1.06); box-shadow: 0 0 70px #67e8f9; }
+    .input-icon {
+      position: absolute;
+      left: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 26px;
+      color: #ff00ff;
+      text-shadow: 0 0 12px #ff00ff;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .btn { 
+      width: 100%; 
+      padding: 20px; 
+      background: linear-gradient(90deg,#00f0ff,#00aaff,#ff00ff); 
+      color: #000; 
+      border: none; 
+      font-family: 'Orbitron', sans-serif; 
+      font-size: 22px; 
+      font-weight: 700; 
+      letter-spacing: 5px; 
+      text-transform: uppercase; 
+      cursor: pointer; 
+      border-radius: 16px; 
+      margin: 18px 0; 
+      position: relative; 
+      overflow: hidden; 
+      box-shadow: 0 0 40px #00f0ff, 0 0 80px rgba(255,0,255,0.5); 
+      transition: all 0.3s ease; 
+    }
+    .btn::before { 
+      content: '>>'; 
+      position: absolute; 
+      left: 28px; 
+      font-size: 24px; 
+    }
+    .btn:hover { 
+      transform: scale(1.06); 
+      box-shadow: 0 0 70px #67e8f9; 
+    }
     .btn.loading { animation: btnPulse 1.2s infinite alternate ease-in-out; pointer-events: none; }
     @keyframes btnPulse { 0% { box-shadow: 0 0 40px #00f0ff; } 100% { box-shadow: 0 0 90px #67e8f9, 0 0 130px #ff00ff; } }
 
-    .guide-link, .register-link { display: block; text-align: center; margin: 25px 0 12px; color: #67e8f9; font-family: 'VT323', monospace; font-size: 17px; text-decoration: none; text-shadow: 0 0 15px #67e8f9; cursor: pointer; letter-spacing: 3px; }
+    .guide-link, .register-link { 
+      display: block; 
+      text-align: center; 
+      margin: 25px 0 12px; 
+      color: #67e8f9; 
+      font-family: 'VT323', monospace; 
+      font-size: 17px; 
+      text-decoration: none; 
+      text-shadow: 0 0 15px #67e8f9; 
+      cursor: pointer; 
+      letter-spacing: 3px; 
+    }
 
-    #hall-screen { background: linear-gradient(180deg, #0a0f1f, #111827); min-height: 100dvh; padding: 20px 15px; position: relative; overflow: hidden; }
+    #energy-header {
+      position: sticky; 
+      top: 0; 
+      z-index: 9999;
+      background: linear-gradient(90deg, #0a0f1f, #1a2340);
+      border-bottom: 5px solid #00f0ff;
+      padding: 14px 15px;
+      display: none;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.8), 0 0 80px rgba(255,215,0,0.4);
+      backdrop-filter: blur(16px);
+    }
+    .energy-label { 
+      font-family: 'VT323', monospace; 
+      font-size: 18px; 
+      color: #67e8f9; 
+      letter-spacing: 5px; 
+      text-shadow: 0 0 15px #67e8f9; 
+      white-space: nowrap; 
+    }
+    .energy-bar-container { 
+      flex: 1; 
+      background: rgba(10, 20, 45, 0.95); 
+      border: 6px solid #00f0ff; 
+      border-radius: 9999px; 
+      height: 34px; 
+      position: relative; 
+      overflow: hidden; 
+      box-shadow: 
+        0 0 25px #00f0ff,
+        0 0 45px rgba(0,240,255,0.6),
+        inset 0 0 20px rgba(255,215,0,0.5);
+    }
+    .energy-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00f0ff, #67e8f9, #ffd700, #ff00ff);
+      box-shadow: 
+        0 0 30px #67e8f9,
+        0 0 55px #ffd700,
+        0 0 80px rgba(255,0,255,0.6);
+      transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .energy-bar-fill::after {
+      content: '';
+      position: absolute; 
+      top: 0; 
+      left: -120%;
+      width: 60%; 
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent);
+      animation: energyShine 1.8s linear infinite;
+    }
+    .energy-bar-fill::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+      animation: energyWave 2.4s linear infinite;
+      opacity: 0.6;
+    }
+    @keyframes energyShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
+    @keyframes energyWave { 0% { transform: translateX(-150%); } 100% { transform: translateX(150%); } }
+
+    .energy-value { 
+      font-family: 'VT323', monospace; 
+      font-size: 24px; 
+      font-weight: 700; 
+      color: #ffd700; 
+      text-shadow: 0 0 20px #ffd700, 0 0 40px #00f0ff; 
+      min-width: 78px; 
+      text-align: right; 
+      letter-spacing: 2px;
+    }
+    .energy-icon { 
+      font-size: 32px; 
+      animation: pulseEnergy 1.4s infinite alternate ease-in-out; 
+      filter: drop-shadow(0 0 12px #ffd700);
+    }
+    @keyframes pulseEnergy { 
+      from { transform: scale(1); } 
+      to { transform: scale(1.22); } 
+    }
+    .energy-low { border-color: #ff00aa !important; }
+    .energy-low .energy-bar-fill { 
+      background: linear-gradient(90deg, #ff0066, #ff44aa, #ff00ff) !important; 
+      box-shadow: 0 0 35px #ff00aa, 0 0 70px #ff44aa !important; 
+    }
+
+    /* ==================== QUANTUM HUB - HALL SCREEN (TỐI ƯU HIỆU ỨNG % ĐỘNG) ==================== */
+    #hall-screen { 
+      background: linear-gradient(180deg, #0a0f1f, #111827); 
+      min-height: 100dvh; 
+      padding: 20px 15px; 
+      position: relative; 
+      overflow: hidden; 
+    }
     #hall-screen::before {
       content: '';
       position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle at 30% 20%, rgba(103,232,249,0.15) 0%, transparent 50%),
-                  radial-gradient(circle at 70% 80%, rgba(255,215,0,0.12) 0%, transparent 50%);
+      background: radial-gradient(circle at 30% 20%, rgba(103,232,249,0.18) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 80%, rgba(255,215,0,0.15) 0%, transparent 50%);
       pointer-events: none; z-index: 1; animation: networkPulse 15s linear infinite;
     }
     @keyframes networkPulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
-    .hall-header { text-align: center; margin-bottom: 40px; position: relative; z-index: 2; }
-    .hall-title { font-size: 52px; font-weight: 700; color: #00f0ff; letter-spacing: 8px; text-shadow: 0 0 30px #00f0ff, 0 0 60px #00f0ff; margin-bottom: 8px; }
-    .hall-subtitle { font-size: 18px; color: #ffd700; letter-spacing: 6px; text-shadow: 0 0 15px #ffd700; }
-    .hall-desc { font-family: 'VT323', monospace; font-size: 17px; color: #a5f3fc; margin-top: 12px; letter-spacing: 4px; }
+    .hall-header { 
+      text-align: center; 
+      margin-bottom: 40px; 
+      position: relative; 
+      z-index: 2; 
+    }
+    .hall-title { 
+      font-size: 52px; 
+      font-weight: 700; 
+      color: #00f0ff; 
+      letter-spacing: 8px; 
+      text-shadow: 0 0 30px #00f0ff, 0 0 60px #00f0ff, 0 0 90px #ff00ff;
+      margin-bottom: 8px; 
+      animation: titlePulse 4s ease infinite;
+    }
+    @keyframes titlePulse {
+      0%, 100% { text-shadow: 0 0 30px #00f0ff, 0 0 60px #00f0ff; }
+      50% { text-shadow: 0 0 50px #00f0ff, 0 0 90px #ff00ff, 0 0 120px #ffd700; }
+    }
+    .hall-subtitle { 
+      font-size: 19px; 
+      color: #ffd700; 
+      letter-spacing: 7px; 
+      text-shadow: 0 0 20px #ffd700; 
+      font-family: 'VT323', monospace;
+    }
+    .hall-desc { 
+      font-family: 'VT323', monospace; 
+      font-size: 18px; 
+      color: #a5f3fc; 
+      margin-top: 12px; 
+      letter-spacing: 5px; 
+      opacity: 0.95;
+    }
 
-    .hall-grid { display: flex; flex-direction: column; gap: 28px; position: relative; z-index: 2; }
+    .hall-grid { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 32px; 
+      position: relative; 
+      z-index: 2; 
+    }
 
     .hall-card {
-      background: rgba(15, 23, 42, 0.92);
-      border: 4px solid #00f0ff;
-      border-radius: 24px;
+      background: linear-gradient(145deg, #0f172a, #1e2937);
+      border: 6px solid #00f0ff;
+      border-radius: 28px;
       overflow: hidden;
-      box-shadow: 0 0 40px rgba(0,240,255,0.7), 0 0 80px rgba(255,215,0,0.3);
+      box-shadow: 
+        0 0 40px rgba(0,240,255,0.9),
+        0 0 90px rgba(255,215,0,0.6),
+        inset 0 0 40px rgba(0,240,255,0.4);
       transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
       position: relative;
+      cursor: pointer;
     }
-    .hall-card:hover { transform: scale(1.05) translateY(-8px); box-shadow: 0 0 80px rgba(0,240,255,0.95), 0 0 120px rgba(255,215,0,0.6); }
+    .hall-card:hover {
+      transform: scale(1.05) translateY(-8px);
+      border-color: #ffd700;
+      box-shadow: 
+        0 0 80px rgba(0,240,255,1),
+        0 0 140px rgba(255,0,255,0.8),
+        inset 0 0 60px rgba(255,215,0,0.5);
+    }
 
-    .hall-image-container { position: relative; height: 180px; background: #0a0f1f; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .hall-image { width: 92%; height: 92%; object-fit: contain; filter: drop-shadow(0 0 25px #00f0ff); }
-
-    .hall-name { text-align: center; font-size: 28px; font-weight: 700; color: #00f0ff; padding: 16px 0 10px; letter-spacing: 4px; text-shadow: 0 0 15px #00f0ff; }
-
-    .progress-container { padding: 0 24px 24px; }
-    .progress-label { display: flex; justify-content: space-between; font-family: 'VT323', monospace; font-size: 15px; margin-bottom: 6px; color: #a5f3fc; }
-    .progress-bar { height: 14px; background: #1e2937; border-radius: 9999px; overflow: hidden; border: 2px solid #22d3ee; margin-bottom: 14px; }
-    .progress-fill { height: 100%; transition: width 1.5s ease; }
-    .progress-fill-cyan { background: linear-gradient(90deg, #22d3ee, #67e8f9); box-shadow: 0 0 20px #67e8f9; }
-    .progress-fill-yellow { background: linear-gradient(90deg, #ffd700, #ffaa00); box-shadow: 0 0 20px #ffd700; }
-
-    #energy-header {
-      position: sticky; top: 0; z-index: 9999;
-      background: linear-gradient(90deg, #0a0f1f, #1a2340);
-      border-bottom: 5px solid #00f0ff;
-      padding: 12px 15px;
-      display: none;
+    .hall-image-container {
+      position: relative;
+      height: 210px;
+      background: #0a0f1f;
+      display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
-      backdrop-filter: blur(12px);
+      justify-content: center;
+      overflow: hidden;
     }
-    .energy-label { font-family: 'VT323', monospace; font-size: 17px; color: #67e8f9; letter-spacing: 4px; text-shadow: 0 0 12px #67e8f9; white-space: nowrap; }
-    .energy-bar-container { flex: 1; background: rgba(10, 20, 45, 0.95); border: 4px solid #00f0ff; border-radius: 9999px; height: 28px; position: relative; overflow: hidden; box-shadow: 0 0 20px #00f0ff, inset 0 0 15px rgba(0,240,255,0.4); }
-    .energy-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #00f0ff, #67e8f9, #ffd700);
-      box-shadow: 0 0 25px #67e8f9, 0 0 40px #ffd700;
-      transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    .hall-image {
+      width: 92%;
+      height: 92%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 30px #00f0ff) drop-shadow(0 0 50px #ffd700);
+      transition: transform 0.5s ease;
+    }
+    .hall-card:hover .hall-image {
+      transform: scale(1.1);
+    }
+
+    .hall-badge {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: rgba(0,0,0,0.85);
+      color: #ffd700;
+      font-family: 'VT323', monospace;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      padding: 6px 18px;
+      border: 4px solid #ff00ff;
+      border-radius: 12px;
+      box-shadow: 0 0 30px #ff00ff, 0 0 50px rgba(255,215,0,0.8);
+      text-shadow: 0 0 15px #ffd700;
+      z-index: 3;
+    }
+
+    .hall-name {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #00f0ff, #ffd700, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      padding: 18px 0 12px;
+      letter-spacing: 6px;
+      text-shadow: 0 0 25px #00f0ff;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hall-stats {
+      padding: 0 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      color: #67e8f9;
+      text-shadow: 0 0 12px #67e8f9;
+      transition: all 0.3s ease;
+    }
+    .stat-row.updating {
+      animation: neonFlash 1.4s ease forwards;
+    }
+    @keyframes neonFlash {
+      0% { filter: brightness(1); text-shadow: 0 0 12px #67e8f9; }
+      40% { filter: brightness(1.6); text-shadow: 0 0 25px #ffd700, 0 0 40px #ff00ff; }
+      70% { filter: brightness(1.3); text-shadow: 0 0 35px #00f0ff, 0 0 55px #ffd700; }
+      100% { filter: brightness(1); text-shadow: 0 0 12px #67e8f9; }
+    }
+    .stat-label {
+      letter-spacing: 3px;
+    }
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffd700;
+      min-width: 68px;
+      text-align: right;
+      transition: all 0.4s ease;
+    }
+    .stat-bar {
+      height: 12px;
+      flex: 1;
+      background: #1e2937;
+      border-radius: 9999px;
+      margin: 0 14px;
+      overflow: hidden;
+      border: 2px solid #22d3ee;
       position: relative;
     }
-    .energy-bar-fill::after {
-      content: '';
-      position: absolute; top: 0; left: -100%;
-      width: 40%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
-      animation: energyShine 2.5s linear infinite;
+    .stat-fill {
+      height: 100%;
+      transition: width 1.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
     }
-    @keyframes energyShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }
-    .energy-value { font-family: 'VT323', monospace; font-size: 22px; font-weight: 700; color: #ffd700; text-shadow: 0 0 15px #ffd700; min-width: 68px; text-align: right; }
-    .energy-icon { font-size: 28px; animation: pulseEnergy 1.8s infinite alternate ease-in-out; }
-    @keyframes pulseEnergy { from { transform: scale(1); text-shadow: 0 0 15px #ffd700; } to { transform: scale(1.15); text-shadow: 0 0 30px #ffd700, 0 0 50px #00f0ff; } }
-    .energy-low { border-color: #ff00aa !important; }
-    .energy-low .energy-bar-fill { background: linear-gradient(90deg, #ff0066, #ff44aa) !important; box-shadow: 0 0 25px #ff00aa !important; }
+    .win-fill { 
+      background: linear-gradient(90deg, #22d3ee, #67e8f9); 
+      box-shadow: 0 0 20px #67e8f9; 
+    }
+    .win-fill::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+      animation: progressShine 2s linear infinite;
+    }
+    .mega-fill { 
+      background: linear-gradient(90deg, #ffd700, #ffaa00); 
+      box-shadow: 0 0 20px #ffd700; 
+    }
+    .mega-fill::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+      animation: progressShine 2s linear infinite;
+    }
+    @keyframes progressShine { 
+      0% { transform: translateX(-100%); } 
+      100% { transform: translateX(300%); } 
+    }
+
+    /* ==================== PG SCREEN & OTHERS (giữ nguyên) ==================== */
+    .game-card {
+      background: rgba(12, 18, 38, 0.96);
+      border: 5px solid #00f0ff;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 
+        0 0 40px rgba(0, 240, 255, 0.85),
+        0 0 80px rgba(255, 0, 255, 0.45),
+        inset 0 0 25px rgba(0, 240, 255, 0.3);
+      transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      cursor: pointer;
+    }
+    .game-card:hover {
+      transform: scale(1.06) translateY(-6px);
+      box-shadow: 
+        0 0 70px rgba(0, 240, 255, 1),
+        0 0 130px rgba(255, 0, 255, 0.7),
+        inset 0 0 40px rgba(255, 215, 0, 0.5);
+      border-color: #ffd700;
+    }
+
+    .game-image-container {
+      position: relative;
+      height: 180px;
+      background: #0a0f1f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 4px solid #00f0ff;
+    }
+    .game-image-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent, rgba(0,240,255,0.12));
+      z-index: 2;
+      pointer-events: none;
+    }
+    .game-image {
+      width: 92%;
+      height: 92%;
+      object-fit: contain;
+      filter: 
+        drop-shadow(0 0 20px #00f0ff)
+        drop-shadow(0 0 35px #ffd700);
+      transition: transform 0.4s ease;
+    }
+    .game-card:hover .game-image {
+      transform: scale(1.12);
+    }
+
+    .pg-badge {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.85);
+      color: #00f0ff;
+      font-family: 'VT323', monospace;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      padding: 4px 14px;
+      border: 3px solid #00f0ff;
+      border-radius: 8px;
+      box-shadow: 0 0 25px #00f0ff, 0 0 40px rgba(255, 0, 255, 0.6);
+      text-shadow: 0 0 12px #00f0ff;
+      z-index: 3;
+    }
+
+    .game-name {
+      text-align: center;
+      font-size: 17px;
+      font-weight: 700;
+      color: #67e8f9;
+      padding: 14px 12px 8px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px #67e8f9, 0 0 25px #00f0ff;
+      line-height: 1.3;
+    }
+
+    .ratio-section {
+      padding: 0 16px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'VT323', monospace;
+    }
+    .ratio-label {
+      font-size: 15px;
+      color: #a5f3fc;
+      text-shadow: 0 0 8px #67e8f9;
+    }
+    .ratio-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffd700;
+      text-shadow: 0 0 15px #ffd700;
+    }
+    .ratio-bar {
+      flex: 1;
+      height: 6px;
+      background: #1e2937;
+      border-radius: 9999px;
+      margin: 0 12px;
+      overflow: hidden;
+    }
+    .ratio-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #22d3ee, #67e8f9);
+      box-shadow: 0 0 12px #67e8f9;
+    }
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,30,0.92); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
     .modal-content { background: rgba(12,18,38,0.98); border: 4px solid #00f0ff; border-radius: 20px; width: 100%; max-width: 380px; padding: 35px 25px; text-align: center; box-shadow: 0 0 50px rgba(0,240,255,0.95); animation: modalPop 0.4s ease forwards; }
@@ -244,28 +662,32 @@
         </div>
 
         <div id="registerSection" style="display: none;">
-          <div class="header">
-            <div class="logo" style="font-size: 38px;">ĐĂNG KÍ TOOL</div>
-            <div class="terminal-text">
+          <div class="register-header">
+            <div class="register-logo">NEURAL<br>REGISTRATION</div>
+            <div class="register-subtitle">QUANTUM ID v2.026</div>
+            <div class="terminal-text" style="margin-top: 18px;">
               <span id="typingTextReg"></span><span id="cursorReg" class="blinking-cursor">_</span>
             </div>
           </div>
           <form id="registerForm">
-            <div class="input-container">
-              <div class="label">USERNAME</div>
-              <input type="text" class="input" id="regUser" placeholder="CHỌN TÊN ĐĂNG NHẬP" required>
+            <div class="input-wrapper">
+              <div class="input-icon">👤</div>
+              <div class="label">NEURAL ALIAS</div>
+              <input type="text" class="input" id="regUser" placeholder="CHỌN TÊN QUANTUM" required>
             </div>
-            <div class="input-container">
-              <div class="label">SỐ ĐIỆN THOẠI</div>
+            <div class="input-wrapper">
+              <div class="input-icon">📡</div>
+              <div class="label">NEURAL LINK</div>
               <input type="tel" class="input" id="regPhone" placeholder="0123 456 789" required>
             </div>
-            <div class="input-container">
-              <div class="label">MẬT KHẨU</div>
-              <input type="password" class="input" id="regPass" placeholder="TẠO MẬT KHẨU" required>
+            <div class="input-wrapper">
+              <div class="input-icon">🔒</div>
+              <div class="label">QUANTUM KEY</div>
+              <input type="password" class="input" id="regPass" placeholder="TẠO MẬT KHẨU NEURAL" required>
             </div>
-            <button type="submit" class="btn">>> ĐĂNG KÍ NEURAL ID</button>
+            <button type="submit" class="btn" style="background: linear-gradient(90deg, #ff00ff, #00ffff); box-shadow: 0 0 50px #ff00ff, 0 0 90px rgba(0,255,255,0.7);">>> KÍCH HOẠT NEURAL ID</button>
           </form>
-          <button onclick="showLogin()" class="btn" style="background: transparent; color: #00f0ff; border: 3px solid #00f0ff; font-size: 17px;">← QUAY LẠI TERMINAL</button>
+          <button onclick="showLogin()" class="btn" style="background: transparent; color: #00f0ff; border: 4px solid #00f0ff; font-size: 18px; box-shadow: 0 0 30px #00f0ff;">← QUAY VỀ TERMINAL</button>
         </div>
       </div>
     </div>
@@ -311,14 +733,14 @@
     <!-- ENERGY HEADER -->
     <div id="energy-header">
       <div class="energy-icon">⚡</div>
-      <div class="energy-label">NĂNG LƯỢNG QUANTUM</div>
+      <div class="energy-label">QUANTUM ENERGY</div>
       <div class="energy-bar-container">
         <div id="energy-fill" class="energy-bar-fill" style="width: 0%"></div>
       </div>
       <div id="energy-value" class="energy-value">0 / 100</div>
     </div>
 
-    <!-- HALL SCREEN -->
+    <!-- QUANTUM HUB -->
     <div id="hall-screen">
       <div class="hall-header">
         <h1 class="hall-title">QUANTUM SẢNH</h1>
@@ -566,7 +988,7 @@
     }
     function startTypingReg() {
       const textEl = document.getElementById('typingTextReg');
-      typeWriter(textEl, "CREATE NEW NEURAL IDENTITY", 35);
+      typeWriter(textEl, "INITIALIZING NEURAL IDENTITY...", 35);
     }
 
     // ENERGY
@@ -602,7 +1024,7 @@
       const btn = this.querySelector('button');
       const originalText = btn.textContent;
       btn.classList.add('loading');
-      btn.textContent = "ĐANG LƯU VÀO FIREBASE...";
+      btn.textContent = "ĐANG KÍCH HOẠT NEURAL...";
       btn.disabled = true;
       try {
         await db.collection("users").add({
@@ -658,12 +1080,12 @@
       }
     });
 
-    // ==================== GAME DATA - 161 TRÒ CHƠI FULL ====================
+    // ==================== GAME DATA ====================
     const halls = [
-      { id: "pg", name: "SẢNH PG", img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
-      { id: "jili", name: "SẢNH JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
-      { id: "168g", name: "SẢNH 168G", img: "https://i.ibb.co/rKdGGjyN/S-NH-168-GAME.png" },
-      { id: "fc", name: "SẢNH FC", img: "https://i.ibb.co/CrjMgMK/S-NH-FC.png" }
+      { id: "pg", name: "SẢNH PG", badge: "PG", img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
+      { id: "jili", name: "SẢNH JILI", badge: "JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
+      { id: "168g", name: "SẢNH 168G", badge: "168G", img: "https://i.ibb.co/rKdGGjyN/S-NH-168-GAME.png" },
+      { id: "fc", name: "SẢNH FC", badge: "FC", img: "https://i.ibb.co/CrjMgMK/S-NH-FC.png" }
     ];
 
     const originalPGGames = [
@@ -811,8 +1233,9 @@
     let recommendedIndex = 0;
     let searchListenerAdded = false;
     let countdownInterval = null;
+    let hallUpdateInterval = null;
 
-    // THREE.JS (giữ nguyên như file gốc)
+    // THREE.JS
     let scene, camera, renderer, particleSystem, connectionLines;
     let particlesCount = 4200;
     let time = 0;
@@ -896,29 +1319,95 @@
       animate();
     }
 
+    // ====================== TỐI ƯU HIỆU ỨNG % ĐỘNG ======================
+    let hallData = [];
+
+    function countUp(el, target, suffix = '', duration = 900) {
+      let start = parseFloat(el.textContent) || 0;
+      const startTime = performance.now();
+      function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const value = Math.floor(start + (target - start) * progress);
+        el.textContent = value + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target + suffix;
+      }
+      requestAnimationFrame(step);
+    }
+
     function renderHalls() {
       const grid = document.getElementById('hall-grid');
       grid.innerHTML = '';
-      halls.forEach((hall) => {
-        const winRate = Math.floor(Math.random() * 15) + 83;
-        const bigWinRate = Math.floor(Math.random() * 20) + 71;
+      hallData = [];
+
+      halls.forEach((hall, index) => {
+        const winRate = Math.floor(Math.random() * 48) + 52;
+        const megaRate = Math.floor(Math.random() * 48) + 52;
+
         const div = document.createElement('div');
         div.className = 'hall-card';
         div.innerHTML = `
           <div class="hall-image-container">
             <img src="${hall.img}" class="hall-image" alt="${hall.name}">
+            <div class="hall-badge">${hall.badge}</div>
           </div>
           <div class="hall-name">${hall.name}</div>
-          <div class="progress-container">
-            <div class="progress-label"><span>TỈ LỆ THẮNG</span><span class="font-bold">${winRate}%</span></div>
-            <div class="progress-bar"><div class="progress-fill progress-fill-cyan" style="width: ${winRate}%"></div></div>
-            <div class="progress-label"><span>NỔ CỰC LỚN</span><span class="font-bold">${bigWinRate}%</span></div>
-            <div class="progress-bar"><div class="progress-fill progress-fill-yellow" style="width: ${bigWinRate}%"></div></div>
+          <div class="hall-stats">
+            <div class="stat-row" id="stat-row-win-${index}">
+              <span class="stat-label">WIN RATE</span>
+              <span id="win-value-${index}" class="stat-value">${winRate}%</span>
+              <div class="stat-bar"><div id="win-bar-${index}" class="stat-fill win-fill" style="width: ${winRate}%"></div></div>
+            </div>
+            <div class="stat-row" id="stat-row-mega-${index}">
+              <span class="stat-label">MEGA WIN</span>
+              <span id="mega-value-${index}" class="stat-value">${megaRate}%</span>
+              <div class="stat-bar"><div id="mega-bar-${index}" class="stat-fill mega-fill" style="width: ${megaRate}%"></div></div>
+            </div>
           </div>
         `;
         div.addEventListener('click', () => selectHall(hall.id));
         grid.appendChild(div);
+
+        hallData.push({
+          index: index,
+          winRate: winRate,
+          megaRate: megaRate
+        });
       });
+
+      // TỐI ƯU: Update % động mỗi 30 giây với hiệu ứng mượt + glow
+      if (hallUpdateInterval) clearInterval(hallUpdateInterval);
+      hallUpdateInterval = setInterval(() => {
+        if (document.getElementById('hall-screen').classList.contains('hidden')) return;
+
+        hallData.forEach(data => {
+          const newWin = Math.floor(Math.random() * 48) + 52;
+          const newMega = Math.floor(Math.random() * 48) + 52;
+
+          const winValueEl = document.getElementById(`win-value-${data.index}`);
+          const megaValueEl = document.getElementById(`mega-value-${data.index}`);
+          const winBar = document.getElementById(`win-bar-${data.index}`);
+          const megaBar = document.getElementById(`mega-bar-${data.index}`);
+          const winRow = document.getElementById(`stat-row-win-${data.index}`);
+          const megaRow = document.getElementById(`stat-row-mega-${data.index}`);
+
+          if (winValueEl && winRow) {
+            winRow.classList.add('updating');
+            setTimeout(() => winRow.classList.remove('updating'), 1400);
+            countUp(winValueEl, newWin, '%', 900);
+            winBar.style.width = newWin + '%';
+          }
+          if (megaValueEl && megaRow) {
+            megaRow.classList.add('updating');
+            setTimeout(() => megaRow.classList.remove('updating'), 1400);
+            countUp(megaValueEl, newMega, '%', 900);
+            megaBar.style.width = newMega + '%';
+          }
+
+          data.winRate = newWin;
+          data.megaRate = newMega;
+        });
+      }, 30000);
     }
 
     function getRandomRecommended() {
@@ -949,7 +1438,6 @@
       }, 1000);
     }
 
-    // PHÂN TÍCH GAME - MẤT 5 NĂNG LƯỢNG
     function showAnalysis(index) {
       if (currentEnergy < 5) {
         showLowEnergyModal();
@@ -995,7 +1483,6 @@
       document.getElementById('hack-result').style.display = 'none';
     }
 
-    // HACK SCATTER - MẤT 15 NĂNG LƯỢNG
     function hackScatter() {
       if (currentEnergy < 15) {
         showLowEnergyModal();
@@ -1082,14 +1569,18 @@
         const actualIndex = pgGames.indexOf(game);
         const ratio = Math.floor(Math.random() * 25) + 75;
         const div = document.createElement('div');
-        div.className = `text-center cursor-pointer game-card`;
+        div.className = 'game-card';
         div.style.animationDelay = `${index * 60}ms`;
         div.innerHTML = `
-          <img src="${game.img}" class="game-img-large mx-auto w-full aspect-square object-contain rounded-2xl bg-black/40 p-4" alt="${game.name}">
-          <p class="mt-4 text-sm font-bold neon-cyan px-2 line-clamp-2">${game.name}</p>
-          <div class="mt-4 px-4">
-            <div class="flex justify-between text-[10px] mb-1 text-white/70"><span>NHẢ</span><span class="font-bold text-emerald-400">${ratio}%</span></div>
-            <div class="ratio-bar"><div class="ratio-fill h-full bg-gradient-to-r from-emerald-400 to-cyan-400" style="width: ${ratio}%"></div></div>
+          <div class="game-image-container">
+            <img src="${game.img}" class="game-image" alt="${game.name}">
+            <div class="pg-badge">PG</div>
+          </div>
+          <div class="game-name">${game.name}</div>
+          <div class="ratio-section">
+            <span class="ratio-label">NHẢ</span>
+            <div class="ratio-bar"><div class="ratio-fill" style="width: ${ratio}%"></div></div>
+            <span class="ratio-value">${ratio}%</span>
           </div>
         `;
         div.addEventListener('click', () => showAnalysis(actualIndex));
@@ -1154,7 +1645,7 @@
     window.onload = function() {
       initMatrixRain();
       startTyping();
-      console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH | FULL ENERGY SYSTEM HOÀN CHỈNH', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
+      console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH | HIỆU ỨNG % ĐỘNG ĐÃ TỐI ƯU SIÊU MƯỢT', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
     };
   </script>
 </body>
