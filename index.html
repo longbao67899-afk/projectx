@@ -68,91 +68,44 @@
     .label { font-family: 'VT323', monospace; font-size: 18px; color: #67e8f9; margin-bottom: 8px; text-shadow: 0 0 12px #67e8f9; letter-spacing: 4px; display: flex; align-items: center; gap: 10px; }
     .label::before { content: '>>'; color: #ff00ff; font-size: 20px; }
 
-    .input-wrapper {
-      position: relative;
-      margin-bottom: 22px;
-    }
+    .input-wrapper { position: relative; margin-bottom: 22px; }
     .input {
-      width: 100%; 
-      background: rgba(10,20,45,0.98); 
-      border: 4px solid #00f0ff; 
-      color: #fff; 
-      padding: 18px 20px 18px 62px; 
-      font-family: 'VT323', monospace; 
-      font-size: 20px; 
-      border-radius: 14px; 
+      width: 100%; background: rgba(10,20,45,0.98); border: 4px solid #00f0ff; color: #fff;
+      padding: 18px 20px 18px 62px; font-family: 'VT323', monospace; font-size: 20px; border-radius: 14px;
       transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
     }
     .input:focus { 
-      outline: none; 
-      border-color: #67e8f9; 
-      background: rgba(15,30,65,0.99); 
-      box-shadow: 0 0 30px #67e8f9, 0 0 60px rgba(103,232,249,0.8), inset 0 0 25px rgba(0,255,255,0.5); 
-      transform: translateY(-4px); 
+      outline: none; border-color: #67e8f9; background: rgba(15,30,65,0.99);
+      box-shadow: 0 0 30px #67e8f9, 0 0 60px rgba(103,232,249,0.8), inset 0 0 25px rgba(0,255,255,0.5);
+      transform: translateY(-4px);
     }
     .input::placeholder { color: #88f0ff; opacity: 0.75; }
 
     .input-icon {
-      position: absolute;
-      left: 22px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 26px;
-      color: #ff00ff;
-      text-shadow: 0 0 12px #ff00ff;
-      z-index: 2;
-      pointer-events: none;
+      position: absolute; left: 22px; top: 50%; transform: translateY(-50%);
+      font-size: 26px; color: #ff00ff; text-shadow: 0 0 12px #ff00ff; z-index: 2; pointer-events: none;
     }
 
     .btn { 
-      width: 100%; 
-      padding: 20px; 
-      background: linear-gradient(90deg,#00f0ff,#00aaff,#ff00ff); 
-      color: #000; 
-      border: none; 
-      font-family: 'Orbitron', sans-serif; 
-      font-size: 22px; 
-      font-weight: 700; 
-      letter-spacing: 5px; 
-      text-transform: uppercase; 
-      cursor: pointer; 
-      border-radius: 16px; 
-      margin: 18px 0; 
-      position: relative; 
-      overflow: hidden; 
-      box-shadow: 0 0 40px #00f0ff, 0 0 80px rgba(255,0,255,0.5); 
-      transition: all 0.3s ease; 
+      width: 100%; padding: 20px; background: linear-gradient(90deg,#00f0ff,#00aaff,#ff00ff); color: #000;
+      border: none; font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 700;
+      letter-spacing: 5px; text-transform: uppercase; cursor: pointer; border-radius: 16px;
+      margin: 18px 0; position: relative; overflow: hidden;
+      box-shadow: 0 0 40px #00f0ff, 0 0 80px rgba(255,0,255,0.5); transition: all 0.3s ease;
     }
-    .btn::before { 
-      content: '>>'; 
-      position: absolute; 
-      left: 28px; 
-      font-size: 24px; 
-    }
-    .btn:hover { 
-      transform: scale(1.06); 
-      box-shadow: 0 0 70px #67e8f9; 
-    }
+    .btn::before { content: '>>'; position: absolute; left: 28px; font-size: 24px; }
+    .btn:hover { transform: scale(1.06); box-shadow: 0 0 70px #67e8f9; }
     .btn.loading { animation: btnPulse 1.2s infinite alternate ease-in-out; pointer-events: none; }
     @keyframes btnPulse { 0% { box-shadow: 0 0 40px #00f0ff; } 100% { box-shadow: 0 0 90px #67e8f9, 0 0 130px #ff00ff; } }
 
     .guide-link, .register-link { 
-      display: block; 
-      text-align: center; 
-      margin: 25px 0 12px; 
-      color: #67e8f9; 
-      font-family: 'VT323', monospace; 
-      font-size: 17px; 
-      text-decoration: none; 
-      text-shadow: 0 0 15px #67e8f9; 
-      cursor: pointer; 
-      letter-spacing: 3px; 
+      display: block; text-align: center; margin: 25px 0 12px; color: #67e8f9;
+      font-family: 'VT323', monospace; font-size: 17px; text-decoration: none;
+      text-shadow: 0 0 15px #67e8f9; cursor: pointer; letter-spacing: 3px;
     }
 
     #energy-header {
-      position: sticky; 
-      top: 0; 
-      z-index: 9999;
+      position: sticky; top: 0; z-index: 9999;
       background: linear-gradient(90deg, #0a0f1f, #1a2340);
       border-bottom: 5px solid #00f0ff;
       padding: 14px 15px;
@@ -162,419 +115,158 @@
       box-shadow: 0 0 40px rgba(0, 240, 255, 0.8), 0 0 80px rgba(255,215,0,0.4);
       backdrop-filter: blur(16px);
     }
-    .energy-label { 
-      font-family: 'VT323', monospace; 
-      font-size: 18px; 
-      color: #67e8f9; 
-      letter-spacing: 5px; 
-      text-shadow: 0 0 15px #67e8f9; 
-      white-space: nowrap; 
-    }
-    .energy-bar-container { 
-      flex: 1; 
-      background: rgba(10, 20, 45, 0.95); 
-      border: 6px solid #00f0ff; 
-      border-radius: 9999px; 
-      height: 34px; 
-      position: relative; 
-      overflow: hidden; 
-      box-shadow: 
-        0 0 25px #00f0ff,
-        0 0 45px rgba(0,240,255,0.6),
-        inset 0 0 20px rgba(255,215,0,0.5);
-    }
+    .energy-label { font-family: 'VT323', monospace; font-size: 18px; color: #67e8f9; letter-spacing: 5px; text-shadow: 0 0 15px #67e8f9; white-space: nowrap; }
+    .energy-bar-container { flex: 1; background: rgba(10, 20, 45, 0.95); border: 6px solid #00f0ff; border-radius: 9999px; height: 34px; position: relative; overflow: hidden; box-shadow: 0 0 25px #00f0ff, 0 0 45px rgba(0,240,255,0.6), inset 0 0 20px rgba(255,215,0,0.5); }
     .energy-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #00f0ff, #67e8f9, #ffd700, #ff00ff);
-      box-shadow: 
-        0 0 30px #67e8f9,
-        0 0 55px #ffd700,
-        0 0 80px rgba(255,0,255,0.6);
-      transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-      overflow: hidden;
+      height: 100%; background: linear-gradient(90deg, #00f0ff, #67e8f9, #ffd700, #ff00ff);
+      box-shadow: 0 0 30px #67e8f9, 0 0 55px #ffd700, 0 0 80px rgba(255,0,255,0.6);
+      transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; overflow: hidden;
     }
     .energy-bar-fill::after {
-      content: '';
-      position: absolute; 
-      top: 0; 
-      left: -120%;
-      width: 60%; 
-      height: 100%;
+      content: ''; position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent);
       animation: energyShine 1.8s linear infinite;
     }
     .energy-bar-fill::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-      animation: energyWave 2.4s linear infinite;
-      opacity: 0.6;
+      animation: energyWave 2.4s linear infinite; opacity: 0.6;
     }
     @keyframes energyShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
     @keyframes energyWave { 0% { transform: translateX(-150%); } 100% { transform: translateX(150%); } }
 
-    .energy-value { 
-      font-family: 'VT323', monospace; 
-      font-size: 24px; 
-      font-weight: 700; 
-      color: #ffd700; 
-      text-shadow: 0 0 20px #ffd700, 0 0 40px #00f0ff; 
-      min-width: 78px; 
-      text-align: right; 
-      letter-spacing: 2px;
-    }
-    .energy-icon { 
-      font-size: 32px; 
-      animation: pulseEnergy 1.4s infinite alternate ease-in-out; 
-      filter: drop-shadow(0 0 12px #ffd700);
-    }
-    @keyframes pulseEnergy { 
-      from { transform: scale(1); } 
-      to { transform: scale(1.22); } 
-    }
+    .energy-value { font-family: 'VT323', monospace; font-size: 24px; font-weight: 700; color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 40px #00f0ff; min-width: 78px; text-align: right; letter-spacing: 2px; }
+    .energy-icon { font-size: 32px; animation: pulseEnergy 1.4s infinite alternate ease-in-out; filter: drop-shadow(0 0 12px #ffd700); }
+    @keyframes pulseEnergy { from { transform: scale(1); } to { transform: scale(1.22); } }
     .energy-low { border-color: #ff00aa !important; }
-    .energy-low .energy-bar-fill { 
-      background: linear-gradient(90deg, #ff0066, #ff44aa, #ff00ff) !important; 
-      box-shadow: 0 0 35px #ff00aa, 0 0 70px #ff44aa !important; 
-    }
+    .energy-low .energy-bar-fill { background: linear-gradient(90deg, #ff0066, #ff44aa, #ff00ff) !important; box-shadow: 0 0 35px #ff00aa, 0 0 70px #ff44aa !important; }
 
-    /* ==================== QUANTUM HUB - HALL SCREEN (TỐI ƯU HIỆU ỨNG % ĐỘNG) ==================== */
-    #hall-screen { 
-      background: linear-gradient(180deg, #0a0f1f, #111827); 
-      min-height: 100dvh; 
-      padding: 20px 15px; 
-      position: relative; 
-      overflow: hidden; 
-    }
+    /* QUANTUM HUB */
+    #hall-screen { background: linear-gradient(180deg, #0a0f1f, #111827); min-height: 100dvh; padding: 20px 15px; position: relative; overflow: hidden; }
     #hall-screen::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       background: radial-gradient(circle at 30% 20%, rgba(103,232,249,0.18) 0%, transparent 50%),
                   radial-gradient(circle at 70% 80%, rgba(255,215,0,0.15) 0%, transparent 50%);
       pointer-events: none; z-index: 1; animation: networkPulse 15s linear infinite;
     }
     @keyframes networkPulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
-    .hall-header { 
-      text-align: center; 
-      margin-bottom: 40px; 
-      position: relative; 
-      z-index: 2; 
-    }
-    .hall-title { 
-      font-size: 52px; 
-      font-weight: 700; 
-      color: #00f0ff; 
-      letter-spacing: 8px; 
-      text-shadow: 0 0 30px #00f0ff, 0 0 60px #00f0ff, 0 0 90px #ff00ff;
-      margin-bottom: 8px; 
-      animation: titlePulse 4s ease infinite;
-    }
-    @keyframes titlePulse {
-      0%, 100% { text-shadow: 0 0 30px #00f0ff, 0 0 60px #00f0ff; }
-      50% { text-shadow: 0 0 50px #00f0ff, 0 0 90px #ff00ff, 0 0 120px #ffd700; }
-    }
-    .hall-subtitle { 
-      font-size: 19px; 
-      color: #ffd700; 
-      letter-spacing: 7px; 
-      text-shadow: 0 0 20px #ffd700; 
-      font-family: 'VT323', monospace;
-    }
-    .hall-desc { 
-      font-family: 'VT323', monospace; 
-      font-size: 18px; 
-      color: #a5f3fc; 
-      margin-top: 12px; 
-      letter-spacing: 5px; 
-      opacity: 0.95;
-    }
+    .hall-header { text-align: center; margin-bottom: 40px; position: relative; z-index: 2; }
+    .hall-title { font-size: 52px; font-weight: 700; color: #00f0ff; letter-spacing: 8px; text-shadow: 0 0 30px #00f0ff, 0 0 60px #00f0ff, 0 0 90px #ff00ff; margin-bottom: 8px; animation: titlePulse 4s ease infinite; }
+    @keyframes titlePulse { 0%,100% { text-shadow: 0 0 30px #00f0ff, 0 0 60px #00f0ff; } 50% { text-shadow: 0 0 50px #00f0ff, 0 0 90px #ff00ff, 0 0 120px #ffd700; } }
+    .hall-subtitle { font-size: 19px; color: #ffd700; letter-spacing: 7px; text-shadow: 0 0 20px #ffd700; font-family: 'VT323', monospace; }
+    .hall-desc { font-family: 'VT323', monospace; font-size: 18px; color: #a5f3fc; margin-top: 12px; letter-spacing: 5px; opacity: 0.95; }
 
-    .hall-grid { 
-      display: flex; 
-      flex-direction: column; 
-      gap: 32px; 
-      position: relative; 
-      z-index: 2; 
-    }
+    .hall-grid { display: flex; flex-direction: column; gap: 32px; position: relative; z-index: 2; }
+    .hall-card { background: linear-gradient(145deg, #0f172a, #1e2937); border: 6px solid #00f0ff; border-radius: 28px; overflow: hidden; box-shadow: 0 0 40px rgba(0,240,255,0.9), 0 0 90px rgba(255,215,0,0.6), inset 0 0 40px rgba(0,240,255,0.4); transition: all 0.4s cubic-bezier(0.23,1,0.32,1); cursor: pointer; }
+    .hall-card:hover { transform: scale(1.05) translateY(-8px); border-color: #ffd700; box-shadow: 0 0 80px rgba(0,240,255,1), 0 0 140px rgba(255,0,255,0.8), inset 0 0 60px rgba(255,215,0,0.5); }
+    .hall-image-container { position: relative; height: 210px; background: #0a0f1f; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hall-image { width: 92%; height: 92%; object-fit: contain; filter: drop-shadow(0 0 30px #00f0ff) drop-shadow(0 0 50px #ffd700); transition: transform 0.5s ease; }
+    .hall-card:hover .hall-image { transform: scale(1.1); }
+    .hall-badge { position: absolute; top: 18px; left: 18px; background: rgba(0,0,0,0.85); color: #ffd700; font-family: 'VT323', monospace; font-size: 32px; font-weight: 700; letter-spacing: 4px; padding: 6px 18px; border: 4px solid #ff00ff; border-radius: 12px; box-shadow: 0 0 30px #ff00ff, 0 0 50px rgba(255,215,0,0.8); text-shadow: 0 0 15px #ffd700; z-index: 3; }
+    .hall-name { text-align: center; font-size: 32px; font-weight: 700; background: linear-gradient(90deg, #00f0ff, #ffd700, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding: 18px 0 12px; letter-spacing: 6px; text-shadow: 0 0 25px #00f0ff; }
+    .hall-stats { padding: 0 24px 24px; display: flex; flex-direction: column; gap: 18px; }
+    .stat-row { display: flex; justify-content: space-between; align-items: center; font-family: 'VT323', monospace; font-size: 18px; color: #67e8f9; text-shadow: 0 0 12px #67e8f9; transition: all 0.3s ease; }
+    .stat-row.updating { animation: neonFlash 1.4s ease forwards; }
+    @keyframes neonFlash { 0% { filter: brightness(1); text-shadow: 0 0 12px #67e8f9; } 40% { filter: brightness(1.6); text-shadow: 0 0 25px #ffd700, 0 0 40px #ff00ff; } 70% { filter: brightness(1.3); text-shadow: 0 0 35px #00f0ff, 0 0 55px #ffd700; } 100% { filter: brightness(1); text-shadow: 0 0 12px #67e8f9; } }
+    .stat-label { letter-spacing: 3px; }
+    .stat-value { font-size: 22px; font-weight: 700; color: #ffd700; min-width: 68px; text-align: right; transition: all 0.4s ease; }
+    .stat-bar { height: 12px; flex: 1; background: #1e2937; border-radius: 9999px; margin: 0 14px; overflow: hidden; border: 2px solid #22d3ee; position: relative; }
+    .stat-fill { height: 100%; transition: width 1.6s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; overflow: hidden; }
+    .win-fill { background: linear-gradient(90deg, #22d3ee, #67e8f9); box-shadow: 0 0 20px #67e8f9; }
+    .win-fill::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent); animation: progressShine 2s linear infinite; }
+    .mega-fill { background: linear-gradient(90deg, #ffd700, #ffaa00); box-shadow: 0 0 20px #ffd700; }
+    .mega-fill::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent); animation: progressShine 2s linear infinite; }
+    @keyframes progressShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
 
-    .hall-card {
-      background: linear-gradient(145deg, #0f172a, #1e2937);
-      border: 6px solid #00f0ff;
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow: 
-        0 0 40px rgba(0,240,255,0.9),
-        0 0 90px rgba(255,215,0,0.6),
-        inset 0 0 40px rgba(0,240,255,0.4);
-      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-      position: relative;
-      cursor: pointer;
-    }
-    .hall-card:hover {
-      transform: scale(1.05) translateY(-8px);
-      border-color: #ffd700;
-      box-shadow: 
-        0 0 80px rgba(0,240,255,1),
-        0 0 140px rgba(255,0,255,0.8),
-        inset 0 0 60px rgba(255,215,0,0.5);
-    }
+    /* REGISTER SECTION */
+    #registerSection { animation: fadeInRegister 0.6s ease forwards; }
+    @keyframes fadeInRegister { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .register-header { text-align: center; margin-bottom: 32px; position: relative; }
+    .register-logo { font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: 700; line-height: 1.1; background: linear-gradient(90deg, #00f0ff, #ffd700, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 40px rgba(0,240,255,0.8), 0 0 80px rgba(255,215,0,0.6); letter-spacing: -2px; margin-bottom: 8px; }
+    .register-subtitle { font-family: 'VT323', monospace; font-size: 22px; color: #67e8f9; letter-spacing: 8px; text-shadow: 0 0 20px #67e8f9; margin-bottom: 12px; }
+    .neural-glow { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 180px; height: 4px; background: linear-gradient(90deg, transparent, #00f0ff, transparent); filter: blur(8px); animation: neuralPulse 2s infinite ease-in-out; }
+    @keyframes neuralPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+    .register-form-container { background: rgba(15,23,42,0.85); border: 3px solid transparent; border-image: linear-gradient(90deg,#00f0ff,#ff00ff) 1; border-radius: 20px; padding: 32px 24px; box-shadow: 0 0 50px rgba(0,240,255,0.4), inset 0 0 30px rgba(255,0,255,0.3); }
+    .modern-input { position: relative; margin-bottom: 28px; }
+    .modern-input label { display: flex; align-items: center; gap: 8px; font-family: 'VT323', monospace; font-size: 17px; color: #67e8f9; margin-bottom: 8px; letter-spacing: 3px; }
+    .modern-input input { width: 100%; background: rgba(10,20,45,0.95); border: 3px solid #00f0ff; color: #fff; padding: 18px 24px 18px 58px; font-family: 'VT323', monospace; font-size: 21px; border-radius: 16px; transition: all 0.4s cubic-bezier(0.23,1,0.32,1); }
+    .modern-input input:focus { border-color: #ffd700; box-shadow: 0 0 0 4px rgba(255,215,0,0.3), 0 0 35px rgba(255,215,0,0.6); transform: scale(1.03); }
+    .modern-input .icon { position: absolute; left: 24px; top: 52px; font-size: 28px; color: #ff00ff; text-shadow: 0 0 15px #ff00ff; transition: all 0.3s ease; }
+    .modern-input input:focus + .icon { color: #ffd700; transform: scale(1.2); }
+    .quantum-badge { position: absolute; top: -12px; right: 24px; background: #ff00ff; color: #000; font-size: 13px; font-weight: 700; padding: 2px 14px; border-radius: 9999px; letter-spacing: 2px; box-shadow: 0 0 25px #ff00ff; animation: badgeFloat 3s ease infinite; }
+    @keyframes badgeFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
-    .hall-image-container {
-      position: relative;
-      height: 210px;
-      background: #0a0f1f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .hall-image {
-      width: 92%;
-      height: 92%;
-      object-fit: contain;
-      filter: drop-shadow(0 0 30px #00f0ff) drop-shadow(0 0 50px #ffd700);
-      transition: transform 0.5s ease;
-    }
-    .hall-card:hover .hall-image {
-      transform: scale(1.1);
-    }
+    /* QUANTUM LOADING */
+    #loadingScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,30,0.97); z-index: 99999; flex-direction: column; align-items: center; justify-content: center; color: #00f0ff; font-family: 'VT323', monospace; overflow: hidden; }
+    .quantum-core { position: relative; width: 180px; height: 180px; margin-bottom: 40px; }
+    .core-orb { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 110px; height: 110px; background: radial-gradient(circle at 30% 30%, #67e8f9, #00f0ff); border-radius: 50%; box-shadow: 0 0 60px #00f0ff, 0 0 120px #00f0ff, inset 0 0 40px #ffd700; animation: corePulse 1.8s ease-in-out infinite; }
+    .ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 3px solid transparent; border-top-color: #ff00ff; border-radius: 50%; animation: ringRotate 4s linear infinite; }
+    .ring1 { width: 160px; height: 160px; animation-duration: 3.2s; }
+    .ring2 { width: 200px; height: 200px; animation-duration: 4.8s; border-top-color: #ffd700; }
+    .ring3 { width: 240px; height: 240px; animation-duration: 2.8s; border-top-color: #67e8f9; }
+    @keyframes corePulse { 0%,100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.15); } }
+    @keyframes ringRotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+    .loading-text { font-size: 28px; letter-spacing: 6px; text-shadow: 0 0 20px #00f0ff; margin-bottom: 12px; animation: textFlicker 1.2s infinite alternate; }
+    .loading-subtext { font-size: 18px; color: #ffd700; letter-spacing: 4px; opacity: 0.9; margin-bottom: 40px; }
+    .progress-container { width: 85%; max-width: 320px; height: 18px; background: rgba(0,240,255,0.1); border: 4px solid #00f0ff; border-radius: 9999px; overflow: hidden; box-shadow: 0 0 30px #00f0ff; position: relative; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #00f0ff, #67e8f9, #ffd700, #ff00ff); box-shadow: 0 0 40px #67e8f9; transition: width 0.15s linear; position: relative; }
+    .progress-bar::after { content: ''; position: absolute; top: 0; left: -150%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent); animation: progressShimmer 1.6s linear infinite; }
+    @keyframes textFlicker { 0% { opacity: 0.7; } 100% { opacity: 1; } }
+    @keyframes progressShimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }
 
-    .hall-badge {
-      position: absolute;
-      top: 18px;
-      left: 18px;
-      background: rgba(0,0,0,0.85);
-      color: #ffd700;
-      font-family: 'VT323', monospace;
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      padding: 6px 18px;
-      border: 4px solid #ff00ff;
-      border-radius: 12px;
-      box-shadow: 0 0 30px #ff00ff, 0 0 50px rgba(255,215,0,0.8);
-      text-shadow: 0 0 15px #ffd700;
-      z-index: 3;
+    /* REGISTER CHOICE MODAL */
+    .choice-modal-content {
+      background: rgba(10,15,35,0.98); border: 4px solid #00f0ff; border-radius: 24px;
+      width: 100%; max-width: 390px; box-shadow: 0 0 60px #00f0ff, 0 0 120px rgba(0,240,255,0.7), inset 0 0 50px rgba(0,240,255,0.3);
+      position: relative; overflow: hidden; animation: modalPop 0.4s ease forwards;
     }
+    .choice-modal-content::before {
+      content: ''; position: absolute; inset: 0; border: 2px solid #00f0ff; border-radius: 20px;
+      box-shadow: 0 0 80px #00f0ff; opacity: 0.35; pointer-events: none; animation: borderGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes borderGlow { from { opacity: 0.35; } to { opacity: 0.8; } }
+    @keyframes modalPop { 0% { transform: scale(0.65) translateY(30px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+    .choice-inner { padding: 32px 28px 28px; text-align: center; position: relative; z-index: 2; }
+    .choice-title { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 8px; color: #00f0ff; text-shadow: 0 0 25px #00f0ff, 0 0 45px #00f0ff; margin-bottom: 10px; }
+    .choice-subtitle { font-family: 'VT323', monospace; font-size: 19px; color: #67e8f9; letter-spacing: 3px; margin-bottom: 32px; text-shadow: 0 0 15px #67e8f9; }
+    .choice-options { display: flex; flex-direction: column; gap: 16px; }
+    .choice-btn {
+      width: 100%; padding: 19px 24px; font-family: 'Orbitron', sans-serif; font-size: 19px; font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase; border-radius: 16px; cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.23,1,0.32,1); position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .tool-btn { background: linear-gradient(90deg, #00f0ff, #00aaff); color: #000; box-shadow: 0 0 35px #00f0ff; }
+    .tool-btn:hover { transform: scale(1.06) translateY(-3px); box-shadow: 0 0 55px #67e8f9; }
+    .game-btn { background: linear-gradient(90deg, #ffd700, #ffaa00); color: #000; box-shadow: 0 0 35px #ffd700; }
+    .game-btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.25); border-radius: 16px; animation: highlightPulse 2s infinite; }
+    .game-btn:hover { transform: scale(1.06) translateY(-3px); box-shadow: 0 0 55px #ffd700; }
+    .cancel-btn { background: transparent; color: #ff00aa; border: 4px solid #ff00aa; box-shadow: 0 0 25px #ff00aa; }
+    .cancel-btn:hover { background: rgba(255,0,170,0.15); transform: scale(1.03); }
+    @keyframes highlightPulse { 0%,100% { opacity: 0.2; } 50% { opacity: 0.45; } }
+    .choice-btn .btn-icon { font-size: 26px; }
 
-    .hall-name {
-      text-align: center;
-      font-size: 32px;
-      font-weight: 700;
-      background: linear-gradient(90deg, #00f0ff, #ffd700, #ff00ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      padding: 18px 0 12px;
-      letter-spacing: 6px;
-      text-shadow: 0 0 25px #00f0ff;
-      position: relative;
-      z-index: 2;
-    }
+    /* GAME SCREEN */
+    .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; }
+    #particle-bg { position: fixed !important; top: 0; left: 0; width: 100% !important; height: 100% !important; pointer-events: none; z-index: -2; opacity: 1; }
 
-    .hall-stats {
-      padding: 0 24px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'VT323', monospace;
-      font-size: 18px;
-      color: #67e8f9;
-      text-shadow: 0 0 12px #67e8f9;
-      transition: all 0.3s ease;
-    }
-    .stat-row.updating {
-      animation: neonFlash 1.4s ease forwards;
-    }
-    @keyframes neonFlash {
-      0% { filter: brightness(1); text-shadow: 0 0 12px #67e8f9; }
-      40% { filter: brightness(1.6); text-shadow: 0 0 25px #ffd700, 0 0 40px #ff00ff; }
-      70% { filter: brightness(1.3); text-shadow: 0 0 35px #00f0ff, 0 0 55px #ffd700; }
-      100% { filter: brightness(1); text-shadow: 0 0 12px #67e8f9; }
-    }
-    .stat-label {
-      letter-spacing: 3px;
-    }
-    .stat-value {
-      font-size: 22px;
-      font-weight: 700;
-      color: #ffd700;
-      min-width: 68px;
-      text-align: right;
-      transition: all 0.4s ease;
-    }
-    .stat-bar {
-      height: 12px;
-      flex: 1;
-      background: #1e2937;
-      border-radius: 9999px;
-      margin: 0 14px;
-      overflow: hidden;
-      border: 2px solid #22d3ee;
-      position: relative;
-    }
-    .stat-fill {
-      height: 100%;
-      transition: width 1.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-      overflow: hidden;
-    }
-    .win-fill { 
-      background: linear-gradient(90deg, #22d3ee, #67e8f9); 
-      box-shadow: 0 0 20px #67e8f9; 
-    }
-    .win-fill::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
-      animation: progressShine 2s linear infinite;
-    }
-    .mega-fill { 
-      background: linear-gradient(90deg, #ffd700, #ffaa00); 
-      box-shadow: 0 0 20px #ffd700; 
-    }
-    .mega-fill::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
-      animation: progressShine 2s linear infinite;
-    }
-    @keyframes progressShine { 
-      0% { transform: translateX(-100%); } 
-      100% { transform: translateX(300%); } 
-    }
-
-    /* ==================== PG SCREEN & OTHERS (giữ nguyên) ==================== */
-    .game-card {
-      background: rgba(12, 18, 38, 0.96);
-      border: 5px solid #00f0ff;
-      border-radius: 22px;
-      overflow: hidden;
-      box-shadow: 
-        0 0 40px rgba(0, 240, 255, 0.85),
-        0 0 80px rgba(255, 0, 255, 0.45),
-        inset 0 0 25px rgba(0, 240, 255, 0.3);
-      transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-      position: relative;
-      cursor: pointer;
-    }
-    .game-card:hover {
-      transform: scale(1.06) translateY(-6px);
-      box-shadow: 
-        0 0 70px rgba(0, 240, 255, 1),
-        0 0 130px rgba(255, 0, 255, 0.7),
-        inset 0 0 40px rgba(255, 215, 0, 0.5);
-      border-color: #ffd700;
-    }
-
-    .game-image-container {
-      position: relative;
-      height: 180px;
-      background: #0a0f1f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      border-bottom: 4px solid #00f0ff;
-    }
-    .game-image-container::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent, rgba(0,240,255,0.12));
-      z-index: 2;
-      pointer-events: none;
-    }
-    .game-image {
-      width: 92%;
-      height: 92%;
-      object-fit: contain;
-      filter: 
-        drop-shadow(0 0 20px #00f0ff)
-        drop-shadow(0 0 35px #ffd700);
-      transition: transform 0.4s ease;
-    }
-    .game-card:hover .game-image {
-      transform: scale(1.12);
-    }
-
-    .pg-badge {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-      background: rgba(0, 0, 0, 0.85);
-      color: #00f0ff;
-      font-family: 'VT323', monospace;
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      padding: 4px 14px;
-      border: 3px solid #00f0ff;
-      border-radius: 8px;
-      box-shadow: 0 0 25px #00f0ff, 0 0 40px rgba(255, 0, 255, 0.6);
-      text-shadow: 0 0 12px #00f0ff;
-      z-index: 3;
-    }
-
-    .game-name {
-      text-align: center;
-      font-size: 17px;
-      font-weight: 700;
-      color: #67e8f9;
-      padding: 14px 12px 8px;
-      letter-spacing: 2px;
-      text-shadow: 0 0 15px #67e8f9, 0 0 25px #00f0ff;
-      line-height: 1.3;
-    }
-
-    .ratio-section {
-      padding: 0 16px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-family: 'VT323', monospace;
-    }
-    .ratio-label {
-      font-size: 15px;
-      color: #a5f3fc;
-      text-shadow: 0 0 8px #67e8f9;
-    }
-    .ratio-value {
-      font-size: 18px;
-      font-weight: 700;
-      color: #ffd700;
-      text-shadow: 0 0 15px #ffd700;
-    }
-    .ratio-bar {
-      flex: 1;
-      height: 6px;
-      background: #1e2937;
-      border-radius: 9999px;
-      margin: 0 12px;
-      overflow: hidden;
-    }
-    .ratio-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #22d3ee, #67e8f9);
-      box-shadow: 0 0 12px #67e8f9;
-    }
+    .game-card { background: rgba(12,18,38,0.96); border: 5px solid #00f0ff; border-radius: 22px; overflow: hidden; box-shadow: 0 0 40px rgba(0,240,255,0.85), 0 0 80px rgba(255,0,255,0.45), inset 0 0 25px rgba(0,240,255,0.3); transition: all 0.35s cubic-bezier(0.23,1,0.32,1); position: relative; cursor: pointer; }
+    .game-card:hover { transform: scale(1.06) translateY(-6px); box-shadow: 0 0 70px rgba(0,240,255,1), 0 0 130px rgba(255,0,255,0.7), inset 0 0 40px rgba(255,215,0,0.5); border-color: #ffd700; }
+    .game-image-container { position: relative; height: 180px; background: #0a0f1f; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 4px solid #00f0ff; }
+    .game-image-container::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent, rgba(0,240,255,0.12)); z-index: 2; pointer-events: none; }
+    .game-image { width: 92%; height: 92%; object-fit: contain; filter: drop-shadow(0 0 20px #00f0ff) drop-shadow(0 0 35px #ffd700); transition: transform 0.4s ease; }
+    .game-card:hover .game-image { transform: scale(1.12); }
+    .pg-badge { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.85); color: #00f0ff; font-family: 'VT323', monospace; font-size: 26px; font-weight: 700; letter-spacing: 3px; padding: 4px 14px; border: 3px solid #00f0ff; border-radius: 8px; box-shadow: 0 0 25px #00f0ff, 0 0 40px rgba(255,0,255,0.6); text-shadow: 0 0 12px #00f0ff; z-index: 3; }
+    .game-name { text-align: center; font-size: 17px; font-weight: 700; color: #67e8f9; padding: 14px 12px 8px; letter-spacing: 2px; text-shadow: 0 0 15px #67e8f9, 0 0 25px #00f0ff; line-height: 1.3; }
+    .ratio-section { padding: 0 16px 16px; display: flex; align-items: center; justify-content: space-between; font-family: 'VT323', monospace; }
+    .ratio-label { font-size: 15px; color: #a5f3fc; text-shadow: 0 0 8px #67e8f9; }
+    .ratio-value { font-size: 18px; font-weight: 700; color: #ffd700; text-shadow: 0 0 15px #ffd700; }
+    .ratio-bar { flex: 1; height: 6px; background: #1e2937; border-radius: 9999px; margin: 0 12px; overflow: hidden; }
+    .ratio-fill { height: 100%; background: linear-gradient(90deg, #22d3ee, #67e8f9); box-shadow: 0 0 12px #67e8f9; }
 
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,30,0.92); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
     .modal-content { background: rgba(12,18,38,0.98); border: 4px solid #00f0ff; border-radius: 20px; width: 100%; max-width: 380px; padding: 35px 25px; text-align: center; box-shadow: 0 0 50px rgba(0,240,255,0.95); animation: modalPop 0.4s ease forwards; }
-    @keyframes modalPop { 0% { transform: scale(0.65) translateY(30px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
 
     .analysis-card { background: linear-gradient(145deg,#0a0718,#1a1433); border: 4px solid #22d3ee; border-radius: 24px; padding: 24px; box-shadow: 0 0 60px rgba(34,211,238,0.9), inset 0 0 40px rgba(34,211,238,0.3); position: relative; overflow: hidden; }
     #game-avatar-analysis { width: 100%; max-width: 260px; margin: 0 auto 20px; display: block; border: 6px solid #22d3ee; border-radius: 18px; box-shadow: 0 0 40px #22d3ee, 0 0 80px rgba(34,211,238,0.6); }
@@ -597,34 +289,17 @@
     .spin-value { font-size: 32px; font-weight: bold; color: #67e8f9; text-shadow: 0 0 15px #67e8f9; }
     .spin-label { font-size: 13px; color: #a5f3fc; margin-top: 4px; }
 
-    .hack-scatter-btn {
-      width: 100%; padding: 18px; background: linear-gradient(90deg,#ff00ff,#00ffff); color: #000;
-      border: none; font-family: 'Orbitron', sans-serif; font-size: 21px; font-weight: 700;
-      letter-spacing: 6px; text-transform: uppercase; cursor: pointer; border-radius: 16px;
-      box-shadow: 0 0 30px #ff00ff, 0 0 60px rgba(0,255,255,0.6); transition: all 0.3s ease; margin-top: 20px;
-    }
-
-    .hack-result {
-      margin-top: 20px; background: rgba(0,0,0,0.7); border: 4px solid #ff00ff; border-radius: 18px;
-      padding: 24px; text-align: center; display: none; animation: hackPop 0.6s ease forwards;
-    }
+    .hack-scatter-btn { width: 100%; padding: 18px; background: linear-gradient(90deg,#ff00ff,#00ffff); color: #000; border: none; font-family: 'Orbitron', sans-serif; font-size: 21px; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; cursor: pointer; border-radius: 16px; box-shadow: 0 0 30px #ff00ff, 0 0 60px rgba(0,255,255,0.6); transition: all 0.3s ease; margin-top: 20px; }
+    .hack-result { margin-top: 20px; background: rgba(0,0,0,0.7); border: 4px solid #ff00ff; border-radius: 18px; padding: 24px; text-align: center; display: none; animation: hackPop 0.6s ease forwards; }
     .hack-amount { font-size: 38px; font-weight: 700; font-family: 'VT323', monospace; color: #ffd700; text-shadow: 0 0 30px #ffd700, 0 0 60px #ff00ff; margin-bottom: 12px; }
     .hack-fun { font-family: 'VT323', monospace; font-size: 22px; color: #67e8f9; text-shadow: 0 0 15px #67e8f9; }
     .matrix-scan { font-family: 'VT323', monospace; font-size: 18px; color: #67e8f9; letter-spacing: 4px; animation: matrixText 1.2s infinite; }
     @keyframes matrixText { 50% { opacity: 0.3; } }
     @keyframes hackPop { 0% { transform: scale(0.7); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-    .promo-float {
-      position: fixed; bottom: 20px; right: 20px; background: linear-gradient(90deg,#ffd700,#ff00ff);
-      color: #000; padding: 12px 18px; border-radius: 50px; box-shadow: 0 0 25px #ffd700, 0 0 40px rgba(255,0,255,0.6);
-      display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; font-weight: 700;
-      font-size: 15px; z-index: 99999; animation: floatPulse 2s infinite; cursor: pointer;
-    }
+    .promo-float { position: fixed; bottom: 20px; right: 20px; background: linear-gradient(90deg,#ffd700,#ff00ff); color: #000; padding: 12px 18px; border-radius: 50px; box-shadow: 0 0 25px #ffd700, 0 0 40px rgba(255,0,255,0.6); display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 15px; z-index: 99999; animation: floatPulse 2s infinite; cursor: pointer; }
     .promo-float:hover { transform: scale(1.1); }
     @keyframes floatPulse { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-    .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; }
-    #particle-bg { position: fixed !important; top: 0; left: 0; width: 100% !important; height: 100% !important; pointer-events: none; z-index: -2; opacity: 1; }
 
     #lowEnergyModal .modal-content { border-color: #ff00aa; box-shadow: 0 0 60px #ff00aa; }
   </style>
@@ -663,41 +338,52 @@
 
         <div id="registerSection" style="display: none;">
           <div class="register-header">
+            <div class="neural-glow"></div>
             <div class="register-logo">NEURAL<br>REGISTRATION</div>
-            <div class="register-subtitle">QUANTUM ID v2.026</div>
+            <div class="register-subtitle">QUANTUM ID v2.026 • BREACH PROTOCOL</div>
             <div class="terminal-text" style="margin-top: 18px;">
               <span id="typingTextReg"></span><span id="cursorReg" class="blinking-cursor">_</span>
             </div>
           </div>
-          <form id="registerForm">
-            <div class="input-wrapper">
-              <div class="input-icon">👤</div>
-              <div class="label">NEURAL ALIAS</div>
-              <input type="text" class="input" id="regUser" placeholder="CHỌN TÊN QUANTUM" required>
-            </div>
-            <div class="input-wrapper">
-              <div class="input-icon">📡</div>
-              <div class="label">NEURAL LINK</div>
-              <input type="tel" class="input" id="regPhone" placeholder="0123 456 789" required>
-            </div>
-            <div class="input-wrapper">
-              <div class="input-icon">🔒</div>
-              <div class="label">QUANTUM KEY</div>
-              <input type="password" class="input" id="regPass" placeholder="TẠO MẬT KHẨU NEURAL" required>
-            </div>
-            <button type="submit" class="btn" style="background: linear-gradient(90deg, #ff00ff, #00ffff); box-shadow: 0 0 50px #ff00ff, 0 0 90px rgba(0,255,255,0.7);">>> KÍCH HOẠT NEURAL ID</button>
-          </form>
-          <button onclick="showLogin()" class="btn" style="background: transparent; color: #00f0ff; border: 4px solid #00f0ff; font-size: 18px; box-shadow: 0 0 30px #00f0ff;">← QUAY VỀ TERMINAL</button>
+          <div class="register-form-container">
+            <form id="registerForm">
+              <div class="modern-input">
+                <label><span class="quantum-badge">NEURAL</span>NEURAL ALIAS</label>
+                <div class="icon">👤</div>
+                <input type="text" class="input" id="regUser" placeholder="CHỌN TÊN QUANTUM" required>
+              </div>
+              <div class="modern-input">
+                <label>NEURAL LINK (SĐT)</label>
+                <div class="icon">📡</div>
+                <input type="tel" class="input" id="regPhone" placeholder="0123 456 789" required>
+              </div>
+              <div class="modern-input">
+                <label>QUANTUM KEY (MẬT KHẨU)</label>
+                <div class="icon">🔒</div>
+                <input type="password" class="input" id="regPass" placeholder="TẠO MẬT KHẨU NEURAL" required>
+              </div>
+              <button type="submit" class="btn" style="background: linear-gradient(90deg, #ff00ff, #00ffff); box-shadow: 0 0 50px #ff00ff, 0 0 90px rgba(0,255,255,0.7); margin-top: 12px;">>> KÍCH HOẠT NEURAL ID</button>
+            </form>
+          </div>
+          <button onclick="showLogin()" class="btn" style="background: transparent; color: #00f0ff; border: 4px solid #00f0ff; font-size: 18px; box-shadow: 0 0 30px #00f0ff; margin-top: 24px;">← QUAY VỀ TERMINAL</button>
         </div>
       </div>
     </div>
 
-    <!-- Loading Screen -->
-    <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,15,40,0.97); z-index:9999; flex-direction:column; align-items:center; justify-content:center; color:#00f0ff; font-family:'VT323',monospace;">
-      <div id="loadingText" style="font-size:26px; margin-bottom:35px; letter-spacing:3px;">CONNECTING TO QUANTUM CORE...</div>
-      <div style="width:85%; max-width:280px; height:14px; background:rgba(0,240,255,0.15); border:3px solid #00f0ff; border-radius:10px; overflow:hidden; box-shadow:0 0 25px #00f0ff;">
-        <div id="progressBar" style="width:0%; height:100%; background:linear-gradient(90deg,#00f0ff,#67e8f9); box-shadow:0 0 25px #67e8f9; transition:width 0.08s linear;"></div>
+    <!-- QUANTUM LOADING -->
+    <div id="loadingScreen">
+      <div class="quantum-core">
+        <div class="core-orb"></div>
+        <div class="ring ring1"></div>
+        <div class="ring ring2"></div>
+        <div class="ring ring3"></div>
       </div>
+      <div id="loadingTextMain" class="loading-text">BREACHING QUANTUM CORE...</div>
+      <div id="loadingSubText" class="loading-subtext">ĐANG ĐỒNG BỘ NĂNG LƯỢNG • NEURAL LINK</div>
+      <div class="progress-container">
+        <div id="loadingProgressBar" class="progress-bar"></div>
+      </div>
+      <div id="loadingStatus" style="margin-top: 30px; font-size: 15px; letter-spacing: 3px; color: #67e8f9; opacity: 0.8;">QUANTUM STABILIZING...</div>
     </div>
 
     <!-- Modals -->
@@ -705,17 +391,21 @@
       <div class="modal-content">
         <div class="modal-title">HƯỚNG DẪN</div>
         <div class="modal-message" id="guideMessage">BƯỚC 1: ĐĂNG KÍ TÀI KHOẢN GAME:<br><strong>WWW.FLY8879.SITE</strong><br><br>BƯỚC 2: ĐĂNG KÍ TK TOOL (GIỐNG TK GAME)<br><br>BƯỚC 3: LÊN ĐIỂM VÀ ĐỢI NĂNG LƯỢNG TRONG TOOL LÊN</div>
-        <button class="modal-btn" onclick="closeModal('guideModal')">ĐÓNG</button>
+        <button onclick="closeModal('guideModal')" style="margin-top:20px;padding:14px 40px;background:#00f0ff;color:#000;border:none;border-radius:12px;font-family:'Orbitron';font-size:18px;font-weight:700;">ĐÓNG</button>
       </div>
     </div>
 
     <div class="modal" id="registerChoiceModal">
-      <div class="modal-content">
-        <div class="modal-title">CHỌN ĐĂNG KÍ</div>
-        <div class="modal-message">Chọn loại tài khoản bạn muốn tạo</div>
-        <button class="modal-option" onclick="registerTool()">ĐĂNG KÍ TÀI KHOẢN TOOL</button>
-        <button class="modal-option" onclick="registerGame()">ĐĂNG KÍ TÀI KHOẢN GAME</button>
-        <button class="modal-btn" onclick="closeModal('registerChoiceModal')" style="background:#444;">HỦY</button>
+      <div class="choice-modal-content">
+        <div class="choice-inner">
+          <h2 class="choice-title">CHỌN ĐĂNG KÍ</h2>
+          <p class="choice-subtitle">Chọn loại tài khoản bạn muốn tạo</p>
+          <div class="choice-options">
+            <button onclick="registerTool()" class="choice-btn tool-btn"><span class="btn-icon">🔧</span>ĐĂNG KÍ TÀI KHOẢN TOOL</button>
+            <button onclick="registerGame()" class="choice-btn game-btn"><span class="btn-icon">🎮</span>ĐĂNG KÍ TÀI KHOẢN GAME</button>
+            <button onclick="closeModal('registerChoiceModal')" class="choice-btn cancel-btn">HỦY</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -723,14 +413,13 @@
       <div class="modal-content">
         <div class="modal-title" id="modalTitle">THÀNH CÔNG</div>
         <div class="modal-message" id="modalMessage"></div>
-        <button class="modal-btn" onclick="closeModal('successModal')">ĐÓNG</button>
+        <button onclick="closeModal('successModal')" style="margin-top:20px;padding:14px 40px;background:#00f0ff;color:#000;border:none;border-radius:12px;font-family:'Orbitron';font-size:18px;font-weight:700;">ĐÓNG</button>
       </div>
     </div>
   </div>
 
   <!-- GAME SCREEN -->
   <div id="gameScreen" class="game-screen hidden">
-    <!-- ENERGY HEADER -->
     <div id="energy-header">
       <div class="energy-icon">⚡</div>
       <div class="energy-label">QUANTUM ENERGY</div>
@@ -740,7 +429,6 @@
       <div id="energy-value" class="energy-value">0 / 100</div>
     </div>
 
-    <!-- QUANTUM HUB -->
     <div id="hall-screen">
       <div class="hall-header">
         <h1 class="hall-title">QUANTUM SẢNH</h1>
@@ -781,7 +469,6 @@
       </div>
     </div>
 
-    <!-- ANALYSIS SCREEN -->
     <div id="analysis-screen" class="hidden">
       <button onclick="backToCurrentScreen()" class="mb-6 flex items-center gap-2 text-cyan-300 hover:text-white text-lg active:scale-95">← QUAY LẠI</button>
       <div class="analysis-card">
@@ -838,7 +525,6 @@
 
     <canvas id="particle-bg" width="420" height="800"></canvas>
 
-    <!-- LOW ENERGY MODAL -->
     <div class="modal" id="lowEnergyModal">
       <div class="modal-content">
         <div class="text-6xl mb-6">⚠️</div>
@@ -888,6 +574,7 @@
     let currentEnergy = 0;
     let userDocId = null;
     let currentUsername = "";
+    let energyUnsubscribe = null;
 
     // AUDIO
     const click = document.getElementById('clickSound');
@@ -911,18 +598,9 @@
       playSuccess();
     }
 
-    function showLowEnergyModal() {
-      document.getElementById('lowEnergyModal').style.display = 'flex';
-    }
-    function closeLowEnergyModal() {
-      document.getElementById('lowEnergyModal').style.display = 'none';
-      playClick();
-    }
-    function depositGame() {
-      closeLowEnergyModal();
-      playClick();
-      window.open('https://www.fly8879.site', '_blank');
-    }
+    function showLowEnergyModal() { document.getElementById('lowEnergyModal').style.display = 'flex'; }
+    function closeLowEnergyModal() { document.getElementById('lowEnergyModal').style.display = 'none'; playClick(); }
+    function depositGame() { closeLowEnergyModal(); playClick(); window.open('https://www.fly8879.site', '_blank'); }
 
     function showGuideModal() { playClick(); document.getElementById('guideModal').style.display = 'flex'; }
     function showRegisterChoiceModal() { playClick(); document.getElementById('registerChoiceModal').style.display = 'flex'; }
@@ -991,7 +669,7 @@
       typeWriter(textEl, "INITIALIZING NEURAL IDENTITY...", 35);
     }
 
-    // ENERGY
+    // ENERGY REALTIME
     function updateEnergyDisplay() {
       const header = document.getElementById('energy-header');
       const fill = document.getElementById('energy-fill');
@@ -1008,86 +686,104 @@
       if (!userDocId) return;
       try {
         await db.collection("users").doc(userDocId).update({ energy: Math.max(0, newEnergy) });
-        currentEnergy = Math.max(0, newEnergy);
-        updateEnergyDisplay();
       } catch (e) { console.error(e); }
     }
 
-    // REGISTER & LOGIN
+    // QUANTUM LOADING
+    let loadingInterval = null;
+    const loadingMessages = ["BREACHING QUANTUM CORE...", "ĐANG ĐỒNG BỘ NĂNG LƯỢNG...", "NEURAL LINK ESTABLISHED...", "QUANTUM STABILIZING...", "HACK PROTOCOL ACTIVE..."];
+    function showLoading(customText = "") {
+      const screen = document.getElementById('loadingScreen');
+      const mainText = document.getElementById('loadingTextMain');
+      const subText = document.getElementById('loadingSubText');
+      const progressBar = document.getElementById('loadingProgressBar');
+      const status = document.getElementById('loadingStatus');
+      screen.style.display = 'flex';
+      if (customText) mainText.textContent = customText;
+      else {
+        let i = 0;
+        loadingInterval = setInterval(() => { mainText.textContent = loadingMessages[i % loadingMessages.length]; i++; }, 1200);
+      }
+      let progress = 0;
+      progressBar.style.width = '0%';
+      const progressAnim = setInterval(() => {
+        progress += Math.random() * 18 + 4;
+        if (progress >= 100) progress = 100;
+        progressBar.style.width = progress + '%';
+        if (progress >= 100) clearInterval(progressAnim);
+      }, 80);
+      let statusIndex = 0;
+      setInterval(() => { if (screen.style.display === 'flex') status.textContent = loadingMessages[(statusIndex++) % loadingMessages.length]; }, 900);
+    }
+    function hideLoading() {
+      const screen = document.getElementById('loadingScreen');
+      if (loadingInterval) clearInterval(loadingInterval);
+      screen.style.display = 'none';
+    }
+
+    // REGISTER FORM
     document.getElementById('registerForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       playClick(); playBreach();
+      showLoading(">> ACTIVATING NEURAL ID...");
       const username = document.getElementById('regUser').value.trim();
       const phone = document.getElementById('regPhone').value.trim();
       const password = document.getElementById('regPass').value.trim();
-      if (!username || !phone || !password) return alert("Vui lòng nhập đầy đủ thông tin!");
-      const btn = this.querySelector('button');
-      const originalText = btn.textContent;
-      btn.classList.add('loading');
-      btn.textContent = "ĐANG KÍCH HOẠT NEURAL...";
-      btn.disabled = true;
+      if (!username || !phone || !password) {
+        hideLoading();
+        return alert("Vui lòng nhập đầy đủ thông tin!");
+      }
       try {
-        await db.collection("users").add({
-          username, phone, password,
-          energy: 0,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          status: "active"
-        });
+        await db.collection("users").add({ username, phone, password, energy: 0, timestamp: firebase.firestore.FieldValue.serverTimestamp(), status: "active" });
+        hideLoading();
         showSuccessModal("ĐĂNG KÍ THÀNH CÔNG", `Username: ${username}<br>SĐT: ${phone}<br>Năng lượng: 0`);
         showLogin();
       } catch (error) {
+        hideLoading();
         showSuccessModal("LỖI", "Không thể lưu vào Firebase.");
-      } finally {
-        btn.classList.remove('loading');
-        btn.textContent = originalText;
-        btn.disabled = false;
       }
     });
 
+    // LOGIN FORM
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       playClick(); playBreach();
+      showLoading(">> CONNECTING TO QUANTUM SERVER...");
       const username = document.getElementById('loginUser').value.trim();
       const password = document.getElementById('loginPass').value.trim();
-      const btn = document.getElementById('connectBtn');
-      const originalText = btn.textContent;
-      btn.classList.add('loading');
-      btn.textContent = ">> BREACHING...";
-      btn.disabled = true;
       try {
         const querySnapshot = await db.collection("users").where("username", "==", username).get();
-        if (querySnapshot.empty) return showSuccessModal("LỖI ĐĂNG NHẬP", "Tài khoản không tồn tại!");
+        if (querySnapshot.empty) { hideLoading(); return showSuccessModal("LỖI ĐĂNG NHẬP", "Tài khoản không tồn tại!"); }
         let userData = null, docId = null;
         querySnapshot.forEach(doc => { userData = doc.data(); docId = doc.id; });
         if (userData && userData.password === password) {
           currentEnergy = userData.energy || 0;
           userDocId = docId;
           currentUsername = username;
+          if (energyUnsubscribe) energyUnsubscribe();
+          energyUnsubscribe = db.collection("users").doc(docId).onSnapshot((doc) => {
+            if (doc.exists) {
+              currentEnergy = doc.data().energy || 0;
+              updateEnergyDisplay();
+            }
+          });
+          hideLoading();
           document.getElementById('loginScreen').classList.add('hidden');
           document.getElementById('gameScreen').classList.remove('hidden');
           initGame();
           updateEnergyDisplay();
           showSuccessModal("ĐĂNG NHẬP THÀNH CÔNG", `Chào mừng ${username.toUpperCase()}<br>Năng lượng: ${currentEnergy}`);
         } else {
+          hideLoading();
           showSuccessModal("LỖI ĐĂNG NHẬP", "Mật khẩu không đúng!");
         }
       } catch (error) {
+        hideLoading();
         showSuccessModal("LỖI", "Không thể kết nối Firebase.");
-      } finally {
-        btn.classList.remove('loading');
-        btn.textContent = originalText;
-        btn.disabled = false;
       }
     });
 
-    // ==================== GAME DATA ====================
-    const halls = [
-      { id: "pg", name: "SẢNH PG", badge: "PG", img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
-      { id: "jili", name: "SẢNH JILI", badge: "JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
-      { id: "168g", name: "SẢNH 168G", badge: "168G", img: "https://i.ibb.co/rKdGGjyN/S-NH-168-GAME.png" },
-      { id: "fc", name: "SẢNH FC", badge: "FC", img: "https://i.ibb.co/CrjMgMK/S-NH-FC.png" }
-    ];
-
+    // ==================== FULL GAME LIST (160+ TRÒ) ====================
     const originalPGGames = [
       { name: "Ba Chú Heo", img: "https://i.ibb.co/Y7TWMqH8/BA-CH-HEO.avif" },
       { name: "Bạn Viên Bảo Tàng", img: "https://i.ibb.co/7tvVVdJd/B-N-VI-N-B-O-T-NG.avif" },
@@ -1290,13 +986,11 @@
         camera.position.x = Math.sin(time * 0.2) * 3;
         camera.position.z = 18 + Math.cos(time * 0.15) * 2;
         camera.lookAt(0, 0, 0);
-
         const posAttr = particleSystem.geometry.attributes.position;
         for (let i = 0; i < particlesCount * 3; i += 3) {
           posAttr.array[i + 1] += Math.sin(time * 2 + i) * 0.008;
         }
         posAttr.needsUpdate = true;
-
         if (Math.floor(time * 8) % 3 === 0) {
           const pos = posAttr.array;
           const linePos = [];
@@ -1319,9 +1013,8 @@
       animate();
     }
 
-    // ====================== TỐI ƯU HIỆU ỨNG % ĐỘNG ======================
+    // HALL RENDER
     let hallData = [];
-
     function countUp(el, target, suffix = '', duration = 900) {
       let start = parseFloat(el.textContent) || 0;
       const startTime = performance.now();
@@ -1339,11 +1032,15 @@
       const grid = document.getElementById('hall-grid');
       grid.innerHTML = '';
       hallData = [];
-
+      const halls = [
+        { id: "pg", name: "SẢNH PG", badge: "PG", img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
+        { id: "jili", name: "SẢNH JILI", badge: "JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
+        { id: "168g", name: "SẢNH 168G", badge: "168G", img: "https://i.ibb.co/rKdGGjyN/S-NH-168-GAME.png" },
+        { id: "fc", name: "SẢNH FC", badge: "FC", img: "https://i.ibb.co/CrjMgMK/S-NH-FC.png" }
+      ];
       halls.forEach((hall, index) => {
         const winRate = Math.floor(Math.random() * 48) + 52;
         const megaRate = Math.floor(Math.random() * 48) + 52;
-
         const div = document.createElement('div');
         div.className = 'hall-card';
         div.innerHTML = `
@@ -1367,30 +1064,20 @@
         `;
         div.addEventListener('click', () => selectHall(hall.id));
         grid.appendChild(div);
-
-        hallData.push({
-          index: index,
-          winRate: winRate,
-          megaRate: megaRate
-        });
+        hallData.push({ index: index, winRate: winRate, megaRate: megaRate });
       });
-
-      // TỐI ƯU: Update % động mỗi 30 giây với hiệu ứng mượt + glow
       if (hallUpdateInterval) clearInterval(hallUpdateInterval);
       hallUpdateInterval = setInterval(() => {
         if (document.getElementById('hall-screen').classList.contains('hidden')) return;
-
         hallData.forEach(data => {
           const newWin = Math.floor(Math.random() * 48) + 52;
           const newMega = Math.floor(Math.random() * 48) + 52;
-
           const winValueEl = document.getElementById(`win-value-${data.index}`);
           const megaValueEl = document.getElementById(`mega-value-${data.index}`);
           const winBar = document.getElementById(`win-bar-${data.index}`);
           const megaBar = document.getElementById(`mega-bar-${data.index}`);
           const winRow = document.getElementById(`stat-row-win-${data.index}`);
           const megaRow = document.getElementById(`stat-row-mega-${data.index}`);
-
           if (winValueEl && winRow) {
             winRow.classList.add('updating');
             setTimeout(() => winRow.classList.remove('updating'), 1400);
@@ -1403,7 +1090,6 @@
             countUp(megaValueEl, newMega, '%', 900);
             megaBar.style.width = newMega + '%';
           }
-
           data.winRate = newWin;
           data.megaRate = newMega;
         });
@@ -1439,77 +1125,59 @@
     }
 
     function showAnalysis(index) {
-      if (currentEnergy < 5) {
-        showLowEnergyModal();
-        return;
-      }
-      currentEnergy -= 5;
-      updateEnergyInFirebase(currentEnergy);
-
-      const game = pgGames[index];
-      document.getElementById('pg-screen').classList.add('hidden');
-      document.getElementById('other-screen').classList.add('hidden');
-      document.getElementById('analysis-screen').classList.remove('hidden');
-
-      document.getElementById('game-title').textContent = game.name;
-      document.getElementById('game-avatar-analysis').src = game.img;
-
-      const prob = Math.floor(Math.random() * 11) + 89;
-      document.getElementById('win-prob-text').textContent = prob + "%";
-      document.getElementById('win-prob-fill').style.width = prob + "%";
-
-      document.getElementById('rtp-value').textContent = (94 + Math.random() * 4).toFixed(1) + "%";
-      document.getElementById('volatility-value').textContent = Math.random() > 0.5 ? "CAO" : "TRUNG BÌNH";
-      document.getElementById('max-win-value').textContent = "×" + Math.floor(3000 + Math.random() * 6000);
-      document.getElementById('hit-frequency').textContent = "1/" + (3 + Math.random() * 4).toFixed(1);
-      document.getElementById('neural-score').textContent = Math.floor(88 + Math.random() * 12);
-
-      const now = new Date();
-      const future = new Date(now.getTime() + (Math.floor(Math.random() * 18) + 5) * 60000);
-      document.getElementById('current-time').textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-      document.getElementById('golden-time').textContent = `${String(future.getHours()).padStart(2,'0')}:${String(future.getMinutes()).padStart(2,'0')}`;
-
-      const totalSpins = Math.floor(Math.random() * 90) + 55;
-      const normalSpins = Math.floor(totalSpins * 0.62);
-      const fastSpins = totalSpins - normalSpins;
-      countUp(document.getElementById('total-spins'), totalSpins);
-      countUp(document.getElementById('normal-spins'), normalSpins);
-      countUp(document.getElementById('fast-spins'), fastSpins);
-
-      document.getElementById('ai-insight').textContent = "Trò này đang ở giai đoạn “Quantum Hot”. Năng lượng tích tụ cực mạnh. Khuyến nghị spin tối thiểu 80 vòng với bet 2.5x để kích hoạt nổ hũ lớn.";
-
-      const minutesLeft = Math.floor((future - now) / 60000);
-      startGoldenCountdown(minutesLeft);
-      document.getElementById('hack-result').style.display = 'none';
+      if (currentEnergy < 5) { showLowEnergyModal(); return; }
+      showLoading("ĐANG PHÂN TÍCH QUANTUM...");
+      setTimeout(() => {
+        currentEnergy -= 5;
+        updateEnergyInFirebase(currentEnergy);
+        hideLoading();
+        const game = pgGames[index];
+        document.getElementById('pg-screen').classList.add('hidden');
+        document.getElementById('other-screen').classList.add('hidden');
+        document.getElementById('analysis-screen').classList.remove('hidden');
+        document.getElementById('game-title').textContent = game.name;
+        document.getElementById('game-avatar-analysis').src = game.img;
+        const prob = Math.floor(Math.random() * 11) + 89;
+        document.getElementById('win-prob-text').textContent = prob + "%";
+        document.getElementById('win-prob-fill').style.width = prob + "%";
+        document.getElementById('rtp-value').textContent = (94 + Math.random() * 4).toFixed(1) + "%";
+        document.getElementById('volatility-value').textContent = Math.random() > 0.5 ? "CAO" : "TRUNG BÌNH";
+        document.getElementById('max-win-value').textContent = "×" + Math.floor(3000 + Math.random() * 6000);
+        document.getElementById('hit-frequency').textContent = "1/" + (3 + Math.random() * 4).toFixed(1);
+        document.getElementById('neural-score').textContent = Math.floor(88 + Math.random() * 12);
+        const now = new Date();
+        const future = new Date(now.getTime() + (Math.floor(Math.random() * 18) + 5) * 60000);
+        document.getElementById('current-time').textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+        document.getElementById('golden-time').textContent = `${String(future.getHours()).padStart(2,'0')}:${String(future.getMinutes()).padStart(2,'0')}`;
+        const totalSpins = Math.floor(Math.random() * 90) + 55;
+        const normalSpins = Math.floor(totalSpins * 0.62);
+        const fastSpins = totalSpins - normalSpins;
+        countUp(document.getElementById('total-spins'), totalSpins);
+        countUp(document.getElementById('normal-spins'), normalSpins);
+        countUp(document.getElementById('fast-spins'), fastSpins);
+        document.getElementById('ai-insight').textContent = "Trò này đang ở giai đoạn “Quantum Hot”. Năng lượng tích tụ cực mạnh. Khuyến nghị spin tối thiểu 80 vòng với bet 2.5x để kích hoạt nổ hũ lớn.";
+        const minutesLeft = Math.floor((future - now) / 60000);
+        startGoldenCountdown(minutesLeft);
+        document.getElementById('hack-result').style.display = 'none';
+      }, 1450);
     }
 
     function hackScatter() {
-      if (currentEnergy < 15) {
-        showLowEnergyModal();
-        return;
-      }
+      if (currentEnergy < 15) { showLowEnergyModal(); return; }
+      showLoading("SCANNING SCATTER MATRIX...");
       const btn = document.getElementById('hackBtn');
       const resultDiv = document.getElementById('hack-result');
       btn.disabled = true;
       btn.innerHTML = '🔍 SCANNING SCATTER...';
       resultDiv.style.display = 'block';
-      resultDiv.innerHTML = `
-        <div class="matrix-scan">QUANTUM SCATTER MATRIX ACTIVATED...</div>
-        <div style="height:80px; background:#111; border:2px solid #ff00ff; border-radius:8px; margin-top:12px; display:flex; align-items:center; justify-content:center; font-family:'VT323',monospace; color:#67e8f9; font-size:18px; letter-spacing:6px;">
-          ● ● ● ● ● ● ● ● ●
-        </div>
-      `;
-
+      resultDiv.innerHTML = `<div class="matrix-scan">QUANTUM SCATTER MATRIX ACTIVATED...</div><div style="height:80px; background:#111; border:2px solid #ff00ff; border-radius:8px; margin-top:12px; display:flex; align-items:center; justify-content:center; font-family:'VT323',monospace; color:#67e8f9; font-size:18px; letter-spacing:6px;">● ● ● ● ● ● ● ● ●</div>`;
       setTimeout(() => {
         currentEnergy -= 15;
         updateEnergyInFirebase(currentEnergy);
-
+        hideLoading();
         const scatterAmounts = ["60K","90K","75K","120K","150K","180K","240K","300K","600K","900K","1800K","3000K"];
         const amount = scatterAmounts[Math.floor(Math.random() * scatterAmounts.length)];
-        resultDiv.innerHTML = `
-          <div class="hack-amount">ĐỀ XUẤT MUA : ${amount}</div>
-          <div class="hack-fun">THẮNG LỚN ĐỪNG QUÊN ANH 🔥</div>
-        `;
+        resultDiv.innerHTML = `<div class="hack-amount">ĐỀ XUẤT MUA : ${amount}</div><div class="hack-fun">THẮNG LỚN ĐỪNG QUÊN ANH 🔥</div>`;
         btn.disabled = false;
         btn.innerHTML = '⚡ HACK SCATTER';
         playSuccess();
@@ -1524,7 +1192,13 @@
         initPGScreen();
       } else {
         document.getElementById('other-screen').classList.remove('hidden');
-        const hall = halls.find(h => h.id === hallId);
+        const hallsList = [
+          { id: "pg", name: "SẢNH PG", badge: "PG", img: "https://i.ibb.co/8Dj2bBQD/S-NH-PG.png" },
+          { id: "jili", name: "SẢNH JILI", badge: "JILI", img: "https://i.ibb.co/b5dKtmyv/S-NH-JILI.png" },
+          { id: "168g", name: "SẢNH 168G", badge: "168G", img: "https://i.ibb.co/rKdGGjyN/S-NH-168-GAME.png" },
+          { id: "fc", name: "SẢNH FC", badge: "FC", img: "https://i.ibb.co/CrjMgMK/S-NH-FC.png" }
+        ];
+        const hall = hallsList.find(h => h.id === hallId);
         document.getElementById('current-hall-name').textContent = hall.name;
         document.getElementById('current-hall-logo').innerHTML = `<img src="${hall.img}" class="hall-logo">`;
       }
@@ -1564,7 +1238,6 @@
       const start = currentPage * gamesPerPage;
       const end = start + gamesPerPage;
       const pageGames = filteredGames.slice(start, end);
-
       pageGames.forEach((game, index) => {
         const actualIndex = pgGames.indexOf(game);
         const ratio = Math.floor(Math.random() * 25) + 75;
@@ -1586,7 +1259,6 @@
         div.addEventListener('click', () => showAnalysis(actualIndex));
         grid.appendChild(div);
       });
-
       const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
       document.getElementById('page-info').textContent = `Trang ${currentPage + 1}/${totalPages}`;
       renderPaginationPG(totalPages);
@@ -1624,18 +1296,6 @@
       updateEnergyDisplay();
     }
 
-    function countUp(el, target, suffix = '', duration = 1400) {
-      let start = 0;
-      const startTime = performance.now();
-      function step(now) {
-        const progress = Math.min((now - startTime) / duration, 1);
-        el.textContent = Math.floor(progress * target) + suffix;
-        if (progress < 1) requestAnimationFrame(step);
-        else el.textContent = target + suffix;
-      }
-      requestAnimationFrame(step);
-    }
-
     function openPromo() {
       playClick();
       window.open('https://www.fly8879.site', '_blank');
@@ -1645,7 +1305,7 @@
     window.onload = function() {
       initMatrixRain();
       startTyping();
-      console.log('%c🚀 TOOL HỦ 2026 + QUANTUM SẢNH | HIỆU ỨNG % ĐỘNG ĐÃ TỐI ƯU SIÊU MƯỢT', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
+      console.log('%c🚀 TOOL HỦ 2026 • QUANTUM SẢNH | FILE ĐẦY ĐỦ - FULL GAME LIST + ENERGY REALTIME', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
     };
   </script>
 </body>
