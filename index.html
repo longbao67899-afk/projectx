@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>TOOL HỦ 2026 • QUANTUM SẢNH</title>
+  <meta name="theme-color" content="#0a0f1f">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <title>TOOL QUYẾT CHIẾN • SẢNH GAME</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -51,7 +53,7 @@
 
     .logo { 
       font-family: 'Orbitron', sans-serif; 
-      font-size: 58px; 
+      font-size: clamp(42px, 10vw, 58px); 
       line-height: 1.05; 
       font-weight: 700;
       letter-spacing: -3px;
@@ -302,6 +304,33 @@
     @keyframes floatPulse { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
     #lowEnergyModal .modal-content { border-color: #ff00aa; box-shadow: 0 0 60px #ff00aa; }
+
+    /* ==================== MOBILE OPTIMIZATION ==================== */
+    .btn, .choice-btn, .game-card, .hall-card, .hack-scatter-btn {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .game-card:active, .hall-card:active {
+      transform: scale(1.04) translateY(-4px);
+    }
+    .btn:active { transform: scale(1.06); }
+
+    @media (max-width: 380px) {
+      .logo { font-size: clamp(42px, 10vw, 52px) !important; }
+      .hall-title { font-size: 42px !important; }
+      .cyber-card { padding: 35px 20px 30px !important; }
+      .btn { padding: 18px !important; font-size: 20px !important; }
+      .hall-image-container { height: 180px !important; }
+      .game-image-container { height: 160px !important; }
+    }
+
+    @media (orientation: landscape) and (max-height: 520px) {
+      .container, .game-screen { padding: 10px 15px !important; }
+      .hall-grid { gap: 20px !important; }
+      #energy-header { padding: 10px 12px !important; font-size: 15px; }
+      .energy-bar-container { height: 28px !important; }
+      .hall-image-container { height: 170px !important; }
+    }
   </style>
 </head>
 <body>
@@ -316,7 +345,7 @@
       <div class="cyber-card">
         <div id="loginSection">
           <div class="header">
-            <div class="logo">TOOL HỦ<br>2026</div>
+            <div class="logo">TOOL<br>QUYẾT CHIẾN</div>
             <div class="terminal-text">
               <span id="typingText"></span><span id="cursor" class="blinking-cursor">_</span>
             </div>
@@ -324,13 +353,13 @@
           <form id="loginForm">
             <div class="input-container">
               <div class="label">USERNAME</div>
-              <input type="text" class="input" id="loginUser" placeholder="ENTER ALIAS" required>
+              <input type="text" class="input" id="loginUser" placeholder="ĐIỀN TÊN ĐĂNG NHẬP" required>
             </div>
             <div class="input-container">
               <div class="label">MẬT KHẨU</div>
               <input type="password" class="input" id="loginPass" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="btn" id="connectBtn">>> KẾT NỐI QUANTUM</button>
+            <button type="submit" class="btn" id="connectBtn">KẾT NỐI</button>
           </form>
           <a href="#" class="guide-link" onclick="showGuideModal()">HƯỚNG DẪN SỬ DỤNG TOOL</a>
           <a href="#" class="register-link" onclick="showRegisterChoiceModal()">ĐĂNG KÍ NGAY • BREACH ACCESS</a>
@@ -399,7 +428,7 @@
       <div class="choice-modal-content">
         <div class="choice-inner">
           <h2 class="choice-title">CHỌN ĐĂNG KÍ</h2>
-          <p class="choice-subtitle">Chọn loại tài khoản bạn muốn tạo</p>
+          <p class="choice-subtitle">ĐĂNG KÍ TÀI KHOẢN GAME TRƯỚC KHI ĐĂNG KÍ TK TOOL</p>
           <div class="choice-options">
             <button onclick="registerTool()" class="choice-btn tool-btn"><span class="btn-icon">🔧</span>ĐĂNG KÍ TÀI KHOẢN TOOL</button>
             <button onclick="registerGame()" class="choice-btn game-btn"><span class="btn-icon">🎮</span>ĐĂNG KÍ TÀI KHOẢN GAME</button>
@@ -422,7 +451,7 @@
   <div id="gameScreen" class="game-screen hidden">
     <div id="energy-header">
       <div class="energy-icon">⚡</div>
-      <div class="energy-label">QUANTUM ENERGY</div>
+      <div class="energy-label">NĂNG LƯỢNG</div>
       <div class="energy-bar-container">
         <div id="energy-fill" class="energy-bar-fill" style="width: 0%"></div>
       </div>
@@ -431,9 +460,9 @@
 
     <div id="hall-screen">
       <div class="hall-header">
-        <h1 class="hall-title">QUANTUM SẢNH</h1>
-        <p class="hall-subtitle">NEURAL INTERFACE • 2049</p>
-        <p class="hall-desc">CHỌN CỔNG • HƠN 160 TRÒ CHƠI QUANTUM</p>
+        <h1 class="hall-title">CHỌN SẢNH</h1>
+        <p class="hall-subtitle">KẾT NỐI STARLINK • 2049</p>
+        <p class="hall-desc">THẮNG LỚN ĐỪNG QUÊN ANH</p>
       </div>
       <div class="hall-grid" id="hall-grid"></div>
     </div>
@@ -619,22 +648,28 @@
       document.getElementById('registerSection').style.display = 'none';
     }
 
-    // MATRIX RAIN
+    // MATRIX RAIN – TỐI ƯU MOBILE
     function initMatrixRain() {
       const canvas = document.getElementById('matrixRain');
       const ctx = canvas.getContext('2d');
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+
       function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const scale = isMobile ? 1 : window.devicePixelRatio;
+        canvas.width = window.innerWidth * scale;
+        canvas.height = window.innerHeight * scale;
+        ctx.scale(scale, scale);
       }
       window.addEventListener('resize', resize);
       resize();
+
       const chars = '01QUANTUMHACKER2026TOOLHỦSẢNHNEURALBREACH';
-      const fontSize = 15;
+      const fontSize = isMobile ? 14 : 15;
       let columns = canvas.width / fontSize;
       let drops = Array(Math.floor(columns)).fill(1);
+
       function draw() {
-        ctx.fillStyle = 'rgba(10, 15, 40, 0.08)';
+        ctx.fillStyle = 'rgba(10, 15, 40, 0.12)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = '#67e8f9';
         ctx.font = `${fontSize}px VT323`;
@@ -645,7 +680,7 @@
           drops[i]++;
         }
       }
-      setInterval(draw, 35);
+      setInterval(draw, isMobile ? 45 : 35);
     }
 
     function typeWriter(element, text, speed = 40) {
@@ -662,7 +697,7 @@
     }
     function startTyping() {
       const textEl = document.getElementById('typingText');
-      typeWriter(textEl, "QUANTUM TERMINAL v2.026 • NEURAL BREACH PROTOCOL", 35);
+      typeWriter(textEl, "ĐANG KẾT NỐI VỆ TINH STARLINK_", 35);
     }
     function startTypingReg() {
       const textEl = document.getElementById('typingTextReg');
@@ -931,20 +966,27 @@
     let countdownInterval = null;
     let hallUpdateInterval = null;
 
-    // THREE.JS
+    // THREE.JS – TỐI ƯU MOBILE
     let scene, camera, renderer, particleSystem, connectionLines;
     let particlesCount = 4200;
     let time = 0;
 
     function initThreeJS() {
       const canvas = document.getElementById('particle-bg');
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+      particlesCount = isMobile ? 1600 : 4200;
+
       scene = new THREE.Scene();
       scene.fog = new THREE.Fog(0x05050f, 8, 35);
       camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
       camera.position.set(0, 0, 18);
-      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer = new THREE.WebGLRenderer({ 
+        canvas, 
+        antialias: !isMobile, 
+        alpha: true 
+      });
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
 
       const positions = new Float32Array(particlesCount * 3);
       const colors = new Float32Array(particlesCount * 3);
@@ -1045,7 +1087,7 @@
         div.className = 'hall-card';
         div.innerHTML = `
           <div class="hall-image-container">
-            <img src="${hall.img}" class="hall-image" alt="${hall.name}">
+            <img src="${hall.img}" class="hall-image" alt="${hall.name}" loading="lazy">
             <div class="hall-badge">${hall.badge}</div>
           </div>
           <div class="hall-name">${hall.name}</div>
@@ -1200,7 +1242,7 @@
         ];
         const hall = hallsList.find(h => h.id === hallId);
         document.getElementById('current-hall-name').textContent = hall.name;
-        document.getElementById('current-hall-logo').innerHTML = `<img src="${hall.img}" class="hall-logo">`;
+        document.getElementById('current-hall-logo').innerHTML = `<img src="${hall.img}" class="hall-logo" loading="lazy">`;
       }
     }
 
@@ -1246,7 +1288,7 @@
         div.style.animationDelay = `${index * 60}ms`;
         div.innerHTML = `
           <div class="game-image-container">
-            <img src="${game.img}" class="game-image" alt="${game.name}">
+            <img src="${game.img}" class="game-image" alt="${game.name}" loading="lazy">
             <div class="pg-badge">PG</div>
           </div>
           <div class="game-name">${game.name}</div>
@@ -1305,7 +1347,7 @@
     window.onload = function() {
       initMatrixRain();
       startTyping();
-      console.log('%c🚀 TOOL HỦ 2026 • QUANTUM SẢNH | FILE ĐẦY ĐỦ - FULL GAME LIST + ENERGY REALTIME', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
+      console.log('%c🚀 TOOL QUYẾT CHIẾN • STARLINK | ĐÃ TỐI ƯU FULL MOBILE - MƯỢT MÀ TRÊN MỌI ĐIỆN THOẠI', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
     };
   </script>
 </body>
