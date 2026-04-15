@@ -249,7 +249,7 @@
     @keyframes highlightPulse { 0%,100% { opacity: 0.2; } 50% { opacity: 0.45; } }
     .choice-btn .btn-icon { font-size: 26px; }
 
-    /* ==================== HACK CHOICE SCREEN - ĐÃ CẢI THIỆN ==================== */
+    /* ==================== HACK CHOICE SCREEN ==================== */
     #hackChoiceScreen { 
       max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; 
       background: linear-gradient(180deg, #0a0f1f, #111827); display: none; 
@@ -305,7 +305,43 @@
     .signal-medium .signal-text { color: #ffd700; }
     .signal-bad .signal-text { color: #ff0066; }
 
-    /* GAME SCREEN */
+    /* ==================== AVIATOR GAME SCREEN (MÁY BAY) ==================== */
+    #aviatorScreen {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999;
+      display: none; overflow: hidden; font-family: 'Courier New', monospace;
+    }
+    #aviatorScreen .title { 
+      position:absolute; top:15px; left:0; width:100%; text-align:center; 
+      color:#00ff41; font-size:32px; font-weight:bold; text-shadow:0 0 20px #00ff41, 0 0 40px #ff0044; 
+      z-index:10; letter-spacing:4px;
+    }
+    #aviatorScreen .score { 
+      position:absolute; top:70px; right:20px; color:#00ff41; font-size:22px; font-weight:bold; 
+      text-shadow:0 0 15px #00ff41; z-index:10; background:rgba(0,0,0,0.7); padding:8px 18px; border-radius:8px; border:2px solid #00ff41;
+    }
+    #aviatorScreen #analysis {
+      position:absolute; top:70px; left:20px; width:230px; background:rgba(0,15,10,0.85);
+      border:2px solid #00ff41; border-radius:12px; padding:12px; z-index:10; color:#00ff41; 
+      box-shadow:0 0 25px #00ff41;
+    }
+    #aviatorScreen #analysis h3 { margin:0 0 12px 0; font-size:19px; text-align:center; text-shadow:0 0 15px #ff0044; }
+    #aviatorScreen .row { display:flex; justify-content:space-between; align-items:center; margin:10px 0; padding:8px 12px; 
+               border-radius:6px; background:rgba(0,255,65,0.08); border:1px solid #00ff41; }
+    #aviatorScreen .label { font-weight:bold; font-size:17px; }
+    #aviatorScreen .value { font-size:20px; font-weight:bold; text-shadow:0 0 10px #00ff41; }
+    #aviatorScreen .controls { position:absolute; bottom:30px; width:100%; display:flex; justify-content:center; gap:20px; z-index:10; }
+    #aviatorScreen #hackBtnAviator {
+      background:#ff0044; color:#fff; font-size:48px; font-weight:bold; padding:22px 80px;
+      border:4px solid #00ff41; border-radius:12px; box-shadow:0 0 30px #ff0044, 0 0 60px #00ff41;
+      cursor:pointer; text-shadow:0 0 20px #fff; letter-spacing:6px;
+    }
+    #aviatorScreen #hackBtnAviator:active { transform:scale(0.95); }
+    #aviatorScreen #restartBtnAviator {
+      display:none; background:#00ff41; color:#000; font-size:32px; border:3px solid #ff0044;
+    }
+    #aviatorScreen canvas { display:block; margin:0 auto; background:#0a001f; box-shadow:0 0 40px #00ff41; }
+
+    /* GAME SCREEN (PG) */
     .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; }
     #particle-bg { position: fixed !important; top: 0; left: 0; width: 100% !important; height: 100% !important; pointer-events: none; z-index: -2; opacity: 1; }
 
@@ -495,7 +531,7 @@
     </div>
   </div>
 
-  <!-- HACK CHOICE SCREEN - ĐÃ CẢI THIỆN THEO YÊU CẦU -->
+  <!-- HACK CHOICE SCREEN -->
   <div id="hackChoiceScreen" class="hidden">
     <div class="container" style="padding-top: 60px;">
       <div class="cyber-card" style="padding: 50px 30px 60px;">
@@ -539,7 +575,45 @@
     </div>
   </div>
 
-  <!-- GAME SCREEN -->
+  <!-- AVIATOR GAME SCREEN (HACK MÁY BAY) -->
+  <div id="aviatorScreen">
+    <div class="title">【HACKER MODE】 ✈️ AVIATOR MASTER ✈️</div>
+    <div class="score" id="scoreDisplay">DISTANCE: 0 m</div>
+
+    <div id="analysis">
+      <h3>📡 TÍN HIỆU HACK</h3>
+      <div class="row"><span class="label">TÍN HIỆU</span><span id="signal" class="value" style="color:#00ff41">TỐT</span></div>
+      <div class="row"><span class="label">TỈ LỆ THẮNG</span><span id="winRate" class="value">92%</span></div>
+      <div class="row"><span class="label">THẮNG CỰC LỚN</span><span id="bigWin" class="value">58%</span></div>
+    </div>
+
+    <canvas id="aviatorCanvas"></canvas>
+    
+    <div class="controls">
+      <button id="hackBtnAviator">🔥 HACK 🔥</button>
+      <button id="restartBtnAviator" style="display:none; background:#00ff41; color:#000; font-size:32px; border:3px solid #ff0044;">RESTART</button>
+    </div>
+
+    <!-- NÚT QUAY LẠI -->
+    <button onclick="backToHackChoiceFromAviator()" 
+            style="position:absolute; top:20px; left:20px; background:transparent; color:#00f0ff; 
+                   border:4px solid #00f0ff; padding:12px 24px; font-size:18px; font-weight:700; 
+                   border-radius:12px; z-index:99999; box-shadow:0 0 30px #00f0ff;">
+      ← QUAY LẠI
+    </button>
+
+    <!-- Thanh năng lượng chung -->
+    <div id="energy-header-aviator" style="position:absolute; top:0; left:0; right:0; z-index:99999; background: linear-gradient(90deg, #0a0f1f, #1a2340); border-bottom: 5px solid #00f0ff; padding: 14px 15px; display:flex; align-items:center; gap:14px; box-shadow: 0 0 40px rgba(0, 240, 255, 0.8);">
+      <div class="energy-icon">⚡</div>
+      <div class="energy-label">NĂNG LƯỢNG</div>
+      <div class="energy-bar-container">
+        <div id="energy-fill-aviator" class="energy-bar-fill" style="width: 0%"></div>
+      </div>
+      <div id="energy-value-aviator" class="energy-value">0 / 100</div>
+    </div>
+  </div>
+
+  <!-- GAME SCREEN (PG) -->
   <div id="gameScreen" class="game-screen hidden">
     <div id="energy-header">
       <div class="energy-icon">⚡</div>
@@ -653,7 +727,8 @@
         <div class="modal-message text-lg leading-relaxed mt-4">
           Năng lượng Quantum của bạn không đủ để thực hiện thao tác.<br><br>
           <strong>Phân tích game mất 5 năng lượng</strong><br>
-          <strong>Hack Scatter mất 15 năng lượng</strong><br><br>
+          <strong>Hack Scatter mất 15 năng lượng</strong><br>
+          <strong>Hack Máy Bay mất 5 năng lượng</strong><br><br>
           Vui lòng nạp tiền vào tài khoản game để tăng năng lượng.<br><br>
           Hoặc liên hệ Admin:<br>
           <span class="text-[#ff00ff] font-bold">@Beiuchoitool88</span>
@@ -741,12 +816,20 @@
       document.getElementById('registerSection').style.display = 'none';
       document.getElementById('hackChoiceScreen').style.display = 'none';
       document.getElementById('gameScreen').style.display = 'none';
+      document.getElementById('aviatorScreen').style.display = 'none';
     }
 
     function backToLogin() {
       playClick();
       document.getElementById('hackChoiceScreen').style.display = 'none';
       document.getElementById('loginScreen').style.display = 'block';
+    }
+
+    function backToHackChoiceFromAviator() {
+      playClick();
+      document.getElementById('aviatorScreen').style.display = 'none';
+      document.getElementById('hackChoiceScreen').style.display = 'flex';
+      updateEnergyDisplay();
     }
 
     // MATRIX RAIN
@@ -810,12 +893,23 @@
       const header = document.getElementById('energy-header');
       const fill = document.getElementById('energy-fill');
       const valueEl = document.getElementById('energy-value');
-      header.style.display = 'flex';
-      const percent = Math.min(Math.max(currentEnergy, 0), 100);
-      fill.style.width = percent + '%';
-      valueEl.textContent = currentEnergy + ' / 100';
-      if (currentEnergy < 30) header.classList.add('energy-low');
-      else header.classList.remove('energy-low');
+      if (header) {
+        header.style.display = 'flex';
+        const percent = Math.min(Math.max(currentEnergy, 0), 100);
+        fill.style.width = percent + '%';
+        valueEl.textContent = currentEnergy + ' / 100';
+        if (currentEnergy < 30) header.classList.add('energy-low');
+        else header.classList.remove('energy-low');
+      }
+      // Cập nhật cho aviator nếu đang mở
+      const headerAvi = document.getElementById('energy-header-aviator');
+      if (headerAvi) {
+        const fillAvi = document.getElementById('energy-fill-aviator');
+        const valueAvi = document.getElementById('energy-value-aviator');
+        const percent = Math.min(Math.max(currentEnergy, 0), 100);
+        fillAvi.style.width = percent + '%';
+        valueAvi.textContent = currentEnergy + ' / 100';
+      }
     }
 
     async function updateEnergyInFirebase(newEnergy) {
@@ -857,7 +951,7 @@
       screen.style.display = 'none';
     }
 
-    // REGISTER FORM (năng lượng = 0)
+    // REGISTER FORM
     document.getElementById('registerForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       playClick(); playBreach();
@@ -880,7 +974,7 @@
       }
     });
 
-    // LOGIN FORM - Sau đăng nhập hiển thị menu hack
+    // LOGIN FORM
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       playClick(); playBreach();
@@ -917,7 +1011,7 @@
       }
     });
 
-    // ==================== HACK MENU - TÍN HIỆU HOẠT ĐỘNG ====================
+    // ==================== HACK MENU ====================
     let signalIntervalMaybay, signalIntervalNohu;
 
     function updateSignal(barId, textId) {
@@ -935,17 +1029,10 @@
     }
 
     function startSignalUpdates() {
-      // Máy Bay
       updateSignal('signal-bar-maybay', 'signal-text-maybay');
-      signalIntervalMaybay = setInterval(() => {
-        updateSignal('signal-bar-maybay', 'signal-text-maybay');
-      }, 30000);
-
-      // Nổ Hũ
+      signalIntervalMaybay = setInterval(() => updateSignal('signal-bar-maybay', 'signal-text-maybay'), 30000);
       updateSignal('signal-bar-nohu', 'signal-text-nohu');
-      signalIntervalNohu = setInterval(() => {
-        updateSignal('signal-bar-nohu', 'signal-text-nohu');
-      }, 30000);
+      signalIntervalNohu = setInterval(() => updateSignal('signal-bar-nohu', 'signal-text-nohu'), 30000);
     }
 
     // CHỌN BẢN HACK
@@ -957,13 +1044,341 @@
         document.getElementById('gameScreen').classList.remove('hidden');
         initGame();
         updateEnergyDisplay();
-      } else {
-        showSuccessModal("HACK MÁY BAY", "Phiên bản Hack Máy Bay đang được cập nhật.<br>Vui lòng chọn Hack Nổ Hũ để tiếp tục.");
+      } else if (mode === 'maybay') {
+        // KIỂM TRA NĂNG LƯỢNG TRƯỚC KHI VÀO GAME MÁY BAY
+        if (currentEnergy < 5) {
+          showLowEnergyModal();
+          return;
+        }
+        currentEnergy -= 5;
+        updateEnergyInFirebase(currentEnergy);
+        updateEnergyDisplay();
+
+        document.getElementById('hackChoiceScreen').style.display = 'none';
+        document.getElementById('aviatorScreen').style.display = 'block';
+        initAviatorGame();
       }
     }
 
-    // FULL GAME LIST (160+ TRÒ)
-    const originalPGGames = [
+    // ==================== AVIATOR GAME LOGIC ====================
+    let aviatorCanvas, aviatorCtx;
+    let baseW = 900, baseH = 500;
+    let scale = 1;
+    let seaLevel = 380;
+    let planeX = 160, planeY = 310;
+    let vx = 0, vy = 0;
+    let cameraX = 0;
+    let isFlying = false, isHacking = false;
+    let flyStart = 0, propAngle = 0, radarAngle = 0;
+    let distance = 0;
+    let countdown = 0;
+    let selectedIcon = '';
+    const icons = ['🐢', '👤', '🐇', '⚡'];
+    let clouds = [];
+    let particles = [];
+    let fakeData = { speed: 0, altitude: 0, signal: 98, hackProgress: 0, status: "LOCKED" };
+    let lastFakeUpdate = 0;
+    let hackStart = 0;
+    let initialCountdown = 0;
+
+    class Particle {
+      constructor(x, y, isSmoke) {
+        this.x = x; this.y = y;
+        this.vx = isSmoke ? -2 + Math.random() * 4 : -5 + Math.random() * 10;
+        this.vy = isSmoke ? -4 - Math.random() * 4 : 2 + Math.random() * 8;
+        this.life = isSmoke ? 45 : 60;
+        this.size = isSmoke ? 10 : 8;
+        this.isSmoke = isSmoke;
+      }
+      update() { this.x += this.vx; this.y += this.vy; this.vy += 0.2; this.life--; }
+      draw() {
+        aviatorCtx.globalAlpha = this.life / 60;
+        aviatorCtx.fillStyle = this.isSmoke ? '#00ff41' : '#00ffff';
+        aviatorCtx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+      }
+    }
+
+    function resizeAviator() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const ratio = baseW / baseH;
+      if (w / h > ratio) { aviatorCanvas.width = h * ratio; aviatorCanvas.height = h; }
+      else { aviatorCanvas.width = w; aviatorCanvas.height = w / ratio; }
+      scale = aviatorCanvas.width / baseW;
+    }
+
+    function drawSky() {
+      const g = aviatorCtx.createLinearGradient(0, 0, 0, baseH);
+      g.addColorStop(0, '#0a001f'); g.addColorStop(1, '#1f0033');
+      aviatorCtx.fillStyle = g; aviatorCtx.fillRect(0, 0, baseW, baseH);
+      aviatorCtx.strokeStyle = 'rgba(0,255,65,0.15)'; aviatorCtx.lineWidth = 2;
+      for (let x = 0; x < baseW; x += 40) { aviatorCtx.beginPath(); aviatorCtx.moveTo(x,0); aviatorCtx.lineTo(x,baseH); aviatorCtx.stroke(); }
+      for (let y = 0; y < baseH; y += 40) { aviatorCtx.beginPath(); aviatorCtx.moveTo(0,y); aviatorCtx.lineTo(baseW,y); aviatorCtx.stroke(); }
+    }
+
+    function drawClouds() {
+      aviatorCtx.fillStyle = '#00ff9f'; aviatorCtx.globalAlpha = 0.25;
+      clouds.forEach(c => {
+        const drawX = c.x - cameraX;
+        aviatorCtx.shadowBlur = 30; aviatorCtx.shadowColor = '#00ff41';
+        aviatorCtx.beginPath();
+        aviatorCtx.arc(drawX, c.y, c.size * 0.6, 0, Math.PI * 2);
+        aviatorCtx.arc(drawX + c.size * 0.6, c.y, c.size * 0.85, 0, Math.PI * 2);
+        aviatorCtx.fill();
+      });
+      aviatorCtx.shadowBlur = 0; aviatorCtx.globalAlpha = 1;
+    }
+
+    function drawSea() {
+      aviatorCtx.fillStyle = '#001122'; aviatorCtx.fillRect(0, seaLevel, baseW, baseH - seaLevel);
+      const time = Date.now() / 250;
+      aviatorCtx.shadowBlur = 15; aviatorCtx.shadowColor = '#00ffff';
+      aviatorCtx.strokeStyle = '#00ff9f'; aviatorCtx.lineWidth = 7;
+      for (let i = 0; i < 11; i++) {
+        const y = seaLevel + 10 + i * 11;
+        aviatorCtx.globalAlpha = 0.8 - i * 0.06;
+        aviatorCtx.beginPath(); aviatorCtx.moveTo(0, y);
+        for (let x = 0; x <= baseW; x += 38) {
+          aviatorCtx.quadraticCurveTo(x + 19, y + Math.sin(time + (x + cameraX)/60 + i) * 16, x + 38, y);
+        }
+        aviatorCtx.stroke();
+      }
+      aviatorCtx.shadowBlur = 0; aviatorCtx.globalAlpha = 1;
+    }
+
+    function drawCarrier() {
+      const drawX = 20 - cameraX; const y = seaLevel;
+      aviatorCtx.fillStyle = '#0f1a2b'; aviatorCtx.fillRect(drawX, y - 92, 480, 92);
+      aviatorCtx.fillStyle = '#112233'; aviatorCtx.fillRect(drawX - 5, y - 100, 490, 12);
+      aviatorCtx.shadowBlur = 25; aviatorCtx.shadowColor = '#00ff41';
+      aviatorCtx.fillStyle = '#00ff41'; aviatorCtx.fillRect(drawX + 15, y - 155, 460, 8);
+      aviatorCtx.shadowBlur = 0;
+      aviatorCtx.strokeStyle = '#00ff41'; aviatorCtx.lineWidth = 4;
+      aviatorCtx.beginPath(); aviatorCtx.moveTo(drawX, y - 92); aviatorCtx.lineTo(drawX - 22, y - 55); aviatorCtx.lineTo(drawX, y - 20); aviatorCtx.stroke();
+      aviatorCtx.beginPath(); aviatorCtx.moveTo(drawX + 480, y - 92); aviatorCtx.lineTo(drawX + 502, y - 55); aviatorCtx.lineTo(drawX + 480, y - 20); aviatorCtx.stroke();
+      aviatorCtx.fillStyle = '#112233'; aviatorCtx.fillRect(drawX + 320, y - 210, 68, 120);
+      aviatorCtx.shadowBlur = 20; aviatorCtx.shadowColor = '#00ff41';
+      aviatorCtx.fillStyle = '#00ff41';
+      aviatorCtx.fillRect(drawX + 330, y - 225, 48, 18);
+      aviatorCtx.fillRect(drawX + 345, y - 245, 18, 22);
+      aviatorCtx.shadowBlur = 0;
+    }
+
+    function drawPlane() {
+      const screenX = planeX - cameraX;
+      aviatorCtx.save();
+      aviatorCtx.shadowBlur = 25; aviatorCtx.shadowColor = '#00ffff';
+      aviatorCtx.translate(screenX, planeY);
+      if (vy > 3) aviatorCtx.rotate(Math.min(vy * 0.1, 1.4));
+      aviatorCtx.fillStyle = '#ff0044'; aviatorCtx.fillRect(-32, -14, 68, 28);
+      aviatorCtx.fillStyle = '#c0392b';
+      aviatorCtx.beginPath(); aviatorCtx.moveTo(-12,-14); aviatorCtx.lineTo(-12,-46); aviatorCtx.lineTo(24,-14); aviatorCtx.fill();
+      aviatorCtx.beginPath(); aviatorCtx.moveTo(-12,14); aviatorCtx.lineTo(-12,46); aviatorCtx.lineTo(24,14); aviatorCtx.fill();
+      aviatorCtx.fillStyle = '#ff0044'; aviatorCtx.beginPath(); aviatorCtx.moveTo(-32,0); aviatorCtx.lineTo(-55,-26); aviatorCtx.lineTo(-55,26); aviatorCtx.fill();
+      aviatorCtx.shadowBlur = 15; aviatorCtx.shadowColor = '#00ffff'; aviatorCtx.fillStyle = '#00ffff'; aviatorCtx.fillRect(8,-8,14,16);
+      aviatorCtx.fillStyle = '#112233'; aviatorCtx.beginPath(); aviatorCtx.arc(-32,0,11,0,Math.PI*2); aviatorCtx.fill();
+      aviatorCtx.shadowBlur = 20; aviatorCtx.shadowColor = '#00ff41';
+      aviatorCtx.strokeStyle = '#00ff41'; aviatorCtx.lineWidth = 7;
+      aviatorCtx.beginPath();
+      for (let i = 0; i < 4; i++) {
+        aviatorCtx.moveTo(-32,0);
+        aviatorCtx.lineTo(-32 + 28*Math.cos(propAngle + i*Math.PI/2), 28*Math.sin(propAngle + i*Math.PI/2));
+      }
+      aviatorCtx.stroke();
+      aviatorCtx.restore();
+    }
+
+    function updateFakeAnalysis() {
+      if (!isFlying) return;
+      const now = Date.now();
+      if (now - lastFakeUpdate < 420) return;
+      lastFakeUpdate = now;
+      fakeData.speed = (12 + Math.random() * 8).toFixed(1);
+      fakeData.altitude = Math.floor(180 + Math.random() * 120);
+      fakeData.signal = Math.floor(85 + Math.random() * 15);
+      fakeData.hackProgress = Math.min(100, fakeData.hackProgress + Math.random() * 12);
+      fakeData.status = ["LOCKED", "BREACHED", "ACTIVE", "ENCRYPTED"][Math.floor(Math.random()*4)];
+    }
+
+    function updateAviator() {
+      const now = Date.now();
+      updateFakeAnalysis();
+
+      if (isHacking) {
+        const elapsed = (now - hackStart) / 1000;
+        countdown = Math.max(0, Math.ceil(initialCountdown - elapsed));
+        if (countdown <= 0) {
+          isHacking = false;
+          isFlying = true;
+          flyStart = now;
+          vx = 3.5; vy = -5;
+          particles = [];
+          fakeData.hackProgress = 0;
+        }
+      }
+
+      if (isFlying) {
+        const timeFly = now - flyStart;
+        distance = Math.max(0, Math.floor((planeX - 160) / 6));
+        document.getElementById('scoreDisplay').textContent = `DISTANCE: ${distance} m`;
+
+        planeX += vx;
+        cameraX = Math.max(0, planeX - 250);
+
+        if (timeFly < 2300) { vy = -3.5; vx = 5.5; }
+        else { vy += 0.32; vx *= 0.965; }
+
+        planeY += vy;
+        propAngle += 0.95;
+        radarAngle += 0.09;
+
+        if (Math.random() < 0.5) particles.push(new Particle(planeX - 38, planeY + (Math.random()*14-7), true));
+
+        if (planeY > seaLevel - 32) {
+          for (let i = 0; i < 130; i++) particles.push(new Particle(planeX + Math.random()*50 - 25, seaLevel - 8, false));
+          planeX = 160; planeY = 310; cameraX = 0; vx = 0; vy = 0; isFlying = false;
+          document.getElementById('restartBtnAviator').style.display = 'block';
+        }
+      } else {
+        radarAngle += 0.05;
+      }
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        if (particles[i].life <= 0) particles.splice(i, 1);
+      }
+      clouds.forEach(c => { c.x += 0.75; if (c.x - cameraX > baseW + 150) c.x = cameraX - 200; });
+    }
+
+    function drawAviator() {
+      aviatorCtx.clearRect(0, 0, aviatorCanvas.width, aviatorCanvas.height);
+      aviatorCtx.save();
+      aviatorCtx.scale(scale, scale);
+
+      drawSky(); drawClouds(); drawCarrier(); drawSea(); drawPlane();
+      particles.forEach(p => {
+        const px = p.x - cameraX;
+        aviatorCtx.globalAlpha = p.life / 60;
+        aviatorCtx.fillStyle = p.isSmoke ? '#00ff41' : '#00ffff';
+        aviatorCtx.fillRect(px - p.size/2, p.y - p.size/2, p.size, p.size);
+      });
+
+      if (isHacking) {
+        aviatorCtx.fillStyle = '#00ff41';
+        aviatorCtx.font = 'bold 95px Courier New';
+        aviatorCtx.textAlign = 'center';
+        aviatorCtx.shadowBlur = 40; aviatorCtx.shadowColor = '#00ff41';
+        aviatorCtx.fillText(countdown.toString(), baseW/2, baseH/2 - 30);
+
+        aviatorCtx.font = '145px Arial';
+        aviatorCtx.shadowBlur = 50; aviatorCtx.shadowColor = '#ff0044';
+        aviatorCtx.fillText(selectedIcon, baseW/2, baseH/2 + 160);
+
+        if (countdown <= 3) {
+          const flash = Math.sin(Date.now() / 55) * 0.5 + 0.5;
+          aviatorCtx.fillStyle = `rgba(255, 0, 68, ${flash})`;
+          aviatorCtx.fillRect(0, 0, baseW, baseH);
+          aviatorCtx.fillStyle = '#ffff00';
+          aviatorCtx.shadowBlur = 30; aviatorCtx.shadowColor = '#ffff00';
+          aviatorCtx.font = 'bold 58px Courier New';
+          aviatorCtx.fillText('CHUẨN BỊ BAY', baseW/2, baseH/2 - 190);
+        }
+      }
+
+      if (isFlying && Date.now() - flyStart < 700) {
+        aviatorCtx.fillStyle = '#00ff41';
+        aviatorCtx.font = 'bold 92px Courier New';
+        aviatorCtx.shadowBlur = 50; aviatorCtx.shadowColor = '#00ff41';
+        aviatorCtx.textAlign = 'center';
+        aviatorCtx.fillText('BAY', baseW/2, baseH/2 - 110);
+      }
+
+      // Fake analysis
+      if (isFlying) {
+        aviatorCtx.shadowBlur = 15; aviatorCtx.shadowColor = '#00ff41';
+        aviatorCtx.fillStyle = 'rgba(0, 15, 10, 0.85)';
+        aviatorCtx.fillRect(baseW - 260, 120, 240, 210);
+        aviatorCtx.fillStyle = '#00ff41';
+        aviatorCtx.font = 'bold 18px Courier New';
+        aviatorCtx.textAlign = 'left';
+        aviatorCtx.fillText('▶ HACK ANALYSIS', baseW - 245, 145);
+        const lines = [
+          `SPEED     ${fakeData.speed} m/s`,
+          `ALTITUDE  ${fakeData.altitude} m`,
+          `SIGNAL    ${fakeData.signal}%`,
+          `HACK      ${fakeData.hackProgress.toFixed(0)}%`,
+          `STATUS    ${fakeData.status}`
+        ];
+        aviatorCtx.font = '16px Courier New';
+        for (let i = 0; i < lines.length; i++) {
+          aviatorCtx.fillStyle = (i === 4) ? '#ffff00' : '#00ff9f';
+          aviatorCtx.fillText(lines[i], baseW - 245, 175 + i * 32);
+        }
+      }
+
+      aviatorCtx.restore();
+
+      // Scanlines
+      aviatorCtx.globalAlpha = 0.07;
+      aviatorCtx.fillStyle = '#000';
+      for (let i = 0; i < aviatorCanvas.height; i += 4) aviatorCtx.fillRect(0, i, aviatorCanvas.width, 2);
+      aviatorCtx.globalAlpha = 1;
+    }
+
+    function loopAviator() {
+      updateAviator();
+      drawAviator();
+      requestAnimationFrame(loopAviator);
+    }
+
+    function initAviatorGame() {
+      aviatorCanvas = document.getElementById('aviatorCanvas');
+      aviatorCtx = aviatorCanvas.getContext('2d');
+      resizeAviator();
+      window.addEventListener('resize', resizeAviator);
+
+      planeX = 160; planeY = 310; vx = 0; vy = 0; cameraX = 0;
+      isFlying = false; isHacking = false; distance = 0; propAngle = 0; particles = [];
+      fakeData.hackProgress = 0;
+
+      clouds = [];
+      for (let i = 0; i < 12; i++) clouds.push({ x: Math.random() * baseW * 2, y: 40 + Math.random() * 160, size: 40 + Math.random() * 30 });
+
+      document.getElementById('hackBtnAviator').onclick = () => {
+        if (isFlying || isHacking) return;
+        // ĐÃ TRỪ NĂNG LƯỢNG Ở selectHackMode, chỉ cần khởi động game
+        isHacking = true;
+        initialCountdown = Math.floor(Math.random() * 7) + 5;
+        countdown = initialCountdown;
+        hackStart = Date.now();
+        selectedIcon = icons[Math.floor(Math.random() * icons.length)];
+      };
+
+      document.getElementById('restartBtnAviator').onclick = () => {
+        planeX = 160; planeY = 310; vx = 0; vy = 0; cameraX = 0;
+        isFlying = false; isHacking = false; countdown = 0;
+        distance = 0; propAngle = 0; particles = [];
+        fakeData.hackProgress = 0;
+        document.getElementById('restartBtnAviator').style.display = 'none';
+      };
+
+      function updateAnalysisUI() {
+        const signals = ['TỐT', 'XẤU', 'KÉM'];
+        const signalEl = document.getElementById('signal');
+        const randomSignal = signals[Math.floor(Math.random() * signals.length)];
+        signalEl.textContent = randomSignal;
+        signalEl.style.color = randomSignal === 'TỐT' ? '#00ff41' : randomSignal === 'XẤU' ? '#ff0044' : '#ffaa00';
+        document.getElementById('winRate').textContent = (Math.floor(Math.random() * 31) + 70) + '%';
+        document.getElementById('bigWin').textContent = (Math.floor(Math.random() * 37) + 30) + '%';
+      }
+      updateAnalysisUI();
+      setInterval(updateAnalysisUI, 15000);
+
+      loopAviator();
+    }
+
+    // ==================== FULL GAME LIST (PG) ====================
+    const originalPGGames = [ /* ... giữ nguyên danh sách game như file gốc ... */ 
       { name: "Ba Chú Heo", img: "https://i.ibb.co/Y7TWMqH8/BA-CH-HEO.avif" },
       { name: "Bạn Viên Bảo Tàng", img: "https://i.ibb.co/7tvVVdJd/B-N-VI-N-B-O-T-NG.avif" },
       { name: "Cơn Sốt Tiền", img: "https://i.ibb.co/kLczq6k/CON-SOT-TIEN.avif" },
@@ -1110,7 +1525,7 @@
     let countdownInterval = null;
     let hallUpdateInterval = null;
 
-    // THREE.JS
+    // THREE.JS (giữ nguyên như file gốc)
     let scene, camera, renderer, particleSystem, connectionLines;
     let particlesCount = 4200;
     let time = 0;
@@ -1195,7 +1610,7 @@
       animate();
     }
 
-    // HALL RENDER
+    // HALL RENDER (giữ nguyên)
     let hallData = [];
     function countUp(el, target, suffix = '', duration = 900) {
       let start = parseFloat(el.textContent) || 0;
@@ -1487,8 +1902,8 @@
     window.onload = function() {
       initMatrixRain();
       startTyping();
-      startSignalUpdates();   // BẬT TÍN HIỆU HOẠT ĐỘNG
-      console.log('%c🚀 TOOL QUYẾT CHIẾN • STARLINK | FILE ĐẦY ĐỦ - MENU HACK ĐÃ CẢI THIỆN', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
+      startSignalUpdates();
+      console.log('%c🚀 TOOL QUYẾT CHIẾN • STARLINK | FILE ĐẦY ĐỦ - HACK MÁY BAY ĐÃ TÍCH HỢP', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
     };
   </script>
 </body>
