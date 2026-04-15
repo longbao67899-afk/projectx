@@ -249,6 +249,62 @@
     @keyframes highlightPulse { 0%,100% { opacity: 0.2; } 50% { opacity: 0.45; } }
     .choice-btn .btn-icon { font-size: 26px; }
 
+    /* ==================== HACK CHOICE SCREEN - ĐÃ CẢI THIỆN ==================== */
+    #hackChoiceScreen { 
+      max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; 
+      background: linear-gradient(180deg, #0a0f1f, #111827); display: none; 
+      flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10;
+    }
+    .hack-choice-title {
+      font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: 700; 
+      background: linear-gradient(90deg, #00f0ff, #ff00ff, #ffd700); 
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px #ff00ff; letter-spacing: -2px; margin-bottom: 40px; text-align: center;
+    }
+    .hack-choice-subtitle {
+      font-family: 'VT323', monospace; font-size: 22px; color: #67e8f9; 
+      letter-spacing: 6px; text-shadow: 0 0 20px #67e8f9; margin-bottom: 60px;
+    }
+    .hack-option {
+      width: 100%; max-width: 380px; margin-bottom: 40px;
+      border-radius: 28px; overflow: hidden; position: relative; cursor: pointer;
+      border: 6px solid #00f0ff; box-shadow: 0 0 60px rgba(0,240,255,0.9), 0 0 120px rgba(255,0,255,0.6);
+      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+    }
+    .hack-option:hover {
+      transform: scale(1.06); border-color: #ffd700; box-shadow: 0 0 90px #ffd700, 0 0 140px #ff00ff;
+    }
+    .hack-image-container {
+      position: relative; height: 220px; background: #0a0f1f; display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .hack-option img {
+      width: 92%; height: 92%; object-fit: contain; filter: drop-shadow(0 0 30px #00f0ff) drop-shadow(0 0 50px #ffd700);
+      transition: transform 0.5s ease;
+    }
+    .hack-option:hover img { transform: scale(1.1); }
+    .hack-name {
+      text-align: center; font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 700;
+      background: linear-gradient(90deg, #00f0ff, #ffd700, #ff00ff); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; padding: 18px 0 8px; letter-spacing: 4px;
+    }
+    .signal-container {
+      display: flex; align-items: center; justify-content: center; gap: 12px; padding: 0 20px 20px;
+      font-family: 'VT323', monospace; font-size: 16px; color: #67e8f9;
+    }
+    .signal-bar {
+      display: flex; gap: 4px;
+    }
+    .signal-segment {
+      width: 14px; height: 14px; border-radius: 2px; transition: all 0.3s ease;
+    }
+    .signal-good .signal-segment { background: #22d3ee; box-shadow: 0 0 12px #22d3ee; }
+    .signal-medium .signal-segment:nth-child(1), .signal-medium .signal-segment:nth-child(2) { background: #ffd700; box-shadow: 0 0 12px #ffd700; }
+    .signal-bad .signal-segment:nth-child(1) { background: #ff0066; box-shadow: 0 0 12px #ff0066; }
+    .signal-text { font-weight: 700; letter-spacing: 2px; }
+    .signal-good .signal-text { color: #22d3ee; }
+    .signal-medium .signal-text { color: #ffd700; }
+    .signal-bad .signal-text { color: #ff0066; }
+
     /* GAME SCREEN */
     .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; }
     #particle-bg { position: fixed !important; top: 0; left: 0; width: 100% !important; height: 100% !important; pointer-events: none; z-index: -2; opacity: 1; }
@@ -305,31 +361,23 @@
 
     #lowEnergyModal .modal-content { border-color: #ff00aa; box-shadow: 0 0 60px #ff00aa; }
 
-    /* ==================== MOBILE OPTIMIZATION ==================== */
-    .btn, .choice-btn, .game-card, .hall-card, .hack-scatter-btn {
+    /* MOBILE OPTIMIZATION */
+    .btn, .choice-btn, .game-card, .hall-card, .hack-scatter-btn, .hack-option {
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
     }
-    .game-card:active, .hall-card:active {
+    .game-card:active, .hall-card:active, .hack-option:active {
       transform: scale(1.04) translateY(-4px);
     }
     .btn:active { transform: scale(1.06); }
 
     @media (max-width: 380px) {
       .logo { font-size: clamp(42px, 10vw, 52px) !important; }
-      .hall-title { font-size: 42px !important; }
+      .hall-title, .hack-choice-title { font-size: 42px !important; }
       .cyber-card { padding: 35px 20px 30px !important; }
       .btn { padding: 18px !important; font-size: 20px !important; }
-      .hall-image-container { height: 180px !important; }
+      .hall-image-container, .hack-image-container { height: 180px !important; }
       .game-image-container { height: 160px !important; }
-    }
-
-    @media (orientation: landscape) and (max-height: 520px) {
-      .container, .game-screen { padding: 10px 15px !important; }
-      .hall-grid { gap: 20px !important; }
-      #energy-header { padding: 10px 12px !important; font-size: 15px; }
-      .energy-bar-container { height: 28px !important; }
-      .hall-image-container { height: 170px !important; }
     }
   </style>
 </head>
@@ -447,6 +495,50 @@
     </div>
   </div>
 
+  <!-- HACK CHOICE SCREEN - ĐÃ CẢI THIỆN THEO YÊU CẦU -->
+  <div id="hackChoiceScreen" class="hidden">
+    <div class="container" style="padding-top: 60px;">
+      <div class="cyber-card" style="padding: 50px 30px 60px;">
+        <div class="hack-choice-title">CHỌN BẢN HACK</div>
+        <div class="hack-choice-subtitle">THẮNG LỚN ĐỪNG QUÊN ANH 🔥</div>
+
+        <!-- HACK MÁY BAY -->
+        <div onclick="selectHackMode('maybay')" class="hack-option">
+          <div class="hack-image-container">
+            <img src="https://i.ibb.co/GBd1LZw/Gemini-Generated-Image-roqihjroqihjroqi.png" alt="Hack Máy Bay" loading="lazy">
+          </div>
+          <div class="hack-name">HACK MÁY BAY</div>
+          <div class="signal-container" id="signal-maybay">
+            <div class="signal-bar" id="signal-bar-maybay">
+              <div class="signal-segment"></div>
+              <div class="signal-segment"></div>
+              <div class="signal-segment"></div>
+            </div>
+            <div class="signal-text" id="signal-text-maybay">TÍN HIỆU TỐT</div>
+          </div>
+        </div>
+
+        <!-- HACK NỔ HŨ -->
+        <div onclick="selectHackMode('nohu')" class="hack-option">
+          <div class="hack-image-container">
+            <img src="https://i.ibb.co/NgmZB4wV/Gemini-Generated-Image-n6ylfjn6ylfjn6yl.png" alt="Hack Nổ Hũ" loading="lazy">
+          </div>
+          <div class="hack-name">HACK NỔ HŨ</div>
+          <div class="signal-container" id="signal-nohu">
+            <div class="signal-bar" id="signal-bar-nohu">
+              <div class="signal-segment"></div>
+              <div class="signal-segment"></div>
+              <div class="signal-segment"></div>
+            </div>
+            <div class="signal-text" id="signal-text-nohu">TÍN HIỆU TỐT</div>
+          </div>
+        </div>
+
+        <button onclick="backToLogin()" class="btn" style="background: transparent; color: #00f0ff; border: 4px solid #00f0ff; margin-top: 30px;">← QUAY VỀ ĐĂNG NHẬP</button>
+      </div>
+    </div>
+  </div>
+
   <!-- GAME SCREEN -->
   <div id="gameScreen" class="game-screen hidden">
     <div id="energy-header">
@@ -517,9 +609,9 @@
         </div>
         <div class="stat-list">
           <div class="stat-row"><span class="stat-label">RTP</span><span id="rtp-value" class="stat-value">96.8%</span></div>
-          <div class="stat-row"><span class="stat-label">VOLATILITY</span><span id="volatility-value" class="stat-value">CAO</span></div>
-          <div class="stat-row"><span class="stat-label">MAX WIN</span><span id="max-win-value" class="stat-value">×4211</span></div>
-          <div class="stat-row"><span class="stat-label">HIT FREQUENCY</span><span id="hit-frequency" class="stat-value">1/5.6</span></div>
+          <div class="stat-row"><span class="stat-label">BIẾN ĐỘNG</span><span id="volatility-value" class="stat-value">CAO</span></div>
+          <div class="stat-row"><span class="stat-label">THẮNG SIÊU LỚN</span><span id="max-win-value" class="stat-value">×4211</span></div>
+          <div class="stat-row"><span class="stat-label">TẦNG SỐ THẮNG</span><span id="hit-frequency" class="stat-value">1/5.6</span></div>
           <div class="stat-row"><span class="stat-label">NEURAL AI SCORE</span><span id="neural-score" class="stat-value">93</span></div>
         </div>
         <div class="golden-time">
@@ -536,7 +628,7 @@
           </div>
         </div>
         <div class="spin-protocol">
-          <h3 class="text-purple-300 font-bold tracking-widest mb-4">⚡ SPIN PROTOCOL</h3>
+          <h3 class="text-purple-300 font-bold tracking-widest mb-4">⚡ CÁCH XOAY</h3>
           <div class="spin-grid">
             <div class="spin-item"><div id="total-spins" class="spin-value">96</div><div class="spin-label">TỔNG VÒNG</div></div>
             <div class="spin-item"><div id="normal-spins" class="spin-value">59</div><div class="spin-label">QUAY THƯỜNG</div></div>
@@ -604,6 +696,7 @@
     let userDocId = null;
     let currentUsername = "";
     let energyUnsubscribe = null;
+    let currentHackMode = "";
 
     // AUDIO
     const click = document.getElementById('clickSound');
@@ -646,9 +739,17 @@
       playClick();
       document.getElementById('loginSection').style.display = 'block';
       document.getElementById('registerSection').style.display = 'none';
+      document.getElementById('hackChoiceScreen').style.display = 'none';
+      document.getElementById('gameScreen').style.display = 'none';
     }
 
-    // MATRIX RAIN – TỐI ƯU MOBILE
+    function backToLogin() {
+      playClick();
+      document.getElementById('hackChoiceScreen').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'block';
+    }
+
+    // MATRIX RAIN
     function initMatrixRain() {
       const canvas = document.getElementById('matrixRain');
       const ctx = canvas.getContext('2d');
@@ -756,7 +857,7 @@
       screen.style.display = 'none';
     }
 
-    // REGISTER FORM
+    // REGISTER FORM (năng lượng = 0)
     document.getElementById('registerForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       playClick(); playBreach();
@@ -779,7 +880,7 @@
       }
     });
 
-    // LOGIN FORM
+    // LOGIN FORM - Sau đăng nhập hiển thị menu hack
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       playClick(); playBreach();
@@ -804,9 +905,7 @@
           });
           hideLoading();
           document.getElementById('loginScreen').classList.add('hidden');
-          document.getElementById('gameScreen').classList.remove('hidden');
-          initGame();
-          updateEnergyDisplay();
+          document.getElementById('hackChoiceScreen').style.display = 'flex';
           showSuccessModal("ĐĂNG NHẬP THÀNH CÔNG", `Chào mừng ${username.toUpperCase()}<br>Năng lượng: ${currentEnergy}`);
         } else {
           hideLoading();
@@ -818,7 +917,52 @@
       }
     });
 
-    // ==================== FULL GAME LIST (160+ TRÒ) ====================
+    // ==================== HACK MENU - TÍN HIỆU HOẠT ĐỘNG ====================
+    let signalIntervalMaybay, signalIntervalNohu;
+
+    function updateSignal(barId, textId) {
+      const statuses = [
+        { text: "TÍN HIỆU TỐT", class: "signal-good" },
+        { text: "TÍN HIỆU TRUNG BÌNH", class: "signal-medium" },
+        { text: "TÍN HIỆU KÉM", class: "signal-bad" }
+      ];
+      const random = statuses[Math.floor(Math.random() * statuses.length)];
+      const bar = document.getElementById(barId);
+      const text = document.getElementById(textId);
+      bar.className = `signal-bar ${random.class}`;
+      text.textContent = random.text;
+      text.className = `signal-text ${random.class}`;
+    }
+
+    function startSignalUpdates() {
+      // Máy Bay
+      updateSignal('signal-bar-maybay', 'signal-text-maybay');
+      signalIntervalMaybay = setInterval(() => {
+        updateSignal('signal-bar-maybay', 'signal-text-maybay');
+      }, 30000);
+
+      // Nổ Hũ
+      updateSignal('signal-bar-nohu', 'signal-text-nohu');
+      signalIntervalNohu = setInterval(() => {
+        updateSignal('signal-bar-nohu', 'signal-text-nohu');
+      }, 30000);
+    }
+
+    // CHỌN BẢN HACK
+    function selectHackMode(mode) {
+      playClick();
+      currentHackMode = mode;
+      if (mode === 'nohu') {
+        document.getElementById('hackChoiceScreen').style.display = 'none';
+        document.getElementById('gameScreen').classList.remove('hidden');
+        initGame();
+        updateEnergyDisplay();
+      } else {
+        showSuccessModal("HACK MÁY BAY", "Phiên bản Hack Máy Bay đang được cập nhật.<br>Vui lòng chọn Hack Nổ Hũ để tiếp tục.");
+      }
+    }
+
+    // FULL GAME LIST (160+ TRÒ)
     const originalPGGames = [
       { name: "Ba Chú Heo", img: "https://i.ibb.co/Y7TWMqH8/BA-CH-HEO.avif" },
       { name: "Bạn Viên Bảo Tàng", img: "https://i.ibb.co/7tvVVdJd/B-N-VI-N-B-O-T-NG.avif" },
@@ -966,7 +1110,7 @@
     let countdownInterval = null;
     let hallUpdateInterval = null;
 
-    // THREE.JS – TỐI ƯU MOBILE
+    // THREE.JS
     let scene, camera, renderer, particleSystem, connectionLines;
     let particlesCount = 4200;
     let time = 0;
@@ -980,11 +1124,7 @@
       scene.fog = new THREE.Fog(0x05050f, 8, 35);
       camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
       camera.position.set(0, 0, 18);
-      renderer = new THREE.WebGLRenderer({ 
-        canvas, 
-        antialias: !isMobile, 
-        alpha: true 
-      });
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: !isMobile, alpha: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
 
@@ -1347,7 +1487,8 @@
     window.onload = function() {
       initMatrixRain();
       startTyping();
-      console.log('%c🚀 TOOL QUYẾT CHIẾN • STARLINK | ĐÃ TỐI ƯU FULL MOBILE - MƯỢT MÀ TRÊN MỌI ĐIỆN THOẠI', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
+      startSignalUpdates();   // BẬT TÍN HIỆU HOẠT ĐỘNG
+      console.log('%c🚀 TOOL QUYẾT CHIẾN • STARLINK | FILE ĐẦY ĐỦ - MENU HACK ĐÃ CẢI THIỆN', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
     };
   </script>
 </body>
