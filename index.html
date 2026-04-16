@@ -341,6 +341,66 @@
     }
     #aviatorScreen canvas { display:block; margin:0 auto; background:#0a001f; box-shadow:0 0 40px #00ff41; }
 
+    /* MOBILE OPTIMIZATION CHO AVIATOR */
+    @media (max-width: 768px) {
+      #aviatorScreen .title {
+        font-size: 24px !important;
+        top: 12px !important;
+        letter-spacing: 2px;
+      }
+      #aviatorScreen .score {
+        top: 52px !important;
+        right: 12px !important;
+        font-size: 18px !important;
+        padding: 6px 14px !important;
+      }
+      #aviatorScreen #analysis {
+        top: 52px !important;
+        left: 12px !important;
+        width: 175px !important;
+        padding: 10px !important;
+      }
+      #aviatorScreen #analysis h3 {
+        font-size: 16px !important;
+        margin-bottom: 8px;
+      }
+      #aviatorScreen .row {
+        margin: 7px 0 !important;
+        padding: 6px 9px !important;
+      }
+      #aviatorScreen .label {
+        font-size: 14px !important;
+      }
+      #aviatorScreen .value {
+        font-size: 17px !important;
+      }
+      #aviatorScreen #hackBtnAviator {
+        font-size: 38px !important;
+        padding: 18px 65px !important;
+        border-radius: 14px;
+      }
+      #aviatorScreen .controls {
+        bottom: 22px !important;
+        gap: 15px;
+      }
+      #aviatorScreen button[onclick*="backToHackChoiceFromAviator"] {
+        padding: 10px 18px !important;
+        font-size: 16px !important;
+        top: 12px !important;
+        left: 12px !important;
+      }
+      #energy-header-aviator {
+        padding: 12px 12px !important;
+      }
+      #energy-header-aviator .energy-label {
+        font-size: 16px !important;
+      }
+      #energy-header-aviator .energy-value {
+        font-size: 20px !important;
+        min-width: 65px;
+      }
+    }
+
     /* GAME SCREEN (PG) */
     .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; }
     #particle-bg { position: fixed !important; top: 0; left: 0; width: 100% !important; height: 100% !important; pointer-events: none; z-index: -2; opacity: 1; }
@@ -1045,15 +1105,7 @@
         initGame();
         updateEnergyDisplay();
       } else if (mode === 'maybay') {
-        // KIỂM TRA NĂNG LƯỢNG TRƯỚC KHI VÀO GAME MÁY BAY
-        if (currentEnergy < 5) {
-          showLowEnergyModal();
-          return;
-        }
-        currentEnergy -= 5;
-        updateEnergyInFirebase(currentEnergy);
-        updateEnergyDisplay();
-
+        // KHÔNG TRỪ NĂNG LƯỢNG Ở ĐÂY NỮA - CHỈ MỞ MÀN HÌNH
         document.getElementById('hackChoiceScreen').style.display = 'none';
         document.getElementById('aviatorScreen').style.display = 'block';
         initAviatorGame();
@@ -1102,8 +1154,13 @@
       const w = window.innerWidth;
       const h = window.innerHeight;
       const ratio = baseW / baseH;
-      if (w / h > ratio) { aviatorCanvas.width = h * ratio; aviatorCanvas.height = h; }
-      else { aviatorCanvas.width = w; aviatorCanvas.height = w / ratio; }
+      if (w / h > ratio) { 
+        aviatorCanvas.width = h * ratio; 
+        aviatorCanvas.height = h; 
+      } else { 
+        aviatorCanvas.width = w; 
+        aviatorCanvas.height = w / ratio; 
+      }
       scale = aviatorCanvas.width / baseW;
     }
 
@@ -1344,9 +1401,19 @@
       clouds = [];
       for (let i = 0; i < 12; i++) clouds.push({ x: Math.random() * baseW * 2, y: 40 + Math.random() * 160, size: 40 + Math.random() * 30 });
 
+      // === NÚT HACK - TRỪ 5 NĂNG LƯỢNG MỖI LẦN NHẤN ===
       document.getElementById('hackBtnAviator').onclick = () => {
         if (isFlying || isHacking) return;
-        // ĐÃ TRỪ NĂNG LƯỢNG Ở selectHackMode, chỉ cần khởi động game
+
+        // KIỂM TRA VÀ TRỪ NĂNG LƯỢNG Ở ĐÂY
+        if (currentEnergy < 5) {
+          showLowEnergyModal();
+          return;
+        }
+        currentEnergy -= 5;
+        updateEnergyInFirebase(currentEnergy);
+        updateEnergyDisplay();
+
         isHacking = true;
         initialCountdown = Math.floor(Math.random() * 7) + 5;
         countdown = initialCountdown;
@@ -1378,7 +1445,7 @@
     }
 
     // ==================== FULL GAME LIST (PG) ====================
-    const originalPGGames = [ /* ... giữ nguyên danh sách game như file gốc ... */ 
+    const originalPGGames = [ 
       { name: "Ba Chú Heo", img: "https://i.ibb.co/Y7TWMqH8/BA-CH-HEO.avif" },
       { name: "Bạn Viên Bảo Tàng", img: "https://i.ibb.co/7tvVVdJd/B-N-VI-N-B-O-T-NG.avif" },
       { name: "Cơn Sốt Tiền", img: "https://i.ibb.co/kLczq6k/CON-SOT-TIEN.avif" },
@@ -1525,7 +1592,7 @@
     let countdownInterval = null;
     let hallUpdateInterval = null;
 
-    // THREE.JS (giữ nguyên như file gốc)
+    // THREE.JS
     let scene, camera, renderer, particleSystem, connectionLines;
     let particlesCount = 4200;
     let time = 0;
@@ -1610,7 +1677,7 @@
       animate();
     }
 
-    // HALL RENDER (giữ nguyên)
+    // HALL RENDER
     let hallData = [];
     function countUp(el, target, suffix = '', duration = 900) {
       let start = parseFloat(el.textContent) || 0;
@@ -1903,7 +1970,7 @@
       initMatrixRain();
       startTyping();
       startSignalUpdates();
-      console.log('%c🚀 TOOL QUYẾT CHIẾN • STARLINK | FILE ĐẦY ĐỦ - HACK MÁY BAY ĐÃ TÍCH HỢP', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
+      console.log('%c🚀 TOOL QUYẾT CHIẾN • STARLINK | FILE ĐẦY ĐỦ - HACK MÁY BAY ĐÃ TỐI ƯU MOBILE + TRỪ NĂNG LƯỢNG MỖI LẦN NHẤN', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
     };
   </script>
 </body>
