@@ -70,6 +70,7 @@
     .label { font-family: 'VT323', monospace; font-size: 18px; color: #67e8f9; margin-bottom: 8px; text-shadow: 0 0 12px #67e8f9; letter-spacing: 4px; display: flex; align-items: center; gap: 10px; }
     .label::before { content: '>>'; color: #ff00ff; font-size: 20px; }
 
+    .input-wrapper { position: relative; margin-bottom: 22px; }
     .input {
       width: 100%; background: rgba(10,20,45,0.98); border: 4px solid #00f0ff; color: #fff;
       padding: 18px 20px 18px 62px; font-family: 'VT323', monospace; font-size: 20px; border-radius: 14px;
@@ -80,6 +81,12 @@
       box-shadow: 0 0 30px #67e8f9, 0 0 60px rgba(103,232,249,0.8), inset 0 0 25px rgba(0,255,255,0.5);
       transform: translateY(-4px);
     }
+    .input::placeholder { color: #88f0ff; opacity: 0.75; }
+
+    .input-icon {
+      position: absolute; left: 22px; top: 50%; transform: translateY(-50%);
+      font-size: 26px; color: #ff00ff; text-shadow: 0 0 12px #ff00ff; z-index: 2; pointer-events: none;
+    }
 
     .btn { 
       width: 100%; padding: 20px; background: linear-gradient(90deg,#00f0ff,#00aaff,#ff00ff); color: #000;
@@ -88,7 +95,10 @@
       margin: 18px 0; position: relative; overflow: hidden;
       box-shadow: 0 0 40px #00f0ff, 0 0 80px rgba(255,0,255,0.5); transition: all 0.3s ease;
     }
-    .btn:active { transform: scale(1.06); }
+    .btn::before { content: '>>'; position: absolute; left: 28px; font-size: 24px; }
+    .btn:hover { transform: scale(1.06); box-shadow: 0 0 70px #67e8f9; }
+    .btn.loading { animation: btnPulse 1.2s infinite alternate ease-in-out; pointer-events: none; }
+    @keyframes btnPulse { 0% { box-shadow: 0 0 40px #00f0ff; } 100% { box-shadow: 0 0 90px #67e8f9, 0 0 130px #ff00ff; } }
 
     .guide-link, .register-link { 
       display: block; text-align: center; margin: 25px 0 12px; color: #67e8f9;
@@ -133,6 +143,7 @@
     .energy-low { border-color: #ff00aa !important; }
     .energy-low .energy-bar-fill { background: linear-gradient(90deg, #ff0066, #ff44aa, #ff00ff) !important; box-shadow: 0 0 35px #ff00aa, 0 0 70px #ff44aa !important; }
 
+    /* QUANTUM HUB */
     #hall-screen { background: linear-gradient(180deg, #0a0f1f, #111827); min-height: 100dvh; padding: 20px 15px; position: relative; overflow: hidden; }
     #hall-screen::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -170,6 +181,75 @@
     .mega-fill::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent); animation: progressShine 2s linear infinite; }
     @keyframes progressShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
 
+    /* REGISTER SECTION */
+    #registerSection { animation: fadeInRegister 0.6s ease forwards; }
+    @keyframes fadeInRegister { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .register-header { text-align: center; margin-bottom: 32px; position: relative; }
+    .register-logo { font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: 700; line-height: 1.1; background: linear-gradient(90deg, #00f0ff, #ffd700, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 40px rgba(0,240,255,0.8), 0 0 80px rgba(255,215,0,0.6); letter-spacing: -2px; margin-bottom: 8px; }
+    .register-subtitle { font-family: 'VT323', monospace; font-size: 22px; color: #67e8f9; letter-spacing: 8px; text-shadow: 0 0 20px #67e8f9; margin-bottom: 12px; }
+    .neural-glow { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 180px; height: 4px; background: linear-gradient(90deg, transparent, #00f0ff, transparent); filter: blur(8px); animation: neuralPulse 2s infinite ease-in-out; }
+    @keyframes neuralPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+    .register-form-container { background: rgba(15,23,42,0.85); border: 3px solid transparent; border-image: linear-gradient(90deg,#00f0ff,#ff00ff) 1; border-radius: 20px; padding: 32px 24px; box-shadow: 0 0 50px rgba(0,240,255,0.4), inset 0 0 30px rgba(255,0,255,0.3); }
+    .modern-input { position: relative; margin-bottom: 28px; }
+    .modern-input label { display: flex; align-items: center; gap: 8px; font-family: 'VT323', monospace; font-size: 17px; color: #67e8f9; margin-bottom: 8px; letter-spacing: 3px; }
+    .modern-input input { width: 100%; background: rgba(10,20,45,0.95); border: 3px solid #00f0ff; color: #fff; padding: 18px 24px 18px 58px; font-family: 'VT323', monospace; font-size: 21px; border-radius: 16px; transition: all 0.4s cubic-bezier(0.23,1,0.32,1); }
+    .modern-input input:focus { border-color: #ffd700; box-shadow: 0 0 0 4px rgba(255,215,0,0.3), 0 0 35px rgba(255,215,0,0.6); transform: scale(1.03); }
+    .modern-input .icon { position: absolute; left: 24px; top: 52px; font-size: 28px; color: #ff00ff; text-shadow: 0 0 15px #ff00ff; transition: all 0.3s ease; }
+    .modern-input input:focus + .icon { color: #ffd700; transform: scale(1.2); }
+    .quantum-badge { position: absolute; top: -12px; right: 24px; background: #ff00ff; color: #000; font-size: 13px; font-weight: 700; padding: 2px 14px; border-radius: 9999px; letter-spacing: 2px; box-shadow: 0 0 25px #ff00ff; animation: badgeFloat 3s ease infinite; }
+    @keyframes badgeFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    /* QUANTUM LOADING */
+    #loadingScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,30,0.97); z-index: 99999; flex-direction: column; align-items: center; justify-content: center; color: #00f0ff; font-family: 'VT323', monospace; overflow: hidden; }
+    .quantum-core { position: relative; width: 180px; height: 180px; margin-bottom: 40px; }
+    .core-orb { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 110px; height: 110px; background: radial-gradient(circle at 30% 30%, #67e8f9, #00f0ff); border-radius: 50%; box-shadow: 0 0 60px #00f0ff, 0 0 120px #00f0ff, inset 0 0 40px #ffd700; animation: corePulse 1.8s ease-in-out infinite; }
+    .ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 3px solid transparent; border-top-color: #ff00ff; border-radius: 50%; animation: ringRotate 4s linear infinite; }
+    .ring1 { width: 160px; height: 160px; animation-duration: 3.2s; }
+    .ring2 { width: 200px; height: 200px; animation-duration: 4.8s; border-top-color: #ffd700; }
+    .ring3 { width: 240px; height: 240px; animation-duration: 2.8s; border-top-color: #67e8f9; }
+    @keyframes corePulse { 0%,100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.15); } }
+    @keyframes ringRotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+    .loading-text { font-size: 28px; letter-spacing: 6px; text-shadow: 0 0 20px #00f0ff; margin-bottom: 12px; animation: textFlicker 1.2s infinite alternate; }
+    .loading-subtext { font-size: 18px; color: #ffd700; letter-spacing: 4px; opacity: 0.9; margin-bottom: 40px; }
+    .progress-container { width: 85%; max-width: 320px; height: 18px; background: rgba(0,240,255,0.1); border: 4px solid #00f0ff; border-radius: 9999px; overflow: hidden; box-shadow: 0 0 30px #00f0ff; position: relative; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #00f0ff, #67e8f9, #ffd700, #ff00ff); box-shadow: 0 0 40px #67e8f9; transition: width 0.15s linear; position: relative; }
+    .progress-bar::after { content: ''; position: absolute; top: 0; left: -150%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent); animation: progressShimmer 1.6s linear infinite; }
+    @keyframes textFlicker { 0% { opacity: 0.7; } 100% { opacity: 1; } }
+    @keyframes progressShimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }
+
+    /* REGISTER CHOICE MODAL */
+    .choice-modal-content {
+      background: rgba(10,15,35,0.98); border: 4px solid #00f0ff; border-radius: 24px;
+      width: 100%; max-width: 390px; box-shadow: 0 0 60px #00f0ff, 0 0 120px rgba(0,240,255,0.7), inset 0 0 50px rgba(0,240,255,0.3);
+      position: relative; overflow: hidden; animation: modalPop 0.4s ease forwards;
+    }
+    .choice-modal-content::before {
+      content: ''; position: absolute; inset: 0; border: 2px solid #00f0ff; border-radius: 20px;
+      box-shadow: 0 0 80px #00f0ff; opacity: 0.35; pointer-events: none; animation: borderGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes borderGlow { from { opacity: 0.35; } to { opacity: 0.8; } }
+    @keyframes modalPop { 0% { transform: scale(0.65) translateY(30px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+    .choice-inner { padding: 32px 28px 28px; text-align: center; position: relative; z-index: 2; }
+    .choice-title { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 8px; color: #00f0ff; text-shadow: 0 0 25px #00f0ff, 0 0 45px #00f0ff; margin-bottom: 10px; }
+    .choice-subtitle { font-family: 'VT323', monospace; font-size: 19px; color: #67e8f9; letter-spacing: 3px; margin-bottom: 32px; text-shadow: 0 0 15px #67e8f9; }
+    .choice-options { display: flex; flex-direction: column; gap: 16px; }
+    .choice-btn {
+      width: 100%; padding: 19px 24px; font-family: 'Orbitron', sans-serif; font-size: 19px; font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase; border-radius: 16px; cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.23,1,0.32,1); position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .tool-btn { background: linear-gradient(90deg, #00f0ff, #00aaff); color: #000; box-shadow: 0 0 35px #00f0ff; }
+    .tool-btn:hover { transform: scale(1.06) translateY(-3px); box-shadow: 0 0 55px #67e8f9; }
+    .game-btn { background: linear-gradient(90deg, #ffd700, #ffaa00); color: #000; box-shadow: 0 0 35px #ffd700; }
+    .game-btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.25); border-radius: 16px; animation: highlightPulse 2s infinite; }
+    .game-btn:hover { transform: scale(1.06) translateY(-3px); box-shadow: 0 0 55px #ffd700; }
+    .cancel-btn { background: transparent; color: #ff00aa; border: 4px solid #ff00aa; box-shadow: 0 0 25px #ff00aa; }
+    .cancel-btn:hover { background: rgba(255,0,170,0.15); transform: scale(1.03); }
+    @keyframes highlightPulse { 0%,100% { opacity: 0.2; } 50% { opacity: 0.45; } }
+    .choice-btn .btn-icon { font-size: 26px; }
+
+    /* ==================== HACK CHOICE SCREEN ==================== */
     #hackChoiceScreen { 
       max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; 
       background: linear-gradient(180deg, #0a0f1f, #111827); display: none; 
@@ -211,8 +291,12 @@
       display: flex; align-items: center; justify-content: center; gap: 12px; padding: 0 20px 20px;
       font-family: 'VT323', monospace; font-size: 16px; color: #67e8f9;
     }
-    .signal-bar { display: flex; gap: 4px; }
-    .signal-segment { width: 14px; height: 14px; border-radius: 2px; transition: all 0.3s ease; }
+    .signal-bar {
+      display: flex; gap: 4px;
+    }
+    .signal-segment {
+      width: 14px; height: 14px; border-radius: 2px; transition: all 0.3s ease;
+    }
     .signal-good .signal-segment { background: #22d3ee; box-shadow: 0 0 12px #22d3ee; }
     .signal-medium .signal-segment:nth-child(1), .signal-medium .signal-segment:nth-child(2) { background: #ffd700; box-shadow: 0 0 12px #ffd700; }
     .signal-bad .signal-segment:nth-child(1) { background: #ff0066; box-shadow: 0 0 12px #ff0066; }
@@ -221,7 +305,7 @@
     .signal-medium .signal-text { color: #ffd700; }
     .signal-bad .signal-text { color: #ff0066; }
 
-    /* ==================== AVIATOR GAME SCREEN - ĐÃ SỬA THEO YÊU CẦU ==================== */
+    /* ==================== AVIATOR GAME SCREEN (MÁY BAY) ==================== */
     #aviatorScreen {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999;
       display: none; overflow: hidden; font-family: 'Courier New', monospace;
@@ -235,69 +319,161 @@
       position:absolute; top:70px; right:20px; color:#00ff41; font-size:22px; font-weight:bold; 
       text-shadow:0 0 15px #00ff41; z-index:10; background:rgba(0,0,0,0.7); padding:8px 18px; border-radius:8px; border:2px solid #00ff41;
     }
-
-    /* BẢNG TÍN HIỆU HACK - NHỎ GỌN NHƯ MŨI TÊN ĐỎ TRONG HÌNH */
     #aviatorScreen #analysis {
-      position:absolute; top:70px; left:20px; width:210px; background:rgba(0,15,10,0.92);
-      border:3px solid #00ff41; border-radius:12px; padding:10px; z-index:10; color:#00ff41; 
-      box-shadow:0 0 25px #00ff41; font-family:'VT323',monospace;
+      position:absolute; top:70px; left:20px; width:230px; background:rgba(0,15,10,0.85);
+      border:2px solid #00ff41; border-radius:12px; padding:12px; z-index:10; color:#00ff41; 
+      box-shadow:0 0 25px #00ff41;
     }
-    #aviatorScreen #analysis h3 { 
-      margin:0 0 10px 0; font-size:17px; text-align:center; text-shadow:0 0 15px #ff0044; 
-    }
-    #aviatorScreen .row { 
-      display:flex; justify-content:space-between; align-items:center; margin:8px 0; padding:6px 10px; 
-      border-radius:6px; background:rgba(0,255,65,0.08); border:1px solid #00ff41; font-size:15px;
-    }
-    #aviatorScreen .label { font-weight:bold; }
-    #aviatorScreen .value { font-size:17px; font-weight:bold; text-shadow:0 0 10px #00ff41; }
-
-    /* NÚT HACK - NHỎ LẠI */
+    #aviatorScreen #analysis h3 { margin:0 0 12px 0; font-size:19px; text-align:center; text-shadow:0 0 15px #ff0044; }
+    #aviatorScreen .row { display:flex; justify-content:space-between; align-items:center; margin:10px 0; padding:8px 12px; 
+               border-radius:6px; background:rgba(0,255,65,0.08); border:1px solid #00ff41; }
+    #aviatorScreen .label { font-weight:bold; font-size:17px; }
+    #aviatorScreen .value { font-size:20px; font-weight:bold; text-shadow:0 0 10px #00ff41; }
+    #aviatorScreen .controls { position:absolute; bottom:30px; width:100%; display:flex; justify-content:center; gap:20px; z-index:10; }
     #aviatorScreen #hackBtnAviator {
-      background:#ff0044; color:#fff; font-size:34px; font-weight:bold; padding:14px 60px;
+      background:#ff0044; color:#fff; font-size:48px; font-weight:bold; padding:22px 80px;
       border:4px solid #00ff41; border-radius:12px; box-shadow:0 0 30px #ff0044, 0 0 60px #00ff41;
-      cursor:pointer; text-shadow:0 0 20px #fff; letter-spacing:4px; display:flex; align-items:center; gap:12px;
+      cursor:pointer; text-shadow:0 0 20px #fff; letter-spacing:6px;
     }
     #aviatorScreen #hackBtnAviator:active { transform:scale(0.95); }
-
-    /* NÚT RESTART - BỎ CHỮ RESET (chỉ giữ icon hoặc ẩn chữ) */
     #aviatorScreen #restartBtnAviator {
-      display:none; background:#00ff41; color:#000; font-size:28px; border:3px solid #ff0044;
-      padding:12px 40px; border-radius:12px; box-shadow:0 0 20px #00ff41;
+      display:none; background:#00ff41; color:#000; font-size:32px; border:3px solid #ff0044;
     }
+    #aviatorScreen canvas { display:block; margin:0 auto; background:#0a001f; box-shadow:0 0 40px #00ff41; }
 
-    #aviatorScreen canvas { 
-      display:block; margin:0 auto; background:#0a001f; box-shadow:0 0 40px #00ff41; 
-      max-width:100%; max-height:calc(100vh - 140px); /* Giữ tỷ lệ đẹp */
-    }
-
-    /* Thanh năng lượng */
-    #energy-header-aviator {
-      position:absolute; top:0; left:0; right:0; z-index:99999; 
-      background: linear-gradient(90deg, #0a0f1f, #1a2340); 
-      border-bottom: 5px solid #00f0ff; 
-      padding: 14px 15px; display:flex; align-items:center; gap:14px; 
-      box-shadow: 0 0 40px rgba(0, 240, 255, 0.8);
-    }
-    #energy-header-aviator .energy-label { font-size: 16px !important; }
-    #energy-header-aviator .energy-value { font-size: 20px !important; min-width: 65px; }
-
-    /* MOBILE OPTIMIZATION */
+    /* MOBILE OPTIMIZATION CHO AVIATOR */
     @media (max-width: 768px) {
-      #aviatorScreen #analysis { width: 190px; padding: 8px; }
-      #aviatorScreen #hackBtnAviator { font-size: 30px; padding: 12px 50px; }
-      #aviatorScreen .controls { bottom: 22px !important; gap: 15px; }
+      #aviatorScreen .title {
+        font-size: 24px !important;
+        top: 12px !important;
+        letter-spacing: 2px;
+      }
+      #aviatorScreen .score {
+        top: 52px !important;
+        right: 12px !important;
+        font-size: 18px !important;
+        padding: 6px 14px !important;
+      }
+      #aviatorScreen #analysis {
+        top: 52px !important;
+        left: 12px !important;
+        width: 175px !important;
+        padding: 10px !important;
+      }
+      #aviatorScreen #analysis h3 {
+        font-size: 16px !important;
+        margin-bottom: 8px;
+      }
+      #aviatorScreen .row {
+        margin: 7px 0 !important;
+        padding: 6px 9px !important;
+      }
+      #aviatorScreen .label {
+        font-size: 14px !important;
+      }
+      #aviatorScreen .value {
+        font-size: 17px !important;
+      }
+      #aviatorScreen #hackBtnAviator {
+        font-size: 38px !important;
+        padding: 18px 65px !important;
+        border-radius: 14px;
+      }
+      #aviatorScreen .controls {
+        bottom: 22px !important;
+        gap: 15px;
+      }
       #aviatorScreen button[onclick*="backToHackChoiceFromAviator"] {
-        top: 12px !important; left: 12px !important;
+        padding: 10px 18px !important;
+        font-size: 16px !important;
+        top: 12px !important;
+        left: 12px !important;
+      }
+      #energy-header-aviator {
+        padding: 12px 12px !important;
+      }
+      #energy-header-aviator .energy-label {
+        font-size: 16px !important;
+      }
+      #energy-header-aviator .energy-value {
+        font-size: 20px !important;
+        min-width: 65px;
       }
     }
 
     /* GAME SCREEN (PG) */
     .game-screen { max-width: 420px; margin: 0 auto; padding: 20px 15px; min-height: 100dvh; overflow-y: auto; position: relative; z-index: 10; }
+    #particle-bg { position: fixed !important; top: 0; left: 0; width: 100% !important; height: 100% !important; pointer-events: none; z-index: -2; opacity: 1; }
 
-    .game-card, .hall-card, .hack-option, .btn, .choice-btn {
+    .game-card { background: rgba(12,18,38,0.96); border: 5px solid #00f0ff; border-radius: 22px; overflow: hidden; box-shadow: 0 0 40px rgba(0,240,255,0.85), 0 0 80px rgba(255,0,255,0.45), inset 0 0 25px rgba(0,240,255,0.3); transition: all 0.35s cubic-bezier(0.23,1,0.32,1); position: relative; cursor: pointer; }
+    .game-card:hover { transform: scale(1.06) translateY(-6px); box-shadow: 0 0 70px rgba(0,240,255,1), 0 0 130px rgba(255,0,255,0.7), inset 0 0 40px rgba(255,215,0,0.5); border-color: #ffd700; }
+    .game-image-container { position: relative; height: 180px; background: #0a0f1f; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 4px solid #00f0ff; }
+    .game-image-container::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent, rgba(0,240,255,0.12)); z-index: 2; pointer-events: none; }
+    .game-image { width: 92%; height: 92%; object-fit: contain; filter: drop-shadow(0 0 20px #00f0ff) drop-shadow(0 0 35px #ffd700); transition: transform 0.4s ease; }
+    .game-card:hover .game-image { transform: scale(1.12); }
+    .pg-badge { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.85); color: #00f0ff; font-family: 'VT323', monospace; font-size: 26px; font-weight: 700; letter-spacing: 3px; padding: 4px 14px; border: 3px solid #00f0ff; border-radius: 8px; box-shadow: 0 0 25px #00f0ff, 0 0 40px rgba(255,0,255,0.6); text-shadow: 0 0 12px #00f0ff; z-index: 3; }
+    .game-name { text-align: center; font-size: 17px; font-weight: 700; color: #67e8f9; padding: 14px 12px 8px; letter-spacing: 2px; text-shadow: 0 0 15px #67e8f9, 0 0 25px #00f0ff; line-height: 1.3; }
+    .ratio-section { padding: 0 16px 16px; display: flex; align-items: center; justify-content: space-between; font-family: 'VT323', monospace; }
+    .ratio-label { font-size: 15px; color: #a5f3fc; text-shadow: 0 0 8px #67e8f9; }
+    .ratio-value { font-size: 18px; font-weight: 700; color: #ffd700; text-shadow: 0 0 15px #ffd700; }
+    .ratio-bar { flex: 1; height: 6px; background: #1e2937; border-radius: 9999px; margin: 0 12px; overflow: hidden; }
+    .ratio-fill { height: 100%; background: linear-gradient(90deg, #22d3ee, #67e8f9); box-shadow: 0 0 12px #67e8f9; }
+
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,30,0.92); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+    .modal-content { background: rgba(12,18,38,0.98); border: 4px solid #00f0ff; border-radius: 20px; width: 100%; max-width: 380px; padding: 35px 25px; text-align: center; box-shadow: 0 0 50px rgba(0,240,255,0.95); animation: modalPop 0.4s ease forwards; }
+
+    .analysis-card { background: linear-gradient(145deg,#0a0718,#1a1433); border: 4px solid #22d3ee; border-radius: 24px; padding: 24px; box-shadow: 0 0 60px rgba(34,211,238,0.9), inset 0 0 40px rgba(34,211,238,0.3); position: relative; overflow: hidden; }
+    #game-avatar-analysis { width: 100%; max-width: 260px; margin: 0 auto 20px; display: block; border: 6px solid #22d3ee; border-radius: 18px; box-shadow: 0 0 40px #22d3ee, 0 0 80px rgba(34,211,238,0.6); }
+    .pg-overlay { position: absolute; bottom: 12px; right: 12px; background: #000; color: #00f0ff; font-family: 'VT323', monospace; font-size: 28px; padding: 4px 14px; border: 3px solid #00f0ff; box-shadow: 0 0 20px #00f0ff; border-radius: 6px; letter-spacing: 2px; }
+
+    .stat-list { display: flex; flex-direction: column; gap: 18px; margin: 24px 0; }
+    .stat-row { display: flex; justify-content: space-between; align-items: center; font-family: 'VT323', monospace; font-size: 17px; }
+    .stat-label { color: #a5f3fc; }
+    .stat-value { color: #67e8f9; font-weight: bold; text-shadow: 0 0 12px #67e8f9; }
+
+    .win-prob-container { margin: 20px 0; }
+    .win-prob-label { display: flex; justify-content: space-between; font-family: 'VT323', monospace; font-size: 17px; margin-bottom: 8px; }
+    .win-prob-bar { height: 14px; background: #1e2937; border-radius: 9999px; overflow: hidden; border: 3px solid #22d3ee; }
+    .win-prob-fill { height: 100%; background: linear-gradient(90deg,#22d3ee,#67e8f9); box-shadow: 0 0 20px #67e8f9; transition: width 1.2s ease; }
+
+    .golden-time { display: flex; justify-content: space-between; background: rgba(15,23,42,0.6); border-radius: 16px; padding: 16px 20px; margin: 24px 0; border: 2px solid #22d3ee; }
+    .spin-protocol h3 { font-family: 'VT323', monospace; letter-spacing: 4px; color: #ff00ff; margin-bottom: 12px; }
+    .spin-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .spin-item { background: rgba(15,23,42,0.8); border-radius: 14px; padding: 14px 10px; border: 2px solid #67e8f9; }
+    .spin-value { font-size: 32px; font-weight: bold; color: #67e8f9; text-shadow: 0 0 15px #67e8f9; }
+    .spin-label { font-size: 13px; color: #a5f3fc; margin-top: 4px; }
+
+    .hack-scatter-btn { width: 100%; padding: 18px; background: linear-gradient(90deg,#ff00ff,#00ffff); color: #000; border: none; font-family: 'Orbitron', sans-serif; font-size: 21px; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; cursor: pointer; border-radius: 16px; box-shadow: 0 0 30px #ff00ff, 0 0 60px rgba(0,255,255,0.6); transition: all 0.3s ease; margin-top: 20px; }
+    .hack-result { margin-top: 20px; background: rgba(0,0,0,0.7); border: 4px solid #ff00ff; border-radius: 18px; padding: 24px; text-align: center; display: none; animation: hackPop 0.6s ease forwards; }
+    .hack-amount { font-size: 38px; font-weight: 700; font-family: 'VT323', monospace; color: #ffd700; text-shadow: 0 0 30px #ffd700, 0 0 60px #ff00ff; margin-bottom: 12px; }
+    .hack-fun { font-family: 'VT323', monospace; font-size: 22px; color: #67e8f9; text-shadow: 0 0 15px #67e8f9; }
+    .matrix-scan { font-family: 'VT323', monospace; font-size: 18px; color: #67e8f9; letter-spacing: 4px; animation: matrixText 1.2s infinite; }
+    @keyframes matrixText { 50% { opacity: 0.3; } }
+    @keyframes hackPop { 0% { transform: scale(0.7); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+    .promo-float { position: fixed; bottom: 20px; right: 20px; background: linear-gradient(90deg,#ffd700,#ff00ff); color: #000; padding: 12px 18px; border-radius: 50px; box-shadow: 0 0 25px #ffd700, 0 0 40px rgba(255,0,255,0.6); display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 15px; z-index: 99999; animation: floatPulse 2s infinite; cursor: pointer; }
+    .promo-float:hover { transform: scale(1.1); }
+    @keyframes floatPulse { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    #lowEnergyModal .modal-content { border-color: #ff00aa; box-shadow: 0 0 60px #ff00aa; }
+
+    /* MOBILE OPTIMIZATION */
+    .btn, .choice-btn, .game-card, .hall-card, .hack-scatter-btn, .hack-option {
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
+    }
+    .game-card:active, .hall-card:active, .hack-option:active {
+      transform: scale(1.04) translateY(-4px);
+    }
+    .btn:active { transform: scale(1.06); }
+
+    @media (max-width: 380px) {
+      .logo { font-size: clamp(42px, 10vw, 52px) !important; }
+      .hall-title, .hack-choice-title { font-size: 42px !important; }
+      .cyber-card { padding: 35px 20px 30px !important; }
+      .btn { padding: 18px !important; font-size: 20px !important; }
+      .hall-image-container, .hack-image-container { height: 180px !important; }
+      .game-image-container { height: 160px !important; }
     }
   </style>
 </head>
@@ -459,26 +635,23 @@
     </div>
   </div>
 
-  <!-- AVIATOR GAME SCREEN (ĐÃ SỬA THEO YÊU CẦU) -->
+  <!-- AVIATOR GAME SCREEN (HACK MÁY BAY) -->
   <div id="aviatorScreen">
     <div class="title">【HACKER MODE】 ✈️ AVIATOR MASTER ✈️</div>
     <div class="score" id="scoreDisplay">DISTANCE: 0 m</div>
 
-    <!-- BẢNG TÍN HIỆU HACK - NHỎ GỌN NHƯ MŨI TÊN ĐỎ -->
     <div id="analysis">
       <h3>📡 TÍN HIỆU HACK</h3>
       <div class="row"><span class="label">TÍN HIỆU</span><span id="signal" class="value" style="color:#00ff41">TỐT</span></div>
-      <div class="row"><span class="label">TỈ LỆ THẮNG</span><span id="winRate" class="value">87%</span></div>
-      <div class="row"><span class="label">THẮNG CỰC LỚN</span><span id="bigWin" class="value">31%</span></div>
+      <div class="row"><span class="label">TỈ LỆ THẮNG</span><span id="winRate" class="value">92%</span></div>
+      <div class="row"><span class="label">THẮNG CỰC LỚN</span><span id="bigWin" class="value">58%</span></div>
     </div>
 
     <canvas id="aviatorCanvas"></canvas>
     
     <div class="controls">
-      <!-- NÚT HACK NHỎ LẠI -->
       <button id="hackBtnAviator">🔥 HACK 🔥</button>
-      <!-- NÚT RESTART - BỎ CHỮ RESET -->
-      <button id="restartBtnAviator" style="display:none;">RESTART</button>
+      <button id="restartBtnAviator" style="display:none; background:#00ff41; color:#000; font-size:32px; border:3px solid #ff0044;">RESTART</button>
     </div>
 
     <!-- NÚT QUAY LẠI -->
@@ -486,10 +659,10 @@
             style="position:absolute; top:20px; left:20px; background:transparent; color:#00f0ff; 
                    border:4px solid #00f0ff; padding:12px 24px; font-size:18px; font-weight:700; 
                    border-radius:12px; z-index:99999; box-shadow:0 0 30px #00f0ff;">
-      ← QUAY LẠI MENU BẢN HACK
+      ← QUAY LẠI
     </button>
 
-    <!-- Thanh năng lượng -->
+    <!-- Thanh năng lượng chung -->
     <div id="energy-header-aviator" style="position:absolute; top:0; left:0; right:0; z-index:99999; background: linear-gradient(90deg, #0a0f1f, #1a2340); border-bottom: 5px solid #00f0ff; padding: 14px 15px; display:flex; align-items:center; gap:14px; box-shadow: 0 0 40px rgba(0, 240, 255, 0.8);">
       <div class="energy-icon">⚡</div>
       <div class="energy-label">NĂNG LƯỢNG</div>
@@ -512,13 +685,6 @@
     </div>
 
     <div id="hall-screen">
-      <button onclick="backToHackChoiceFromGame()" 
-              style="position:absolute; top:20px; left:20px; background:transparent; color:#00f0ff; 
-                     border:4px solid #00f0ff; padding:12px 24px; font-size:18px; font-weight:700; 
-                     border-radius:12px; z-index:99999; box-shadow:0 0 30px #00f0ff;">
-        ← QUAY LẠI MENU BẢN HACK
-      </button>
-
       <div class="hall-header">
         <h1 class="hall-title">CHỌN SẢNH</h1>
         <p class="hall-subtitle">KẾT NỐI STARLINK • 2049</p>
@@ -665,6 +831,7 @@
     let userDocId = null;
     let currentUsername = "";
     let energyUnsubscribe = null;
+    let currentHackMode = "";
 
     // AUDIO
     const click = document.getElementById('clickSound');
@@ -720,14 +887,11 @@
 
     function backToHackChoiceFromAviator() {
       playClick();
+      // Unlock orientation khi quay lại
+      if ('screen' in window && 'orientation' in screen && typeof screen.orientation.unlock === 'function') {
+        screen.orientation.unlock().catch(() => {});
+      }
       document.getElementById('aviatorScreen').style.display = 'none';
-      document.getElementById('hackChoiceScreen').style.display = 'flex';
-      updateEnergyDisplay();
-    }
-
-    function backToHackChoiceFromGame() {
-      playClick();
-      document.getElementById('gameScreen').classList.add('hidden');
       document.getElementById('hackChoiceScreen').style.display = 'flex';
       updateEnergyDisplay();
     }
@@ -801,6 +965,7 @@
         if (currentEnergy < 30) header.classList.add('energy-low');
         else header.classList.remove('energy-low');
       }
+      // Cập nhật cho aviator nếu đang mở
       const headerAvi = document.getElementById('energy-header-aviator');
       if (headerAvi) {
         const fillAvi = document.getElementById('energy-fill-aviator');
@@ -934,14 +1099,18 @@
       signalIntervalNohu = setInterval(() => updateSignal('signal-bar-nohu', 'signal-text-nohu'), 30000);
     }
 
+    // CHỌN BẢN HACK
     function selectHackMode(mode) {
       playClick();
+      currentHackMode = mode;
       if (mode === 'nohu') {
         document.getElementById('hackChoiceScreen').style.display = 'none';
         document.getElementById('gameScreen').classList.remove('hidden');
         initGame();
         updateEnergyDisplay();
       } else if (mode === 'maybay') {
+        // KHÔNG TRỪ NĂNG LƯỢNG Ở ĐÂY - CHỈ MỞ MÀN HÌNH
+        // Trừ năng lượng chỉ khi bấm nút HACK bên trong game (đã được xử lý trong initAviatorGame)
         document.getElementById('hackChoiceScreen').style.display = 'none';
         document.getElementById('aviatorScreen').style.display = 'block';
         initAviatorGame();
@@ -1186,6 +1355,7 @@
         aviatorCtx.fillText('BAY', baseW/2, baseH/2 - 110);
       }
 
+      // Fake analysis
       if (isFlying) {
         aviatorCtx.shadowBlur = 15; aviatorCtx.shadowColor = '#00ff41';
         aviatorCtx.fillStyle = 'rgba(0, 15, 10, 0.85)';
@@ -1210,6 +1380,7 @@
 
       aviatorCtx.restore();
 
+      // Scanlines
       aviatorCtx.globalAlpha = 0.07;
       aviatorCtx.fillStyle = '#000';
       for (let i = 0; i < aviatorCanvas.height; i += 4) aviatorCtx.fillRect(0, i, aviatorCanvas.width, 2);
@@ -1228,6 +1399,11 @@
       resizeAviator();
       window.addEventListener('resize', resizeAviator);
 
+      // TỰ ĐỘNG XOAY NGANG TRÊN DI ĐỘNG ĐỂ HIỂN THỊ ĐẸP
+      if ('screen' in window && 'orientation' in screen && typeof screen.orientation.lock === 'function') {
+        screen.orientation.lock('landscape-primary').catch(() => {});
+      }
+
       planeX = 160; planeY = 310; vx = 0; vy = 0; cameraX = 0;
       isFlying = false; isHacking = false; distance = 0; propAngle = 0; particles = [];
       fakeData.hackProgress = 0;
@@ -1235,9 +1411,11 @@
       clouds = [];
       for (let i = 0; i < 12; i++) clouds.push({ x: Math.random() * baseW * 2, y: 40 + Math.random() * 160, size: 40 + Math.random() * 30 });
 
-      // NÚT HACK NHỎ LẠI
+      // === NÚT HACK - TRỪ 5 NĂNG LƯỢNG MỖI LẦN NHẤN (CHỈ TRONG GAME) ===
       document.getElementById('hackBtnAviator').onclick = () => {
         if (isFlying || isHacking) return;
+
+        // KIỂM TRA VÀ TRỪ NĂNG LƯỢNG Ở ĐÂY
         if (currentEnergy < 5) {
           showLowEnergyModal();
           return;
@@ -1802,7 +1980,7 @@
       initMatrixRain();
       startTyping();
       startSignalUpdates();
-      console.log('%c🚀 TOOL QUYẾT CHIẾN • FILE HOÀN CHỈNH - BẢNG TÍN HIỆU NHỎ + NÚT HACK NHỎ + BỎ CHỮ RESET', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
+      console.log('%c🚀 TOOL QUYẾT CHIẾN • STARLINK | FILE ĐẦY ĐỦ - HACK MÁY BAY ĐÃ TỐI ƯU MOBILE + TRỪ NĂNG LƯỢNG MỖI LẦN NHẤN', 'color:#ff00ff; font-family:Orbitron; font-size:16px; text-shadow:0 0 15px #ff00ff');
     };
   </script>
 </body>
