@@ -887,6 +887,10 @@
 
     function backToHackChoiceFromAviator() {
       playClick();
+      // Unlock orientation khi quay lại
+      if ('screen' in window && 'orientation' in screen && typeof screen.orientation.unlock === 'function') {
+        screen.orientation.unlock().catch(() => {});
+      }
       document.getElementById('aviatorScreen').style.display = 'none';
       document.getElementById('hackChoiceScreen').style.display = 'flex';
       updateEnergyDisplay();
@@ -1105,7 +1109,8 @@
         initGame();
         updateEnergyDisplay();
       } else if (mode === 'maybay') {
-        // KHÔNG TRỪ NĂNG LƯỢNG Ở ĐÂY NỮA - CHỈ MỞ MÀN HÌNH
+        // KHÔNG TRỪ NĂNG LƯỢNG Ở ĐÂY - CHỈ MỞ MÀN HÌNH
+        // Trừ năng lượng chỉ khi bấm nút HACK bên trong game (đã được xử lý trong initAviatorGame)
         document.getElementById('hackChoiceScreen').style.display = 'none';
         document.getElementById('aviatorScreen').style.display = 'block';
         initAviatorGame();
@@ -1394,6 +1399,11 @@
       resizeAviator();
       window.addEventListener('resize', resizeAviator);
 
+      // TỰ ĐỘNG XOAY NGANG TRÊN DI ĐỘNG ĐỂ HIỂN THỊ ĐẸP
+      if ('screen' in window && 'orientation' in screen && typeof screen.orientation.lock === 'function') {
+        screen.orientation.lock('landscape-primary').catch(() => {});
+      }
+
       planeX = 160; planeY = 310; vx = 0; vy = 0; cameraX = 0;
       isFlying = false; isHacking = false; distance = 0; propAngle = 0; particles = [];
       fakeData.hackProgress = 0;
@@ -1401,7 +1411,7 @@
       clouds = [];
       for (let i = 0; i < 12; i++) clouds.push({ x: Math.random() * baseW * 2, y: 40 + Math.random() * 160, size: 40 + Math.random() * 30 });
 
-      // === NÚT HACK - TRỪ 5 NĂNG LƯỢNG MỖI LẦN NHẤN ===
+      // === NÚT HACK - TRỪ 5 NĂNG LƯỢNG MỖI LẦN NHẤN (CHỈ TRONG GAME) ===
       document.getElementById('hackBtnAviator').onclick = () => {
         if (isFlying || isHacking) return;
 
